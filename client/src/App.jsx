@@ -36,19 +36,16 @@ import Addcase from "./components/user/Addcase";
 import Historyrepair from "./components/user/Historyrepair";
 import Deletecase from "./components/user/Deletecase";
 
-
 //Manager
-import Sidebarmanager from"./layout/manager/Sidebarmanager"
+import Sidebarmanager from "./layout/manager/Sidebarmanager";
 import Headerbarmanager from "./layout/manager/Headerbarmanager";
 import Reportcase from "./components/Manager/Reportcase";
 import Reportcasetechnician from "./components/technician/Reportcasetech";
 import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
 
-
 function App() {
   return (
     <>
-     
       <Routes>
         <Route path="/" element={<LoginPage />} />
       </Routes>
@@ -131,7 +128,7 @@ function App() {
               </>
             }
           />
-            <Route
+          <Route
             path="/technician/*"
             element={
               <>
@@ -141,8 +138,10 @@ function App() {
                   <div className="content_body">
                     <Box m="20px">
                       <Routes>
-                        <Route path="reportcasetech" element={<Reportcasetechnician />} />
-                       
+                        <Route
+                          path="reportcasetech"
+                          element={<Reportcasetechnician />}
+                        />
 
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
@@ -162,8 +161,11 @@ function App() {
                   <div className="content_body">
                     <Box m="20px">
                       <Routes>
-                        <Route path="reportcase" element={<Reportcase />} />
-        
+                        <Route
+                          path="reportcase"
+                          element={<Reportcase />}
+                        />
+
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
                     </Box>
