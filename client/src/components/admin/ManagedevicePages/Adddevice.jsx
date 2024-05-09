@@ -8,12 +8,13 @@ import InputLabel from "@mui/material/InputLabel";
 import { Button, IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { useState } from "react";
 
 function Adddevice() {
+  const navigate = useNavigate();
   const [devName, setDevname] = useState("");
 
   console.log(devName);
@@ -33,6 +34,7 @@ function Adddevice() {
         }
       );
       setDevname("");
+      navigate("/admin/Managedevice")
       console.log(response);
     } catch (error) {
       console.error(error.response.data);
