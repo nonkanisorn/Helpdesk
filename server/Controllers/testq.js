@@ -20,7 +20,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   const { users_name, users_img } = req.body
   db.query(
-    "INSERT TO tbl_users(users_name,users_img) VALUES(?,?)",
+    "INSERT TO tbl_users(uers_name,users_img) VALUES(?,?)",i 
     [users_name,users_img],
     (err, result) => {
       if (err) {
