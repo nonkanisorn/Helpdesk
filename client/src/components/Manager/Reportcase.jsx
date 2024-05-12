@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom"
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +21,7 @@ function Reportcase() {
   const [nametech, setNametech] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const [caseData, setcaseData] = useState([]);
+  const navigate = useNavigate();
   const handleChange = (event, case_id) => {
     const selectedTechnician = event.target.value; 
     setSelectedTechnicians((prevState) => ({
@@ -39,12 +42,15 @@ function Reportcase() {
         console.error(error);
       });
   };
+  const topagedetail = (case_id) =>{
+    navigate(`/manager/detail/${case_id}`)
+  }
   useEffect(() => {
     axios
       .get("http://localhost:5000/case/")
       .then(function (response) {
         setcaseData(response.data);
-        console.log(response);
+        console.log(caseData);
       })
       .catch(function (error) {
         console.log(error);
@@ -110,11 +116,19 @@ function Reportcase() {
                 </FormControl>
               </TableCell>
               <TableCell>
-                <Button
+                {/* ปุ่มส่งข้อมูล */}
+                {/* <Button
                   onClick={() => sendtech(item.case_id)}
                   variant="contained"
                 >
                   ดูรายละเอียด 
+                </Button> */}
+
+                <Button
+                  onClick={()=> topagedetail(item.case_id)}
+                  variant="contained"
+                >
+                  ดูรายละเอียด
                 </Button>
               </TableCell>
             </TableRow>
