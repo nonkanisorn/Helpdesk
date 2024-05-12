@@ -17,6 +17,18 @@ exports.list = async (req, res) => {
   });
 };
 
+exports.listbyID = async (req,res)=>{
+  const case_id = req.params.case_id
+  db.query("SELECT * FROM tbl_case WHERE case_id = ? ",[case_id],(err,result)=>{
+    if(err){
+      console.log(err)
+      res.status(500).send("server error")
+    } else {
+      res.send(result)
+    }
+  })
+}
+
 exports.create = (req, res) => {
   console.log(req.body);
   // console.log(req.headers)
