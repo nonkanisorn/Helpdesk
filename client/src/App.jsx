@@ -42,7 +42,7 @@ import Headerbarmanager from "./layout/manager/Headerbarmanager";
 import Reportcase from "./components/Manager/Reportcase";
 import Reportcasetechnician from "./components/technician/Reportcasetech";
 import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
-
+import Detailcase from "./components/Manager/Detailcase";
 function App() {
   return (
     <>
@@ -165,7 +165,10 @@ function App() {
                           path="reportcase"
                           element={<Reportcase />}
                         />
-
+                        <Route
+                          path="detail/:case_id"
+                          element={<Detailcase/>}
+                        />
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
                     </Box>
