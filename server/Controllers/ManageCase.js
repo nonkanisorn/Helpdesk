@@ -32,11 +32,12 @@ exports.listbyID = async (req,res)=>{
 exports.create = (req, res) => {
   console.log(req.body);
   // console.log(req.headers)
-  const { case_detail, case_img } = req.body;
+  const { case_detail , dep_name} = req.body;
+  // const case_img = req.files.case_img
   
   db.query(
-    "INSERT INTO tbl_case(case_detail, case_img) VALUES (?,?)",
-    [case_detail, case_img],
+    "INSERT INTO tbl_case(dep_name,case_detail ) VALUES (?,?)",
+    [dep_name,case_detail],
     (err, result) => {
       if (err) {
         console.log(err);
