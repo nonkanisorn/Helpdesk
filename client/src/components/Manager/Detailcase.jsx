@@ -3,16 +3,43 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+
 function Detailcase() {
   const { case_id } = useParams();
   const [casedatabyID, setcasedatabyID] = useState([]);
   const [imgurl, setImgUrls] = useState([]);
+  const [technician, settechnician] = useState([]);
 
-  // casedatabyID.map((casedata)=>{
-  //   const blob = new Blob ([casedata.case_img.data])
-  //   const bloburl = URL.createObjectURL(blob)
+  const [selectedTechnicians, setSelectedTechnicians] = useState({});
 
-  // })
+  const handleChange = (event, case_id) => {
+    const selectedTechnician = event.target.value;
+    setSelectedTechnicians((prevState) => ({
+      ...prevState,
+      [case_id]: selectedTechnician,
+    }));
+  };
+
+  const sendtech = (case_id) => {
+    const technician_name = selectedTechnicians[case_id];
+    axios
+      .patch(`http://localhost:5000/addtechcase/${case_id}`, {
+        technician_name,
+      })
+      .then(() => {
+        console.log(technician_name)
+        console.log(selectedTechnicians)
+        console.log("success");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:5000/case/${case_id}`)
@@ -23,6 +50,7 @@ function Detailcase() {
         const urls = response.data.map((casedata) => {
           const bufferData = new Uint8Array(casedata.case_img.data);
           const blob = new Blob([bufferData], { type: "image/jpeg" });
+
           return URL.createObjectURL(blob);
         });
         setImgUrls(urls);
@@ -31,15 +59,41 @@ function Detailcase() {
         console.log(error);
       })
       .finally(function () {});
+    axios.get("http://localhost:5000/technician").then(function (response) {
+      const technicianData = response.data.map(
+        (technician) => technician.technician_name
+      );
+      settechnician(technicianData);
+      console.log(technician);
+    });
   }, []);
   return (
     <div>
       {casedatabyID.map((casedata) => (
         <div key={casedata.case_id}>
-          หัวข้อ: {casedata.case_detail}
+          <h1>หัวข้อ: {casedata.case_detail}</h1>
+          <img src={imgurl} alt="รุป" width={500} height={400} />
           <div>{casedata.technician_name}</div>
-          <img src={imgurl} alt="รุป" width={500} height={400}/>
-          {imgurl}
+          <div>{casedata.case_detail}</div>
+          <span>รายชื่อช่างที่ได้รับมอบหมาย</span>{" "}
+          <span id="tech">ยังไม่ได้รับมอบหมาย</span>
+          
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="ช่าง"
+            value={
+              selectedTechnicians[casedata.case_id] || casedata.technician_name
+            }
+            onChange={(event) => handleChange(event , casedata.case_id)}
+          >
+            {Array.isArray(technician)&&technician.map((techname, index) => (
+              <MenuItem key={index} value={techname}>
+                {techname}
+              </MenuItem>
+            ))}
+          </Select>
+          <Button onClick={() => sendtech(casedata.case_id)} variant="contained">เพิ่มช่าง</Button>
         </div>
       ))}
     </div>
