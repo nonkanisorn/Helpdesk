@@ -11,17 +11,19 @@ import Select from "@mui/material/Select";
 
 import axios from "axios";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
   const [caseImg, setCaseImg] = useState("");
   const [buildingName, setBuildingname] = useState("");
-  const [depname, setDepname] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [depname, setDepname] = useState([]);
 
   const formData = new FormData();
   formData.append("case_detail", caseDetail);
-  formData.append("case_img", caseImg);
+  // formData.append("case_img", caseImg);
+  formData.append("dep_name", selectedDepartment);
 
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
@@ -29,6 +31,10 @@ function Addcase() {
   const handledepartmentChange = (event) => {
     setDepname(event.target.value);
   };
+  const handleChange = (event) => {
+    const selectedDepartment = event.target.value;
+  };
+
   const createcase = async (e, event) => {
     e.preventDefault();
 
@@ -38,21 +44,30 @@ function Addcase() {
         formData,
         {
           headers: {
-            "Content-Type": "application/json", // ระบุ Content-Type ไปยัง server
+            "Content-Type": "multipart/form-data", // ระบุ Content-Type ไปยัง server
           },
         }
       );
       setCaseDetail("");
-      setCaseImg("");
+      setCaseImg(null);
       setBuildingname("");
       setDepname("");
-
       console.log(response.data);
     } catch (error) {
       console.error(error.response.data);
     }
   };
-
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/department/`)
+      .then(function (response) {
+        setDepname(response.data);
+        console.log(depname);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
   return (
     <Box
       component="form"
@@ -69,6 +84,7 @@ function Addcase() {
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ marginRight: "8px" }}>อาคาร</span>
+              {}
               <Select
                 labelId="building-select-label"
                 id="building-select"
@@ -87,17 +103,17 @@ function Addcase() {
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ marginRight: "8px" }}>แผนก : </span>
+
               <Select
                 labelId="department-select-label"
                 id="department-select"
-                value={depname}
-                label="อาคาร"
-                onChange={handledepartmentChange}
+                value={selectedDepartment}
+                label="แผนก"
+                onChange={(event)=>handleChange(event)}
               >
-                <MenuItem value={10}>IT</MenuItem>
-                <MenuItem value={20}>การจัดการทั่วไป</MenuItem>
-                <MenuItem value={30}>การตลาด</MenuItem>
-                <MenuItem value={30}>การเงิน</MenuItem>
+                {depname.map((dep, index) => (
+                  <MenuItem key={index}>{dep.dep_name}</MenuItem>
+                ))}
               </Select>
             </div>
           </FormControl>
@@ -113,17 +129,16 @@ function Addcase() {
             sx={{ marginLeft: 2 }}
           />
         </div>
-        <div style={{ marginLeft: 15, marginBottom: 15 }}>
+        {/* <div style={{ marginLeft: 15, marginBottom: 15 }}>
           รูปภาพ :
-          <TextField
+          <input
             id="case_img"
             type="file"
-            value={caseImg}
-            onChange={(e) => setCaseImg(e.target.value)}
-            placeholder="ใส่รูปภาพ"
-            sx={{ marginLeft: 2 }}
+            // value={caseImg}
+            onChange={(e) => setCaseImg(e.target.files[0])}
+            // placeholder="ใส่รูปภาพ"
           />
-        </div>
+        </div> */}
         {/* <InputLabel htmlFor="component-simple" ></InputLabel> */}
         <Button onClick={createcase}>เพิ่มการแจ้งซ่อม</Button>
       </FormControl>
