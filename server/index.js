@@ -9,8 +9,11 @@ const cookieParser = require("cookie-parser");
 const Cookies = require("universal-cookie");
 const bcrypt = require("bcrypt");
 const { error } = require("console");
+const morgan = require('morgan')
 
 const cookies = new Cookies();
+
+app.use(morgan('dev'))
 
 app.use(bodyParser.urlencoded({ limit: "31mb", extended: true }));
 app.use(bodyParser.json({ limit: "31mb", extended: true }));
