@@ -15,8 +15,10 @@ const cookies = new Cookies();
 
 app.use(morgan('dev'))
 
-app.use(bodyParser.urlencoded({ limit: "31mb", extended: true }));
-app.use(bodyParser.json({ limit: "31mb", extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', 'http://localhost:5174'); // แทนที่ด้วยโดเมนของ React
 //   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -37,10 +39,10 @@ var db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "repairnoticedb",
+  database: "Helpdesk",
 });
 
-db.connect(function (err) {
+db.connect(function(err) {
   if (err) {
     console.error("error connecting: " + err.stack);
     return;
@@ -72,8 +74,8 @@ app.post("/api/login", async (req, res) => {
 
   db.query(
     "SELECT u.*, r.role_name FROM tbl_users u " +
-      "INNER JOIN tbl_role r ON u.role_id = r.role_id  " +
-      "WHERE users_username = ? ",
+    "INNER JOIN tbl_role r ON u.role_id = r.role_id  " +
+    "WHERE users_username = ? ",
     [users_username],
     async (err, result) => {
       // console.log(result);
@@ -103,7 +105,7 @@ app.post("/api/login", async (req, res) => {
         const token = jwt.sign({ users_username, role: userRole }, secret, {
           expiresIn: "1h",
         });
-        res.cookie("token", token, { httpOnly: false ,maxAge: 300000, sameSite: "none", secure: true});
+        res.cookie("token", token, { httpOnly: false, maxAge: 300000, sameSite: "none", secure: true });
 
         res.json({
           message: "login success",
