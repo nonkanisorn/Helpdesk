@@ -17,10 +17,10 @@ exports.list = async (req, res) => {
   });
 };
 
-exports.listbyID = async (req,res)=>{
+exports.listbyID = async (req, res) => {
   const case_id = req.params.case_id
-  db.query("SELECT * FROM tbl_case WHERE case_id = ? ",[case_id],(err,result)=>{
-    if(err){
+  db.query("SELECT * FROM tbl_case WHERE case_id = ? ", [case_id], (err, result) => {
+    if (err) {
       console.log(err)
       res.status(500).send("server error")
     } else {
@@ -30,14 +30,17 @@ exports.listbyID = async (req,res)=>{
 }
 
 exports.create = (req, res) => {
-  console.log(req.body);
   // console.log(req.headers)
-  const { case_detail , dep_name} = req.body;
+  const { case_detail, dep_name } = req.body;
   // const case_img = req.files.case_img
-  
+  console.log(req.body)
+
+  if (!case_detail) {
+    return res.status(400).send("case_detail is require")
+  }
   db.query(
     "INSERT INTO tbl_case(dep_name,case_detail ) VALUES (?,?)",
-    [dep_name,case_detail],
+    [dep_name, case_detail],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -66,15 +69,15 @@ exports.remove = async (req, res) => {
   );
 };
 
-exports.update = async (req,res)=>{
-    const caseID =req.params.case_id;
-    const {case_detail,case_img} = req.body
-    db.query("UPDATE tbl_case SET case_detail = ?, case_img = ? WHERE case_id = ?",[case_detail,case_img,caseID],(err,result)=>{
-        if(err){
-            console.log(err);
-            res.status(500).send("server error");
-        }else{
-            res.send(result)
-        }
-    })
+exports.update = async (req, res) => {
+  const caseID = req.params.case_id;
+  const { case_detail, case_img } = req.body
+  db.query("UPDATE tbl_case SET case_detail = ?, case_img = ? WHERE case_id = ?", [case_detail, case_img, caseID], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("server error");
+    } else {
+      res.send(result)
+    }
+  })
 }
