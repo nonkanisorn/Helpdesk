@@ -17,34 +17,41 @@ function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
   const [caseImg, setCaseImg] = useState("");
   const [buildingName, setBuildingname] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [depname, setDepname] = useState([]);
-
-  const formData = new FormData();
-  formData.append("case_detail", caseDetail);
-  // formData.append("case_img", caseImg);
-  formData.append("dep_name", selectedDepartment);
 
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
   };
   const handledepartmentChange = (event) => {
-    setDepname(event.target.value);
+    setSelectedDepartment(event.target.value);
+
   };
-  const handleChange = (event) => {
-    const selectedDepartment = event.target.value;
-  };
+  // depname.map((dep) => {
+  //   return dep.dep_name
+  // })
+  //}
 
   const createcase = async (e, event) => {
     e.preventDefault();
 
+    //const formData = new FormData();
+    // formData.append("case_img", caseImg);
+    //formData.append("dep_name", selectedDepartment);
+
+    // formData.append("case_detail", caseDetail);
+
+
     try {
       const response = await axios.post(
         "http://localhost:5000/Case",
-        formData,
+        {
+          dep_name: selectedDepartment,
+          case_detail: caseDetail,
+        },
         {
           headers: {
-            "Content-Type": "multipart/form-data", // ระบุ Content-Type ไปยัง server
+            "Content-Type": "application/json",
           },
         }
       );
@@ -52,19 +59,20 @@ function Addcase() {
       setCaseImg(null);
       setBuildingname("");
       setDepname("");
+      setSelectedDepartment("");
       console.log(response.data);
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error);
     }
   };
   useEffect(() => {
     axios
       .get(`http://localhost:5000/department/`)
-      .then(function (response) {
+      .then(function(response) {
         setDepname(response.data);
         console.log(depname);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
   }, []);
@@ -84,7 +92,6 @@ function Addcase() {
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ marginRight: "8px" }}>อาคาร</span>
-              {}
               <Select
                 labelId="building-select-label"
                 id="building-select"
@@ -103,18 +110,18 @@ function Addcase() {
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ marginRight: "8px" }}>แผนก : </span>
-
               <Select
                 labelId="department-select-label"
                 id="department-select"
+                //value={dep.dep_name}
                 value={selectedDepartment}
+                onChange={handledepartmentChange}
                 label="แผนก"
-                onChange={(event)=>handleChange(event)}
+              //onChange={(event) => handleChange(event)}
               >
-                {depname.map((dep, index) => (
-                  <MenuItem key={index}>{dep.dep_name}</MenuItem>
-                ))}
-              </Select>
+                {Array.isArray(depname) && depname.map((dep, index) => (
+                  <MenuItem key={index} value={dep.dep_name}>{dep.dep_name}</MenuItem>
+                ))}             </Select>
             </div>
           </FormControl>
         </div>
