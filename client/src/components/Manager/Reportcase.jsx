@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -23,7 +23,7 @@ function Reportcase() {
   const [caseData, setcaseData] = useState([]);
   const navigate = useNavigate();
   const handleChange = (event, case_id) => {
-    const selectedTechnician = event.target.value; 
+    const selectedTechnician = event.target.value;
     setSelectedTechnicians((prevState) => ({
       ...prevState,
       [case_id]: selectedTechnician,
@@ -32,7 +32,7 @@ function Reportcase() {
   const sendtech = (case_id) => {
     const technician_name = selectedTechnicians[case_id];
     axios
-      .patch(`http://localhost:5000/addtechcase/${case_id}`, {
+      .patch(`http://localhost:5011/addtechcase/${case_id}`, {
         technician_name,
       })
       .then(() => {
@@ -42,29 +42,29 @@ function Reportcase() {
         console.error(error);
       });
   };
-  const topagedetail = (case_id) =>{
+  const topagedetail = (case_id) => {
     navigate(`/manager/detail/${case_id}`)
   }
   useEffect(() => {
     axios
-      .get("http://localhost:5000/case/")
-      .then(function (response) {
+      .get("http://localhost:5011/case/")
+      .then(function(response) {
         setcaseData(response.data);
         console.log(caseData);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
     axios
-      .get("http://localhost:5000/technician")
-      .then(function (response) {
+      .get("http://localhost:5011/technician")
+      .then(function(response) {
         const technicianData = response.data.map(
           (technician) => technician.technician_name
         );
         setNametech(technicianData);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
   }, []);
@@ -125,7 +125,7 @@ function Reportcase() {
                 </Button> */}
 
                 <Button
-                  onClick={()=> topagedetail(item.case_id)}
+                  onClick={() => topagedetail(item.case_id)}
                   variant="contained"
                 >
                   ดูรายละเอียด
