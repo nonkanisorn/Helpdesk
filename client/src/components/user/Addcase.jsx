@@ -19,18 +19,23 @@ function Addcase() {
   const [buildingName, setBuildingname] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [depname, setDepname] = useState([]);
-
+  const [fetchtrigger, setFetchtrigger] = useState(false)
+  const [depname2, setDepname2] = useState([]);
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
   };
   const handledepartmentChange = (event) => {
     setSelectedDepartment(event.target.value);
-
-  };
-  // depname.map((dep) => {
-  //   return dep.dep_name
+  }
+  // const dep2 = axios
+  //   .get(`http://localhost:5011/department`)
+  // .then(function(response) {
+  //   setDepname2(response.data);
+  //   console.log(depname);
   // })
-  //}
+  // .catch(function(error) {
+  //   console.log(error);
+  // });
 
   const createcase = async (e, event) => {
     e.preventDefault();
@@ -44,7 +49,7 @@ function Addcase() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/Case",
+        "http://localhost:5011/Case",
         {
           dep_name: selectedDepartment,
           case_detail: caseDetail,
@@ -60,22 +65,26 @@ function Addcase() {
       setBuildingname("");
       setDepname("");
       setSelectedDepartment("");
+
+      //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
+      setFetchtrigger(!fetchtrigger)
+
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/department/`)
+      .get(`http://localhost:5011/department`)
       .then(function(response) {
         setDepname(response.data);
-        console.log(depname);
       })
       .catch(function(error) {
         console.log(error);
       });
-  }, []);
+  }, [fetchtrigger]);
   return (
     <Box
       component="form"
@@ -120,8 +129,11 @@ function Addcase() {
               //onChange={(event) => handleChange(event)}
               >
                 {Array.isArray(depname) && depname.map((dep, index) => (
-                  <MenuItem key={index} value={dep.dep_name}>{dep.dep_name}</MenuItem>
-                ))}             </Select>
+                  <MenuItem key={index} value={dep.dep_name}>
+                    {dep.dep_name}
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
           </FormControl>
         </div>
