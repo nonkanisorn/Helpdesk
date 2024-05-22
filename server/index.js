@@ -26,7 +26,6 @@ app.use(bodyParser.json());
 // });
 app.use(
   cors({
-    origin: "http://localhost:5173",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
 
@@ -210,4 +209,4 @@ app.get("/api/users", async (req, res) => {
 
 readdirSync("./Routes").map((r) => app.use("/", require("./Routes/" + r)));
 
-app.listen(5000, () => console.log("server run port 5000"));
+app.listen(5011, () => console.log("server run port 5011"));
