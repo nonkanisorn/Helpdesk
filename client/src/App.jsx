@@ -113,6 +113,7 @@ function App() {
                   <div className="content_body">
                     <Box m="20px">
                       <Routes>
+
                         <Route path="addcase" element={<Addcase />} />
                         <Route
                           path="historyrepair"
@@ -167,7 +168,7 @@ function App() {
                         />
                         <Route
                           path="detail/:case_id"
-                          element={<Detailcase/>}
+                          element={<Detailcase />}
                         />
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
