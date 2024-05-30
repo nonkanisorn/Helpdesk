@@ -29,7 +29,7 @@ function Detailcase() {
   const sendtech = (case_id) => {
     const technician_name = selectedTechnicians[case_id];
     axios
-      .patch(`http://localhost:5000/addtechcase/${case_id}`, {
+      .patch(`http://localhost:5011/addtechcase/${case_id}`, {
         technician_name,
       })
       .then(() => {
@@ -44,7 +44,7 @@ function Detailcase() {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/case/${case_id}`)
+      .get(`http://localhost:5011/case/${case_id}`)
       .then(function(response) {
         // console.log(response)
         setcasedatabyID(response.data);
@@ -62,7 +62,7 @@ function Detailcase() {
         console.log(error);
       })
       .finally(function() { });
-    axios.get("http://localhost:5000/technician").then(function(response) {
+    axios.get("http://localhost:5011/technician").then(function(response) {
       const technicianData = response.data.map(
         (technician) => technician.technician_name
       );
