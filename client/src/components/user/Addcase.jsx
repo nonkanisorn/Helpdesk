@@ -20,6 +20,7 @@ function Addcase() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [depname, setDepname] = useState([]);
   const [fetchtrigger, setFetchtrigger] = useState(false)
+
   const [depname2, setDepname2] = useState([]);
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
