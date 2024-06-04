@@ -35,6 +35,7 @@ import Addstatus from "./components/admin/ManagestatusPages/Addstatus";
 import Addcase from "./components/user/Addcase";
 import Historyrepair from "./components/user/Historyrepair";
 import Deletecase from "./components/user/Deletecase";
+import User from "./components/user/User";
 
 //Manager
 import Sidebarmanager from "./layout/manager/Sidebarmanager";
@@ -43,6 +44,7 @@ import Reportcase from "./components/Manager/Reportcase";
 import Reportcasetechnician from "./components/technician/Reportcasetech";
 import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
 import Detailcase from "./components/Manager/Detailcase";
+import Adduser from "./components/Manager/Adduser";
 function App() {
   return (
     <>
@@ -113,7 +115,7 @@ function App() {
                   <div className="content_body">
                     <Box m="20px">
                       <Routes>
-
+                        <Route path="mainuser" element={<User />} />
                         <Route path="addcase" element={<Addcase />} />
                         <Route
                           path="historyrepair"
@@ -169,6 +171,10 @@ function App() {
                         <Route
                           path="detail/:case_id"
                           element={<Detailcase />}
+                        />
+                        <Route
+                          path="adduser"
+                          element={<Adduser />}
                         />
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
