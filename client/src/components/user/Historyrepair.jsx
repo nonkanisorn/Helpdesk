@@ -12,18 +12,18 @@ import Paper from '@mui/material/Paper';
 function Historyrepair() {
   const [caseData, setcaseData] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-      .get("http://localhost:5000/Case")
-      .then(function (response) {
+      .get("http://localhost:5011/Case")
+      .then(function(response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
-  },[])
+      .finally(function() { });
+  }, [])
 
 
   return (
