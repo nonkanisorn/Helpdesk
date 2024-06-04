@@ -8,15 +8,18 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
+import axios from "axios";
 function LoginPage() {
-  const [users_username, setusers_username] = useState(""); // สร้าง state สำหรับเก็บค่า username
-  const [users_password, setusers_password] = useState("");
+  const [username, setusername] = useState(""); // สร้าง state สำหรับเก็บค่า username
+  const [userpassword, setuserpassword] = useState("");
+  console.log(userpassword)
   const Login = () => {
     // ฟังก์ชันที่ใช้สำหรับการเข้าสู่ระบบ
     // ทำการส่งข้อมูลเข้าสู่ระบบด้วย axios หรือวิธีอื่น ๆ ที่คุณต้องการ
-    axios.post("/login", { username: users_username, password: users_password })
+    axios.post("http://localhost:5011/login", { username, userpassword })
       .then(response => {
-        // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
+        // ดำเนินการหลังจากเข้าสู่ระบบสำเร็p
+        console.log(response.data)
       })
       .catch(error => {
         // ดำเนินการเมื่อมีข้อผิดพลาดเกิดขึ้นในการเข้าสู่ระบบ
@@ -64,13 +67,13 @@ function LoginPage() {
                 id="outlined-basic"
                 label="username"
                 variant="outlined"
-                onChange={(e) => setusers_username(e.target.value)}
+                onChange={(e) => setusername(e.target.value)}
               />
               <TextField
                 id="outlined-basic"
                 label="Password"
                 variant="outlined"
-                onChange={(e) => setusers_password(e.target.value)}
+                onChange={(e) => setuserpassword(e.target.value)}
               />
             </Typography>
             <Typography variant="body2" mt={4} textAlign={"right"}>
