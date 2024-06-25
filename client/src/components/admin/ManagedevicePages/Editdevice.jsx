@@ -8,12 +8,13 @@ function Editdevice() {
   const { dev_id, dev_name } = useParams();
   const [newName, setNewDevName] = useState(dev_name);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const handleUpdate = () => {
     const formData = new FormData();
     formData.append("newName", newName);
 
     axios
-      .put(`http://localhost:5000/Device/${dev_id}/${newName}`, formData)
+      .put(`${apiUrl}/Device/${dev_id}/${newName}`, formData)
       .then(() => {
         console.log(`Updated device name to: ${newName}`);
         navigate("/admin/Managedevice");
@@ -21,7 +22,7 @@ function Editdevice() {
       .catch((error) => {
         console.error("Error updateing data: ", error);
       });
-      
+
   };
   return (
     <div>

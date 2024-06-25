@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 function Manageposition() {
   const [positionData, setPositiondata] = useState([]);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const Deleteposition = async (position_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -21,11 +22,11 @@ function Manageposition() {
     }
 
     axios
-      .delete(`http://localhost:5000/Position/${position_id}`)
+      .delete(`${apiUrl}/Position/${position_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get("http://localhost:5000/Position")
+          .get(`${apiUrl}/Position`)
           .then((response) => {
             setPositiondata(response.data);
             console.log(response);
@@ -41,15 +42,15 @@ function Manageposition() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Position")
-      .then(function (response) {
+      .get(`${apiUrl}/Position`)
+      .then(function(response) {
         setPositiondata(response.data);
         console.log(positionData);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
 
   return (

@@ -8,12 +8,13 @@ function Editstatus() {
   const { status_id, status_name } = useParams();
   const [newName, setNewDevName] = useState(status_name);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const handleUpdate = () => {
     const formData = new FormData();
     formData.append("newName", newName);
 
     axios
-      .put(`http://localhost:5000/Status/${status_id}/${newName}`, formData)
+      .put(`${apiUrl}/Status/${status_id}/${newName}`, formData)
       .then(() => {
         console.log(`Updated device name to: ${newName}`);
         navigate("/admin/Managestatus");
@@ -21,7 +22,7 @@ function Editstatus() {
       .catch((error) => {
         console.error("Error updateing data: ", error);
       });
-      
+
   };
   return (
     <div>

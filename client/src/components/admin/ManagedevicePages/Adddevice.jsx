@@ -17,6 +17,7 @@ function Adddevice() {
   const navigate = useNavigate();
   const [devName, setDevname] = useState("");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   console.log(devName);
   const formData = new FormData();
   formData.append("dev_name", devName);
@@ -25,7 +26,7 @@ function Adddevice() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/Device",
+        ` ${apiUrl}/Device`,
         formData,
         {
           headers: {

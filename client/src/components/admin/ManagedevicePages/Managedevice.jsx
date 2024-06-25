@@ -1,4 +1,4 @@
-import React ,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 function Managedevice() {
   const [deviceData, setDevicedata] = useState([]);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const Deletedevice = async (dev_id) => {
     try {
       const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
@@ -22,11 +22,11 @@ function Managedevice() {
       }
       /** */
       axios
-        .delete(`http://localhost:5000/Device/${dev_id}`)
+        .delete(`${apiUrl}/Device/${dev_id}`)
         .then((response) => {
           console.log(response.data);
           axios
-            .get("http://localhost:5000/Device")
+            .get(`${apiUrl}/Device`)
             .then((response) => {
               setDevicedata(response.data);
               console.log(response);
@@ -42,19 +42,19 @@ function Managedevice() {
       console.log(error);
     }
 
-    
+
   };
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Device")
-      .then(function (response) {
+      .get(`${apiUrl}/Device`)
+      .then(function(response) {
         setDevicedata(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
 
 

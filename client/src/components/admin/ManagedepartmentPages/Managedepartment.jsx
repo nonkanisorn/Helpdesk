@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 function Managedepartment() {
   const [departmentData, setDepartmentdata] = useState([]);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const Deletedepartment = async (dep_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -21,11 +21,11 @@ function Managedepartment() {
     }
 
     axios
-      .delete(`http://localhost:5000/Department/${dep_id}`)
+      .delete(`${apiUrl}/Department/${dep_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get("http://localhost:5000/Department")
+          .get(`${apiUrl}/Department`)
           .then((response) => {
             setDepartmentdata(response.data);
             console.log(response);
@@ -41,15 +41,15 @@ function Managedepartment() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Department")
-      .then(function (response) {
+      .get(`${apiUrl}/Department`)
+      .then(function(response) {
         setDepartmentdata(response.data);
         console.log(departmentData);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
 
   return (

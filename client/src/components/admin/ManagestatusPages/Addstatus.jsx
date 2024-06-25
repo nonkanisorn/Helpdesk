@@ -17,15 +17,16 @@ function Addstatus() {
   const navigate = useNavigate()
   const [statusName, setStatusname] = useState("");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   // console.log(positionName);
   const formData = new FormData();
   formData.append("status_name", statusName);
 
-  const createstatus= async (e, event) => {
+  const createstatus = async (e, event) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/Status",
+        `${apiUrl}/Status`,
         formData,
         {
           headers: {

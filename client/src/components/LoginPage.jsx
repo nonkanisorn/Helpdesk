@@ -9,23 +9,51 @@ import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../store/userSlice";
+
+
+
+
 function LoginPage() {
   const [username, setusername] = useState(""); // สร้าง state สำหรับเก็บค่า username
   const [userpassword, setuserpassword] = useState("");
-  console.log(userpassword)
-  const Login = () => {
-    // ฟังก์ชันที่ใช้สำหรับการเข้าสู่ระบบ
-    // ทำการส่งข้อมูลเข้าสู่ระบบด้วย axios หรือวิธีอื่น ๆ ที่คุณต้องการ
-    axios.post("http://localhost:5011/login", { username, userpassword })
-      .then(response => {
-        // ดำเนินการหลังจากเข้าสู่ระบบสำเร็p
-        console.log(response.data)
-      })
-      .catch(error => {
-        // ดำเนินการเมื่อมีข้อผิดพลาดเกิดขึ้นในการเข้าสู่ระบบ
-      });
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5011/login", {
+        username,
+        userpassword,
+      });
+      // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
+      console.log(response.data);
+
+      dispatch(login({
+        username: response.data.payload.user.name,
+        role: response.data.payload.user.role,
+        token: response.data.token
+      }))
+      localStorage.setItem("token", response.data.token)
+      roleRedirects(response.data.payload.user.role)
+    } catch (error) {
+      // ดำเนินการเมื่อมีข้อผิดพลาดเกิดขึ้นในการเข้าสู่ระบบ
+      console.error("There was an error logging in!", error);
+      alert('Failed to login. Please check your username and password.');
+    }
+  };
+  const roleRedirects = (role) => {
+    // console.log(role)
+    if (role === 'admin') {
+      navigate('/admin/index')
+    } else {
+      navigate('/user/index')
+    }
+  }
   return (
     <div className="login">
       <Box
@@ -82,8 +110,8 @@ function LoginPage() {
           </CardContent>
           <CardActions>
             <Button
-              onClick={Login}
               variant="contained"
+              onClick={handleLogin}
               color="primary"
               sx={{ width: "80%", height: "50px", marginLeft: 5 }}
             >

@@ -5,7 +5,6 @@ import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
-
 import axios from "axios";
 
 import { useState } from "react";
@@ -13,7 +12,7 @@ import { useState } from "react";
 function Addposition() {
   const navigate = useNavigate();
   const [positionName, setPositionname] = useState("");
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   console.log(positionName);
   const formData = new FormData();
   formData.append("position_name", positionName);
@@ -22,7 +21,7 @@ function Addposition() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/Position",
+        `${apiUrl}/Position`,
         formData,
         {
           headers: {

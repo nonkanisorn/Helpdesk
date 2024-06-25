@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 function Managestatus() {
   const [statusData, setStatusdata] = useState([]);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const Deletestatus = async (status_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -21,11 +22,11 @@ function Managestatus() {
     }
 
     axios
-      .delete(`http://localhost:5000/Status/${status_id}`)
+      .delete(`${apiUrl}/Status/${status_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get("http://localhost:5000/Status")
+          .get(`${apiUrl}/Status`)
           .then((response) => {
             setStatusdata(response.data);
             console.log(response);
@@ -41,15 +42,15 @@ function Managestatus() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Status")
-      .then(function (response) {
+      .get(`${apiUrl}/Status`)
+      .then(function(response) {
         setStatusdata(response.data);
         console.log(statusData);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
 
   return (

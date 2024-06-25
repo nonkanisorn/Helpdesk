@@ -8,12 +8,13 @@ function Editposition() {
   const { position_id, position_name } = useParams();
   const [newName, setNewpoName] = useState(position_name);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const handleUpdate = () => {
     const formData = new FormData();
     formData.append("position_name", newName);
 
     axios
-      .put(`http://localhost:5000/Position/${position_id}/${newName}`, formData)
+      .put(`${apiUrl}/Position/${position_id}/${newName}`, formData)
       .then((response) => {
         console.log(`Updated device name to: ${newName}`);
         navigate("/admin/Manageposition");

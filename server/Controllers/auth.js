@@ -57,7 +57,8 @@ exports.login = async (req, res) => {
         console.log(isMatch)
         var payload = {
           user: {
-            name: results[0].username
+            username: results[0].username,
+            role: results[0].role
           }
         }
       } else {
@@ -74,5 +75,19 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.log((err))
     res.send('server error').status(500)
+  }
+}
+exports.currentUser = async (req, res) => {
+  try {
+    console.log('currentUser', req.user)
+    db.query('SELECT * FROM tbl_users WHERE username = ? ', [req.user.name], async (error, result) => {
+      if (error) {
+        res.send('server error1').status(500)
+      }
+      res.send(result)
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('server error')
   }
 }
