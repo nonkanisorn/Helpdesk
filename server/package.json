@@ -10,7 +10,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.8.0",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.4",
     "universal-cookie": "^7.0.2"
   },
   "name": "server",
