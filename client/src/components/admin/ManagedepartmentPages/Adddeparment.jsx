@@ -13,16 +13,16 @@ import { useState } from "react";
 function Adddepartment() {
   const navigate = useNavigate();
   const [departmentName, setDepartmentname] = useState("");
-
   console.log(departmentName);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const formData = new FormData();
   formData.append("dep_name", departmentName);
 
-  const createdepartment= async (e, event) => {
+  const createdepartment = async (e, event) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/Department",
+        `${apiUrl}/Department`,
         formData,
         {
           headers: {
