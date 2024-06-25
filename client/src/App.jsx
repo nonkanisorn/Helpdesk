@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 
@@ -45,66 +45,86 @@ import Reportcasetechnician from "./components/technician/Reportcasetech";
 import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
 import Detailcase from "./components/Manager/Detailcase";
 import Adduser from "./components/Manager/Adduser";
+import AdminRoute from "./Routes/ AdminRoute";
+
+
+import axios from "axios";
+
 function App() {
+
+  useEffect(() => {
+    const idToken = localStorage.getItem('token')
+    console.log(idToken)
+    const currentUser = async (token) => {
+      await axios.post(`${process.env.REACT_APP_API_URL}/current-user`, {}, {
+        headers: {
+
+          authtoken: token
+
+        }
+      }).then((res) => {
+        console.log(res)
+      })
+      if (idToken) {
+        currentUser(idToken).then(console.log(res))
+      } else {
+        console.log("FAILLLL")
+      }
+    }
+  }, [])
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
       <div className="app">
         <Routes>
-          <Route
-            path="/admin/*"
-            element={
-              <>
-                <Sidebaradmin />
-                <main className="content">
-                  <Headerbaradmin />
-                  <div className="content_body">
-                    <Box m="20px">
-                      <Routes>
-                        <Route path="manageuser" element={<Manageuser />} />
-                        <Route
-                          path="manageposition"
-                          element={<Manageposition />}
-                        />
-                        <Route path="managedevice" element={<Managedevice />} />
-                        <Route path="adminpage" element={<Adminpages />} />
-                        <Route path="managestatus" element={<Managestatus />} />
-                        <Route
-                          path="managedepartment"
-                          element={<Managedepartment />}
-                        />
-                        <Route path="adddevice" element={<Adddevice />} />
-                        <Route
-                          path="editdevice/:dev_id/:dev_name"
-                          element={<Editdevice />}
-                        />
-                        <Route path="addposition" element={<Addposition />} />
-                        <Route
-                          path="editposition/:position_id/:position_name"
-                          element={<Editposition />}
-                        />
-                        <Route path="addstatus" element={<Addstatus />} />
-                        <Route
-                          path="editstatus/:status_id/:status_name"
-                          element={<Editstatus />}
-                        />
-                        <Route
-                          path="adddepartment"
-                          element={<Adddepartment />}
-                        />
-                        <Route
-                          path="editdepartment/:dep_id/:dep_name"
-                          element={<Editdepartment />}
-                        />
-                      </Routes>
-                    </Box>
-                  </div>
-                </main>
-              </>
-            }
-          />
+          <Route path="/admin/*" element={
+            <AdminRoute>
+              <Routes>
+                <Route path="manageuser" element={<Manageuser />} />
+                <Route
+                  path="manageposition"
+                  element={<Manageposition />}
+                />
+                <Route path="managedevice" element={<Managedevice />} />
+                <Route path="adminpage" element={<Adminpages />} />
+                <Route path="managestatus" element={<Managestatus />} />
+
+                <Route
+                  path="managedepartment"
+                  element={<Managedepartment />}
+                />
+                <Route path="adddevice" element={<Adddevice />} />
+                <Route
+                  path="editdevice/:dev_id/:dev_name"
+                  element={<Editdevice />}
+                />
+                <Route path="addposition" element={<Addposition />} />
+                <Route
+                  path="editposition/:position_id/:position_name"
+                  element={<Editposition />}
+                />
+                <Route path="addstatus" element={<Addstatus />} />
+                <Route
+                  path="editstatus/:status_id/:status_name"
+                  element={<Editstatus />}
+                />
+                <Route
+                  path="adddepartment"
+                  element={<Adddepartment />}
+                />
+                <Route
+                  path="editdepartment/:dep_id/:dep_name"
+                  element={<Editdepartment />}
+                />
+
+              </Routes>
+            </AdminRoute>
+          } />
+        </Routes>
+        <Routes>
           <Route
             path="/user/*"
             element={
@@ -185,9 +205,8 @@ function App() {
             }
           />
         </Routes>
-      </div>
+      </div >
     </>
   );
 }
-
 export default App;
