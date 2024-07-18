@@ -11,7 +11,8 @@ import Select from "@mui/material/Select";
 
 import axios from "axios";
 
-import { useState, useEffect } from "react";
+
+import { useRef, useState, useEffect } from "react";
 
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
@@ -19,33 +20,25 @@ function Addcase() {
   const [buildingName, setBuildingname] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [depname, setDepname] = useState([]);
-  const [fetchtrigger, setFetchtrigger] = useState(false)
-
-  const [depname2, setDepname2] = useState([]);
+  const [fetchtrigger, setFetchtrigger] = useState(false);
+  const [file, setFile] = useState(null);
+  const inputFileRef = useRef()
+  const apiUrl = process.env.REACT_APP_API_URL;
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
   };
   const handledepartmentChange = (event) => {
     setSelectedDepartment(event.target.value);
-  }
-  // const dep2 = axios
-  //   .get(`http://localhost:5011/department`)
-  // .then(function(response) {
-  //   setDepname2(response.data);
-  //   console.log(depname);
-  // })
-  // .catch(function(error) {
-  //   console.log(error);
-  // });
+  };
+  const handlefilechange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-  const createcase = async (e, event) => {
+  const createcase = async (e) => {
     e.preventDefault();
 
-    //const formData = new FormData();
-    // formData.append("case_img", caseImg);
-    //formData.append("dep_name", selectedDepartment);
-
-    // formData.append("case_detail", caseDetail);
+    const formData = new FormData();
+    formData.append("photo", file);
 
 
     try {
@@ -61,6 +54,19 @@ function Addcase() {
           },
         }
       );
+      axios.post(`${apiUrl}/upload`, formData, {
+
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(() => {
+        console.log('success file')
+        console.log(file)
+      })
+      if (inputFileRef.current) {
+        inputFileRef.current.value = ""
+      }
+      setFile(null)
       setCaseDetail("");
       setCaseImg(null);
       setBuildingname("");
@@ -68,7 +74,7 @@ function Addcase() {
       setSelectedDepartment("");
 
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
-      setFetchtrigger(!fetchtrigger)
+      setFetchtrigger(!fetchtrigger);
 
       console.log(response.data);
     } catch (error) {
@@ -97,7 +103,7 @@ function Addcase() {
       autoComplete="off"
     >
       <div>แจ้งซ่อม โดยคุณ</div>
-      <FormControl variant="standard">
+      <FormControl variant="standard" >
         <div style={{ marginLeft: 15, marginBottom: 15 }}>
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,11 +135,12 @@ function Addcase() {
                 label="แผนก"
               //onChange={(event) => handleChange(event)}
               >
-                {Array.isArray(depname) && depname.map((dep, index) => (
-                  <MenuItem key={index} value={dep.dep_name}>
-                    {dep.dep_name}
-                  </MenuItem>
-                ))}
+                {Array.isArray(depname) &&
+                  depname.map((dep, index) => (
+                    <MenuItem key={index} value={dep.dep_name}>
+                      {dep.dep_name}
+                    </MenuItem>
+                  ))}
               </Select>
             </div>
           </FormControl>
@@ -149,17 +156,9 @@ function Addcase() {
             sx={{ marginLeft: 2 }}
           />
         </div>
-        {/* <div style={{ marginLeft: 15, marginBottom: 15 }}>
-          รูปภาพ :
-          <input
-            id="case_img"
-            type="file"
-            // value={caseImg}
-            onChange={(e) => setCaseImg(e.target.files[0])}
-            // placeholder="ใส่รูปภาพ"
-          />
-        </div> */}
-        {/* <InputLabel htmlFor="component-simple" ></InputLabel> */}
+        <div>
+          <input type="file" name="photo" onChange={handlefilechange} ref={inputFileRef} />
+        </div>
         <Button onClick={createcase}>เพิ่มการแจ้งซ่อม</Button>
       </FormControl>
     </Box>

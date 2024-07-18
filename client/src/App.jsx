@@ -5,7 +5,7 @@ import { CssBaseline, Box } from "@mui/material";
 import "./App.css";
 //------iimport layout------//
 //ADMIN
-// import Headerbaradmin from "./layout/admin/Headerbaradmin";
+
 import Headerbaradmin from "./layout/admin/Headerbaradmin";
 import Sidebaradmin from "./layout/admin/Sidebaradmin";
 
@@ -17,19 +17,6 @@ import Sidebaruser from "./layout/users/Sidebaruser";
 //ADMIN
 
 import LoginPage from "./components/LoginPage";
-import Manageuser from "./components/admin/ManageuserPages/Manageuser";
-import Manageposition from "./components/admin/ManagepositionPages/Manageposition";
-import Managedevice from "./components/admin/ManagedevicePages/Managedevice";
-import Managestatus from "./components/admin/ManagestatusPages/Managestatus";
-import Adddevice from "./components/admin/ManagedevicePages/Adddevice";
-import Editdevice from "./components/admin/ManagedevicePages/Editdevice";
-import Editposition from "./components/admin/ManagepositionPages/Editposition";
-import Addposition from "./components/admin/ManagepositionPages/Addposition";
-import Managedepartment from "./components/admin/ManagedepartmentPages/Managedepartment";
-import Adddepartment from "./components/admin/ManagedepartmentPages/Adddeparment";
-import Editdepartment from "./components/admin/ManagedepartmentPages/Editdepartment";
-import Adminpages from "./components/admin/adminpages";
-import Addstatus from "./components/admin/ManagestatusPages/Addstatus";
 
 //USER
 import Addcase from "./components/user/Addcase";
@@ -45,112 +32,72 @@ import Reportcasetechnician from "./components/technician/Reportcasetech";
 import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
 import Detailcase from "./components/Manager/Detailcase";
 import Adduser from "./components/Manager/Adduser";
-import AdminRoute from "./Routes/ AdminRoute";
 
-
+import { login } from "./store/userSlice";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-
+import UserRoute from "./Routes/UserRoute";
+import AdminRoute from "./Routes/ AdminRoute";
+import { useState } from "react";
+import Notfound404 from "./components/Notfound404";
 function App() {
-
-  useEffect(() => {
-    const idToken = localStorage.getItem('token')
-    console.log(idToken)
-    const currentUser = async (token) => {
-      await axios.post(`${process.env.REACT_APP_API_URL}/current-user`, {}, {
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
+  const currentUser = async (idToken) => {
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/current-user`, {}, {
         headers: {
-
-          authtoken: token
-
+          authtoken: idToken
         }
-      }).then((res) => {
-        console.log(res)
-      })
-      if (idToken) {
-        currentUser(idToken).then(console.log(res))
-      } else {
-        console.log("FAILLLL")
-      }
+      });
+      dispatch(login({
+        username: res.data[0].username,
+        role: res.data[0].role,
+        token: idToken,
+      }))
+      setLoading(false)
+      console.log('resdata', res.data);
+      return res.data
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+      setLoading(false)
     }
-  }, [])
-
+  };
+  useEffect(() => {
+    const Token = localStorage.getItem('user');
+    if (Token) {
+      const idToken = JSON.parse(Token)
+      // dispatch(login({
+      //   username: res.data[0].username,
+      //   role: res.data[0].role,
+      //   token: idToken,
+      //
+      // }))
+      dispatch(login(idToken))
+      console.log(idToken.token)
+      currentUser(idToken.token).then(() => console.log("sucess")).catch((error) => {
+        console.log(error)
+      }).finally(() => {
+        setLoading(false)
+      })
+    } else {
+      console.log("No token found");
+      setLoading(false)
+    }
+  }, [dispatch]);
+  if (loading) {
+    return null; // ไม่แสดงอะไรในขณะที่กำลังโหลด
+  }
   return (
     <>
       <Routes>
+        <Route path="*" element={<Notfound404 text="ไม่มีpath" />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin/*" element={<AdminRoute />} />
+        <Route path="/user/*" element={<UserRoute />} />
       </Routes>
       <div className="app">
         <Routes>
-          <Route path="/admin/*" element={
-            <AdminRoute>
-              <Routes>
-                <Route path="manageuser" element={<Manageuser />} />
-                <Route
-                  path="manageposition"
-                  element={<Manageposition />}
-                />
-                <Route path="managedevice" element={<Managedevice />} />
-                <Route path="adminpage" element={<Adminpages />} />
-                <Route path="managestatus" element={<Managestatus />} />
-
-                <Route
-                  path="managedepartment"
-                  element={<Managedepartment />}
-                />
-                <Route path="adddevice" element={<Adddevice />} />
-                <Route
-                  path="editdevice/:dev_id/:dev_name"
-                  element={<Editdevice />}
-                />
-                <Route path="addposition" element={<Addposition />} />
-                <Route
-                  path="editposition/:position_id/:position_name"
-                  element={<Editposition />}
-                />
-                <Route path="addstatus" element={<Addstatus />} />
-                <Route
-                  path="editstatus/:status_id/:status_name"
-                  element={<Editstatus />}
-                />
-                <Route
-                  path="adddepartment"
-                  element={<Adddepartment />}
-                />
-                <Route
-                  path="editdepartment/:dep_id/:dep_name"
-                  element={<Editdepartment />}
-                />
-
-              </Routes>
-            </AdminRoute>
-          } />
-        </Routes>
-        <Routes>
-          <Route
-            path="/user/*"
-            element={
-              <>
-                <Sidebaruser />
-                <main className="content">
-                  <Headerbaruser />
-                  <div className="content_body">
-                    <Box m="20px">
-                      <Routes>
-                        <Route path="mainuser" element={<User />} />
-                        <Route path="addcase" element={<Addcase />} />
-                        <Route
-                          path="historyrepair"
-                          element={<Historyrepair />}
-                        />
-                        <Route path="deletecase" element={<Deletecase />} />
-
-                        {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
-                      </Routes>
-                    </Box>
-                  </div>
-                </main>
-              </>
-            }
-          />
           <Route
             path="/technician/*"
             element={
@@ -166,6 +113,7 @@ function App() {
                           element={<Reportcasetechnician />}
                         />
 
+                        <Route path="*" element={<Notfound404 />} />
                         {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
                       </Routes>
                     </Box>

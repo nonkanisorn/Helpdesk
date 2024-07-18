@@ -11,8 +11,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+// import { login } from "../store/userSlice";
 import { login } from "../store/userSlice";
-
+import { useEffect } from "react";
 
 
 
@@ -31,14 +32,20 @@ function LoginPage() {
         userpassword,
       });
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
-      console.log(response.data);
+      console.log('loginresponse', response.data);
 
       dispatch(login({
-        username: response.data.payload.user.name,
+        username: response.data.payload.user,
+        role: response.data.payload.user.role,
+        token: response.data.token,
+        test: "test"
+      }))
+      localStorage.setItem("user", JSON.stringify({
+        username: response.data.payload.user,
         role: response.data.payload.user.role,
         token: response.data.token
       }))
-      localStorage.setItem("token", response.data.token)
+      // localStorage.setItem("token", response.data.token)
       roleRedirects(response.data.payload.user.role)
     } catch (error) {
       // ดำเนินการเมื่อมีข้อผิดพลาดเกิดขึ้นในการเข้าสู่ระบบ
@@ -54,6 +61,10 @@ function LoginPage() {
       navigate('/user/index')
     }
   }
+  // useEffect(() => {
+  //
+  //   handleLogin()
+  // }, [])
   return (
     <div className="login">
       <Box

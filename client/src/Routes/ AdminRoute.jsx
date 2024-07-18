@@ -1,22 +1,147 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Sidebaradmin from '../layout/admin/Sidebaradmin'
 import Headerbaradmin from '../layout/admin/Headerbaradmin'
 import { Box } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useDispatch } from "react-redux";
+import { login } from '../store/userSlice'
+import Notfound404 from '../components/Notfound404'
+
+import Manageuser from '../components/admin/ManageuserPages/Manageuser'
+import Manageposition from '../components/admin/ManagepositionPages/Manageposition'
+import Managedevice from '../components/admin/ManagedevicePages/Managedevice'
+import Managestatus from '../components/admin/ManagestatusPages/Managestatus'
+import Adddevice from "../components/admin/ManagedevicePages/Adddevice";
+import Editdevice from "../components/admin/ManagedevicePages/Editdevice";
+import Editposition from "../components/admin/ManagepositionPages/Editposition";
+import Addposition from "../components/admin/ManagepositionPages/Addposition";
+import Managedepartment from "../components/admin/ManagedepartmentPages/Managedepartment";
+import Adddepartment from "../components/admin/ManagedepartmentPages/Adddeparment";
+import Editdepartment from "../components/admin/ManagedepartmentPages/Editdepartment";
+import Adminpages from "../components/admin/adminpages";
+import Addstatus from "../components/admin/ManagestatusPages/Addstatus";
+import Editstatus from '../components/admin/ManagestatusPages/Editstatus'
 const AdminRoute = ({ children }) => {
-  return (
+  const { user } = useSelector((state) => ({ ...state }))
+  const [ok, setOk] = useState(false)
+  const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const currentAdmin = async (idToken) => {
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/current-admin`, {}, {
+        headers: {
+          authtoken: idToken
+        }
+      });
+      console.log(res)
+      return res.data
+      // dispatch(login({
+      //   username: user.user.username,
+      //   role: user.user.role,
+      //   token: user.user.token
+      // }))
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // console.log('adminroute', user.token)
+  // useEffect(() => {
+  //   currentAdmin(user.user.token)
+  //     .then(res => {
+  //       console.log('res', res)
+  //       setOk(true)
+  //     }).catch((err) => {
+  //       console.log(err)
+  //       setOk(false)
+  // }, [user])
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      dispatch(login(storedUser));
+    }
+  }, [dispatch]);
+  useEffect(() => {
+    const verifyAdmin = async () => {
+      if (user?.token) {
+        try {
+          await currentAdmin(user.token);
+          setOk(true);
+        } catch (err) {
+          console.error(err);
+          setOk(false);
+          // navigate('/login');
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    verifyAdmin();
+  }, [user, navigate]);
+
+  if (loading) {
+    return null; // ไม่แสดงอะไรในขณะที่กำลังโหลด
+  }
+  // useEffect(() => {
+  //   if (user.token) {
+  <Route path="*" element={<Notfound404 />} />
+  //     currentAdmin(user.token)
+  //       .then(() => setOk(true))
+  //       .catch((err) => {
+  //         console.log(err);
+  //         setOk(false);
+  //         // navigate('/login');
+  //       }).finally(() =>
+  //         setLoading(false)
+  //       );
+  //   }
+  // }, [user, navigate]);
+  // if (loading) {
+  //   return null; // ไม่แสดงอะไรในขณะที่กำลังโหลด
+  // }
+  // useEffect(() => {
+  //
+  //   currentAdmin(user.user.token).then(() => setOk(true)).catch((err) => console.log(err))
+  // }, [user.user.username])
+  const text = "No permission"
+  return ok ? (
     <div className="app">
       <Sidebaradmin />
       <main className="content">
         <Headerbaradmin />
         <div className="content_body">
-          <Box m="20px">
-            {children}
+          <Box m="19px">
+            <Routes>
+              <Route path="manageuser" element={<Manageuser />} />
+              <Route path="manageposition" element={<Manageposition />} />
+              <Route path="managedevice" element={<Managedevice />} />
+              <Route path="index" element={<Adminpages />} />
+              <Route path="managestatus" element={<Managestatus />} />
+              <Route path="managedepartment" element={<Managedepartment />} />
+              <Route path="adddevice" element={<Adddevice />} />
+              <Route path="editdevice/:dev_id/:dev_name" element={<Editdevice />} />
+              <Route path="addposition" element={<Addposition />} />
+              <Route path="editposition/:position_id/:position_name" element={<Editposition />} />
+              <Route path="addstatus" element={<Addstatus />} />
+              <Route path="editstatus/:status_id/:status_name" element={<Editstatus />} />
+              <Route path="adddepartment" element={<Adddepartment />} />
+              <Route path="editdepartment/:dep_id/:dep_name" element={<Editdepartment />} />
+              <Route path="*" element={<Notfound404 text="ไม่มีpathนี้" />} />
+            </Routes>
           </Box>
         </div>
       </main>
     </div>
-  )
+  ) : <Notfound404 text={text} />
 }
+
 
 export default AdminRoute

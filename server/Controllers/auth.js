@@ -80,9 +80,9 @@ exports.login = async (req, res) => {
 exports.currentUser = async (req, res) => {
   try {
     console.log('currentUser', req.user)
-    db.query('SELECT * FROM tbl_users WHERE username = ? ', [req.user.name], async (error, result) => {
+    db.query('SELECT username,role FROM tbl_users WHERE username = ? ', [req.user.username], async (error, result) => {
       if (error) {
-        res.send('server error1').status(500)
+        return res.status(500).send('server error1')
       }
       res.send(result)
     })
