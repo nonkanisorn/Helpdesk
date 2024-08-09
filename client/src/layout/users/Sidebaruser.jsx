@@ -4,10 +4,10 @@ import {
   Menu,
   MenuItem,
   SubMenu,
-  
+
 } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -20,11 +20,17 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import TableViewIcon from '@mui/icons-material/TableView';
 import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
-
+import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/userSlice";
+import { useSelector } from "react-redux";
 const Sidebaruser = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
+  const userName = useSelector((state) =>
+    state.user.name
+  )
 
   return (
     <div
@@ -81,23 +87,25 @@ const Sidebaruser = () => {
                       width="100px"
                       height="100px"
                       src={`/assets/123.jpg`}
-                      style={{ cursor: "pointer", borderRadius: "50%"}}
+                      style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                   </Box>
                   <Box textAlign="center">
-                    <Typography sx={{ m: "10px 0 0 0" }}>ROITAI</Typography>
-                    <Typography>DEV </Typography>
+                    <Typography sx={{ m: "10px 0 0 0" }}>{userName}</Typography>
                   </Box>
                 </Box>
               )}
               <Link to="/user" className="menu-bars">
                 <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
-              </Link>  
+              </Link>
               <Link to="/user/Addcase" className="menu-bars">
                 <MenuItem icon={<ConstructionOutlinedIcon />}>แจ้งซ่อม</MenuItem>
               </Link>
+              <Link to="/user/statuscase" className="menu-bars">
+                <MenuItem icon={<ConstructionOutlinedIcon />}>สถานะการแจ้งซ่อม</MenuItem>
+              </Link>
               <Link to="/user/Historyrepair" className="menu-bars">
-                <MenuItem icon={<HistoryToggleOffIcon />}>ประวัติการซ่อม</MenuItem>
+                <MenuItem icon={<HistoryToggleOffIcon />}>ประวัติการแจ้งซ่อม</MenuItem>
               </Link>
 
               <SubMenu icon={<MapOutlinedIcon />} label="Data">

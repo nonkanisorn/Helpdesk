@@ -4,7 +4,9 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/userSlice";
 const Headerbaruser = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -15,6 +17,12 @@ const Headerbaruser = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const dispart = useDispatch()
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    dispart(logout())
+    navigate('/login')
+  }
   return (
     <Box display="flex" justifyContent="right" p={2}>
       {/* search 
@@ -54,7 +62,7 @@ const Headerbaruser = () => {
               <MenuItem onClick={handleClose}>Profile</MenuItem>
             </Link>
             <Link to="#" className="menu-bars">
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Link>
           </Menu>
         </IconButton>
