@@ -48,15 +48,15 @@ const Sidebaradmin = () => {
                 }}
               >
                 {!isCollapsed && (
-                  <Box 
+                  <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
                     ml="15px"
                     bgcolor="#234"
                   >
-                    <Typography sx={{color: "#ffff"}}>Repair APP</Typography>
-                    <IconButton  onClick={() => setisCollapsed(!isCollapsed)}>
+                    <Typography sx={{ color: "#ffff" }}>Repair APP</Typography>
+                    <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon />
                     </IconButton>
                   </Box>
@@ -82,26 +82,26 @@ const Sidebaradmin = () => {
                   </Box>
                 </Box>
               )}
-                <Link to="/admin" className="menu-bars ">
-                  <MenuItem style={{color: "#fff"}} icon={<HomeOutlinedIcon /> }>หน้าหลัก</MenuItem>
-                </Link>
-                <Link to="/admin/Manageuser" className="menu-bars">
-                  <MenuItem style={{color: "#fff"}} icon={<EditOutlinedIcon />}>จัดการสมาชิก</MenuItem>
-                </Link>
-                <Link to="/admin/Manageposition" className="menu-bars">
-                  <MenuItem style={{color: "#fff"}} icon={<EditOutlinedIcon />}>จัดการตำแหน่ง</MenuItem>
-                </Link>
-                <Link to="/admin/Managedevice" className="menu-bars">
-                  <MenuItem style={{color: "#fff"}} icon={<EditOutlinedIcon />}>จัดการอุปกรณ์</MenuItem>
-                </Link>
-                <Link to="/admin/Managestatus" className="menu-bars">
-                  <MenuItem style={{color: "#fff"}} icon={<EditOutlinedIcon />}>จัดการสถานะ</MenuItem>
-                </Link>
-                <Link to="/admin/Managedepartment" className="menu-bars">
-                  <MenuItem style={{color: "#fff"}} icon={<EditOutlinedIcon />}>จัดการแผนก</MenuItem>
-                </Link>
+              <Link to="/admin/index" className="menu-bars ">
+                <MenuItem style={{ color: "#fff" }} icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
+              </Link>
+              <Link to="/admin/adduser" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการสมาชิก</MenuItem>
+              </Link>
+              <Link to="/admin/Managerole" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการตำแหน่ง</MenuItem>
+              </Link>
+              <Link to="/admin/Managedevice" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการอุปกรณ์</MenuItem>
+              </Link>
+              <Link to="/admin/Managestatus" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการสถานะ</MenuItem>
+              </Link>
+              <Link to="/admin/Managedepartment" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการแผนก</MenuItem>
+              </Link>
             </Menu>
-            
+
           </div>
         </div>
       </Sidebar>

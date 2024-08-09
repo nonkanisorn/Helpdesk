@@ -8,6 +8,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/userSlice";
 const Headerbaradmin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -18,7 +21,15 @@ const Headerbaradmin = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const dispart = useDispatch()
+  const navigate = useNavigate()
+  const handleLogout = async () => {
+    dispart(logout())
+    navigate('/login')
+  }
   return (
+
     <Box display="flex" justifyContent="right" p={2}>
       {/* search 
       <Box display="flex" borderRadius="3px" backgroundColor="#F5EFE7">
@@ -57,7 +68,7 @@ const Headerbaradmin = () => {
               <MenuItem onClick={handleClose}>Profile</MenuItem>
             </Link>
             <Link to="#" className="menu-bars">
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Link>
           </Menu>
         </IconButton>
