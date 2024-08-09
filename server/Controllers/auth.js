@@ -13,7 +13,7 @@ const db = mysql.createConnection({
 
 exports.register = async (req, res) => {
   try {
-    const { username, userpassword } = req.body
+    const { username, userpassword, role_id, name } = req.body
     const passwordHash = await bcrypt.hash(userpassword, 10)  //Encrypt
     db.query("SELECT * FROM tbl_users WHERE username = ? ", [username], (error, results) => {
       if (error) {
@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
       if (results.length > 0) {
         res.send('มีคนใช้แล้ว').status(400)
       }
-      db.query("INSERT INTO tbl_users (username,userpassword)values(?,?)", [username, passwordHash]), (err, results) => {
+      db.query("INSERT INTO tbl_users (username,userpassword,role_id,name)values(?,?,?,?)", [username, passwordHash, role_id, name]), (err, results) => {
         if (err) {
           console.log(err)
           res.status(501).send("server error")
@@ -58,7 +58,10 @@ exports.login = async (req, res) => {
         var payload = {
           user: {
             username: results[0].username,
-            role: results[0].role
+            role: results[0].role_id,
+            name: results[0].name,
+            users_id: results[0].users_id
+
           }
         }
       } else {
@@ -80,9 +83,10 @@ exports.login = async (req, res) => {
 exports.currentUser = async (req, res) => {
   try {
     console.log('currentUser', req.user)
-    db.query('SELECT username,role FROM tbl_users WHERE username = ? ', [req.user.username], async (error, result) => {
+    db.query('SELECT users_id,username,role_id,name FROM tbl_users WHERE username = ? ', [req.user.username], async (error, result) => {
       if (error) {
-        return res.status(500).send('server error1')
+        res.send(error)
+        return res.status(500).send('error query database')
       }
       res.send(result)
     })
