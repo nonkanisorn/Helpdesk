@@ -56,17 +56,6 @@ function Reportcase() {
         console.log(error);
       })
       .finally(function() { });
-    axios
-      .get("http://localhost:5011/technician")
-      .then(function(response) {
-        const technicianData = response.data.map(
-          (technician) => technician.technician_name
-        );
-        setNametech(technicianData);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
   }, []);
 
   return (
@@ -92,38 +81,11 @@ function Reportcase() {
               <TableCell component="th" scope="row">
                 {item.case_id}
               </TableCell>
-              <TableCell>{item.case_detail}</TableCell>
+              <TableCell>{item.name}</TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">ช่าง</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedTechnicians[item.case_id] || item.technician_name}
-                    label="ช่าง"
-                    onChange={(event) => handleChange(event, item.case_id)}
-                  >
-                    {Array.isArray(nametech) &&
-                      nametech.map((name, index) => (
-                        <MenuItem key={index} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell>
-                {/* ปุ่มส่งข้อมูล */}
-                {/* <Button
-                  onClick={() => sendtech(item.case_id)}
-                  variant="contained"
-                >
-                  ดูรายละเอียด 
-                </Button> */}
-
                 <Button
                   onClick={() => topagedetail(item.case_id)}
                   variant="contained"
