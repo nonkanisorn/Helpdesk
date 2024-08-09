@@ -33,17 +33,17 @@ function LoginPage() {
       });
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
       console.log('loginresponse', response.data);
-
       dispatch(login({
         username: response.data.payload.user,
         role: response.data.payload.user.role,
         token: response.data.token,
-        test: "test"
+        name: response.data.payload.user.name,
+        users_id: response.data.payload.user.users_id
       }))
       localStorage.setItem("user", JSON.stringify({
         username: response.data.payload.user,
         role: response.data.payload.user.role,
-        token: response.data.token
+        token: response.data.token,
       }))
       // localStorage.setItem("token", response.data.token)
       roleRedirects(response.data.payload.user.role)
@@ -55,11 +55,16 @@ function LoginPage() {
   };
   const roleRedirects = (role) => {
     // console.log(role)
-    if (role === 'admin') {
+    if (role === 1) {
       navigate('/admin/index')
+    } else if (role == 2) {
+      navigate('/manager/index')
+    } else if (role == 3) {
+      navigate('/technician/index')
     } else {
       navigate('/user/index')
     }
+
   }
   // useEffect(() => {
   //
@@ -111,6 +116,7 @@ function LoginPage() {
               <TextField
                 id="outlined-basic"
                 label="Password"
+                type="password"
                 variant="outlined"
                 onChange={(e) => setuserpassword(e.target.value)}
               />
