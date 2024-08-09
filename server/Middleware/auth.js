@@ -20,7 +20,7 @@ exports.auth = async (req, res, next) => {
 
     // res.send(req.user)
     next()
-  } catch (err) {
+  } catch (error) {
     res.status(500).send("Token Valid")
   }
 
@@ -29,21 +29,21 @@ exports.auth = async (req, res, next) => {
 exports.adminCheck = async (req, res, next) => {
   try {
     // console.log('admincheck', req.user)
-    db.query("SELECT username,role FROM tbl_users WHERE username = ? ", [req.user.username], (error, result) => {
+    db.query("SELECT username,role_id FROM tbl_users WHERE username = ? ", [req.user.username], (error, result) => {
       if (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).send("Database query error")
       }
       // console.log(result)
       // console.log('result', result[0].role)
-      if (result[0].role != "admin") {
+      if (result[0].role_id != 1) {
         return res.status(403).send('Admin access Denied!!!')
       } else {
         next()
       }
     })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    console.log(error)
     res.status(403).send('Admin access Denied!!!')
   }
 }
