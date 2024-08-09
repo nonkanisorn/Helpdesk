@@ -19,27 +19,19 @@ import Sidebaruser from "./layout/users/Sidebaruser";
 import LoginPage from "./components/LoginPage";
 
 //USER
-import Addcase from "./components/user/Addcase";
-import Historyrepair from "./components/user/Historyrepair";
-import Deletecase from "./components/user/Deletecase";
-import User from "./components/user/User";
 
 //Manager
-import Sidebarmanager from "./layout/manager/Sidebarmanager";
-import Headerbarmanager from "./layout/manager/Headerbarmanager";
-import Reportcase from "./components/Manager/Reportcase";
 import Reportcasetechnician from "./components/technician/Reportcasetech";
-import Editstatus from "./components/admin/ManagestatusPages/Editstatus";
-import Detailcase from "./components/Manager/Detailcase";
-import Adduser from "./components/Manager/Adduser";
-
+import ManagerRoute from "./Routes/ManagerRoute";
 import { login } from "./store/userSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import UserRoute from "./Routes/UserRoute";
-import AdminRoute from "./Routes/ AdminRoute";
+import AdminRoute from "./Routes/AdminRoute";
 import { useState } from "react";
 import Notfound404 from "./components/Notfound404";
+import ResponsiveAppBar from "./layout/ResponsiveAppBar";
+import TechnicianRoute from "./Routes/TechnicianRoute";
 function App() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
@@ -52,8 +44,10 @@ function App() {
       });
       dispatch(login({
         username: res.data[0].username,
-        role: res.data[0].role,
+        role: res.data[0].role_id,
         token: idToken,
+        name: res.data[0].name,
+        users_id: res.data[0].users_id,
       }))
       setLoading(false)
       console.log('resdata', res.data);
@@ -92,68 +86,13 @@ function App() {
     <>
       <Routes>
         <Route path="*" element={<Notfound404 text="ไม่มีpath" />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin/*" element={<AdminRoute />} />
         <Route path="/user/*" element={<UserRoute />} />
+        <Route path="/manager/*" element={<ManagerRoute />} />
+        <Route path="/technician/*" element={<TechnicianRoute />} />
       </Routes>
-      <div className="app">
-        <Routes>
-          <Route
-            path="/technician/*"
-            element={
-              <>
-                <Sidebaruser />
-                <main className="content">
-                  <Headerbaruser />
-                  <div className="content_body">
-                    <Box m="20px">
-                      <Routes>
-                        <Route
-                          path="reportcasetech"
-                          element={<Reportcasetechnician />}
-                        />
-
-                        <Route path="*" element={<Notfound404 />} />
-                        {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
-                      </Routes>
-                    </Box>
-                  </div>
-                </main>
-              </>
-            }
-          />
-          <Route
-            path="/manager/*"
-            element={
-              <>
-                <Sidebarmanager />
-                <main className="content">
-                  <Headerbarmanager />
-                  <div className="content_body">
-                    <Box m="20px">
-                      <Routes>
-                        <Route
-                          path="reportcase"
-                          element={<Reportcase />}
-                        />
-                        <Route
-                          path="detail/:case_id"
-                          element={<Detailcase />}
-                        />
-                        <Route
-                          path="adduser"
-                          element={<Adduser />}
-                        />
-                        {/* อาจเพิ่มเส้นทางอื่น ๆ สำหรับผู้ใช้ได้ตามต้องการ */}
-                      </Routes>
-                    </Box>
-                  </div>
-                </main>
-              </>
-            }
-          />
-        </Routes>
-      </div >
     </>
   );
 }
