@@ -4,7 +4,7 @@ import {
   Menu,
   MenuItem,
   SubMenu,
-  
+
 } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ import TableViewIcon from '@mui/icons-material/TableView';
 import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
 
-const Sidebaruser = () => {
+const Sidebarmanager = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
@@ -81,7 +81,7 @@ const Sidebaruser = () => {
                       width="100px"
                       height="100px"
                       src={`/assets/123.jpg`}
-                      style={{ cursor: "pointer", borderRadius: "50%"}}
+                      style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                   </Box>
                   <Box textAlign="center">
@@ -92,7 +92,7 @@ const Sidebaruser = () => {
               )}
               <Link to="/user" className="menu-bars">
                 <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
-              </Link>  
+              </Link>
               <Link to="/manager/reportcase" className="menu-bars">
                 <MenuItem icon={<ConstructionOutlinedIcon />}>รายการแจ้งซ่อม</MenuItem>
               </Link>
@@ -161,4 +161,4 @@ const Sidebaruser = () => {
     </div>
   );
 };
-export default Sidebaruser;
+export default Sidebarmanager;
