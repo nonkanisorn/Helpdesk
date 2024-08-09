@@ -32,9 +32,9 @@ function Adduser() {
     >
       <Typography variant='h3'>เพิ่มสมาชิก</Typography>
       <Typography>Username</Typography>
-      <TextField id="outlined-basic" label="Outlined" variant="outlined" value={username} onChange={((e) => setusername(e.target.value))} />
+      <TextField id="outlined-basic-username" label="Outlined" variant="outlined" value={username} onChange={((e) => setusername(e.target.value))} />
       <Typography>Password</Typography>
-      <TextField id="outlined-basic" label="Outlined" type='password' variant="outlined" value={userpassword} onChange={((e) => setuserpassword(e.target.value))} /><br />
+      <TextField id="outlined-basic=password" label="Outlined" type='password' variant="outlined" value={userpassword} onChange={((e) => setuserpassword(e.target.value))} /><br />
       <Button variant='outlined' onClick={register}>เพิ่มสมาชิก</Button>
     </Box>
   )
