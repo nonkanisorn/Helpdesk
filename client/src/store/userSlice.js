@@ -27,7 +27,8 @@
 //
 // export default userSlice.reducer
 import { createSlice } from '@reduxjs/toolkit';
-
+// import { useNavigate } from 'react-router-dom';
+// const navigate = useNavigate()
 const initialState = {
 	username: '',
 	role: '',
@@ -39,10 +40,12 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		login: (state, action) => {
-			const { username, role, token } = action.payload;
+			const { username, role, token, name, users_id } = action.payload;
 			state.username = username;
 			state.role = role;
 			state.token = token;
+			state.name = name;
+			state.users_id = users_id;
 			localStorage.setItem('user', JSON.stringify(action.payload));
 		},
 		logout: (state) => {
@@ -50,6 +53,7 @@ const userSlice = createSlice({
 			state.role = '';
 			state.token = '';
 			localStorage.removeItem('user');
+			// navigate('/login')
 		},
 		loadUserFromStorage: (state, action) => {
 			const userData = action.payload;

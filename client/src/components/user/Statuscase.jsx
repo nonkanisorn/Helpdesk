@@ -8,16 +8,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 
-function Historyrepair() {
+function Statuscase() {
   const [caseData, setcaseData] = useState([]);
   const user_id = useSelector((state) => state.user.users_id)
   console.log("user", user_id)
+  const status_id = 3
+
+  const updatestatuscase = (case_id) => {
+    axios.patch(`http://localhost:5011/case/${case_id}`, { status_id }).then((result) => {
+      console.log(result)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5011/caseuser/${user_id}`)
+      .get(`http://localhost:5011/caseuserstatus/${user_id}`)
       .then(function(response) {
         setcaseData(response.data);
         console.log(response);
@@ -50,6 +60,10 @@ function Historyrepair() {
                 {item.case_topic}
               </TableCell>
               <TableCell>{item.status_name}</TableCell>
+              <TableCell><Button>ดูรายละเอียดการแจ้งซ่อม</Button></TableCell>
+              <TableCell>
+                {item.status_id === 4 && (<Button onClick={() => updatestatuscase(item.case_id)}>ยืนยันการซ่อม</Button>)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -57,5 +71,5 @@ function Historyrepair() {
     </TableContainer>
   );
 }
-export default Historyrepair;
+export default Statuscase;
 

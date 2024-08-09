@@ -11,19 +11,24 @@ import Select from "@mui/material/Select";
 
 import axios from "axios";
 
+import { useSelector } from "react-redux";
 
 import { useRef, useState, useEffect } from "react";
 
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
+  const [case_topic, setCase_topic] = useState("")
   const [caseImg, setCaseImg] = useState("");
   const [buildingName, setBuildingname] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [depname, setDepname] = useState([]);
   const [fetchtrigger, setFetchtrigger] = useState(false);
   const [file, setFile] = useState(null);
+  const status_id = 1
   const inputFileRef = useRef()
   const apiUrl = process.env.REACT_APP_API_URL;
+  const userId = useSelector((state) => state.user.users_id)
+  const userName = useSelector((state) => state.user.name)
   const handlebuildingChange = (event) => {
     setBuildingname(event.target.value);
   };
@@ -33,7 +38,7 @@ function Addcase() {
   const handlefilechange = (e) => {
     setFile(e.target.files[0]);
   };
-
+  console.log(case_topic)
   const createcase = async (e) => {
     e.preventDefault();
 
@@ -47,6 +52,9 @@ function Addcase() {
         {
           dep_name: selectedDepartment,
           case_detail: caseDetail,
+          user_id: userId,
+          status_id,
+          case_topic
         },
         {
           headers: {
@@ -83,6 +91,8 @@ function Addcase() {
   };
 
   useEffect(() => {
+    console.log("this.state.first", userId)
+
     axios
       .get(`http://localhost:5011/department`)
       .then(function(response) {
@@ -102,8 +112,18 @@ function Addcase() {
       noValidate
       autoComplete="off"
     >
-      <div>แจ้งซ่อม โดยคุณ</div>
+      <div>
+        แจ้งซ่อมโดยคุณ:{userName}
+      </div>
       <FormControl variant="standard" >
+        หััวข้อ :
+        <TextField
+          id="case_topic"
+          type="text"
+          value={case_topic}
+          onChange={(e) => setCase_topic(e.target.value)}
+          placeholder="ใส่หัวข้อ"
+        />
         <div style={{ marginLeft: 15, marginBottom: 15 }}>
           <FormControl variant="standard" fullWidth>
             <div style={{ display: "flex", alignItems: "center" }}>

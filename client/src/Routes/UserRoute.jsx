@@ -9,7 +9,12 @@ import Addcase from '../components/user/Addcase';
 import Historyrepair from '../components/user/Historyrepair';
 import Deletecase from "../components/user/Deletecase"
 import Notfound404 from '../components/Notfound404';
+import { useNavigate } from 'react-router-dom';
+import Sidebartech from '../layout/tech/Sidebartech';
+import Headerbartech from '../layout/tech/Headerbartech';
+import Statuscase from '../components/user/Statuscase';
 const UserRoute = ({ children }) => {
+  const navigate = useNavigate()
   const { user } = useSelector((state) => ({ ...state }))
   console.log('userRoute', user)
   console.log('tokenn', user.token)
@@ -26,13 +31,14 @@ const UserRoute = ({ children }) => {
               <Route path="addcase" element={<Addcase />} />
               <Route path="historyrepair" element={<Historyrepair />} />
               <Route path="deletecase" element={<Deletecase />} />
+              <Route path="statuscase" element={<Statuscase />} />
               <Route path="*" element={<Notfound404 />} />
             </Routes>
           </Box>
         </div>
       </main>
     </div>
-  ) : <h1>Access Denied</h1>;
+  ) : navigate('/login');
 };
 
 export default UserRoute;
