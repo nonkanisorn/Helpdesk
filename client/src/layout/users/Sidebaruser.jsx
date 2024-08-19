@@ -1,13 +1,8 @@
-import React, { useState } from "react";
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-
-} from "react-pro-sidebar";
+import React, { useEffect, useState } from "react";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -17,9 +12,9 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import TableViewIcon from '@mui/icons-material/TableView';
-import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
-import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
+import TableViewIcon from "@mui/icons-material/TableView";
+import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
+import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import { Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/userSlice";
@@ -28,9 +23,33 @@ const Sidebaruser = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
-  const userName = useSelector((state) =>
-    state.user.name
-  )
+  const userName = useSelector((state) => state.user.name);
+  const users_id = useSelector((state) => state.user.users_id);
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    if (users_id) {
+      const fetchdata = async () => {
+        const response = await axios.get(
+          `http://localhost:5011/userbyid/${users_id}`,
+        );
+        if (response.data[0].user_img.data.length === 0) {
+          setUrl(
+            "https://images.unsplash.com/photo-1719205153554-33eb4834cc36?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          );
+        } else {
+          const user = response.data[0];
+          console.log(response);
+          const array = new Uint8Array(user.user_img.data);
+          const blob = new Blob([array], { type: "image/jpeg" });
+          const url = URL.createObjectURL(blob);
+          setUrl(url);
+        }
+      };
+
+      fetchdata();
+    }
+  }, [users_id]);
 
   return (
     <div
@@ -44,9 +63,8 @@ const Sidebaruser = () => {
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
-        // image="/assets/123.jpg"
         breakPoint="md"
-        style={{ height: "100%", backgroundColor: "rgb(120, 120, 120)" }}
+        style={{ height: "100%", backgroundColor: "#1a237e" }}
       >
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
@@ -86,7 +104,7 @@ const Sidebaruser = () => {
                       alt="profile-user"
                       width="100px"
                       height="100px"
-                      src={`/assets/123.jpg`}
+                      src={url}
                       style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                   </Box>
@@ -95,62 +113,24 @@ const Sidebaruser = () => {
                   </Box>
                 </Box>
               )}
-              <Link to="/user" className="menu-bars">
+              <Link to="/user/index" className="menu-bars">
                 <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
               </Link>
               <Link to="/user/Addcase" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>แจ้งซ่อม</MenuItem>
+                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                  แจ้งซ่อม
+                </MenuItem>
               </Link>
               <Link to="/user/statuscase" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>สถานะการแจ้งซ่อม</MenuItem>
+                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                  สถานะการแจ้งซ่อม
+                </MenuItem>
               </Link>
               <Link to="/user/Historyrepair" className="menu-bars">
-                <MenuItem icon={<HistoryToggleOffIcon />}>ประวัติการแจ้งซ่อม</MenuItem>
-              </Link>
-
-              <SubMenu icon={<MapOutlinedIcon />} label="Data">
-                <Link to={"/"} className="menu-bars">
-                  <MenuItem icon={<TableViewIcon />}>
-                    {" "}
-                    Tabledd
-                  </MenuItem>
-                </Link>
-                <MenuItem icon={<BarChartOutlinedIcon />}>
-                  {" "}
-                  Line charts
+                <MenuItem icon={<HistoryToggleOffIcon />}>
+                  ประวัติการแจ้งซ่อม
                 </MenuItem>
-              </SubMenu>
-
-              <SubMenu label="Manage" icon={<PeopleOutlinedIcon />}>
-                <Link to={"/admin/manage"} className="menu-bars">
-                  <MenuItem>Admin</MenuItem>
-                </Link>
-                <MenuItem> Admin</MenuItem>
-              </SubMenu>
-            </Menu>
-
-            <div
-              style={{
-                padding: "0 24px",
-                marginBottom: "8px",
-                marginTop: "32px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                style={{
-                  opacity: isCollapsed ? 0 : 0.5,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Extra
-              </Typography>
-            </div>
-
-            <Menu>
-              <MenuItem icon={<CalendarTodayOutlinedIcon />}>Calendar</MenuItem>
-              <MenuItem icon={<ReceiptOutlinedIcon />}>Documentation</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>

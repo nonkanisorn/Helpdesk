@@ -1,5 +1,5 @@
-const mysql = require("mysql")
-require('dotenv').config();
+const mysql = require("mysql");
+require("dotenv").config();
 const db = mysql.createConnection({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -16,12 +16,27 @@ exports.list = async (req, res) => {
     }
   });
 };
+exports.listbyid = async (req, res) => {
+  const users_id = req.params.users_id;
+  db.query(
+    "SELECT * FROM tbl_users WHERE users_id = ? ",
+    [users_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        res.send(results);
+      }
+    },
+  );
+};
 
 exports.create = async (req, res) => {
-  const { users_name, users_img } = req.body
+  const { users_name, users_img } = req.body;
   db.query(
-    "INSERT TO tbl_users(users_name,users_img) VALUES(?,?)",
-    [users_name,users_img],
+    "INSERT TO tbl_users(users_name,user_img) VALUES(?,?)",
+    [users_name, users_img],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -29,7 +44,7 @@ exports.create = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
@@ -45,7 +60,7 @@ exports.remove = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
@@ -62,6 +77,6 @@ exports.update = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };

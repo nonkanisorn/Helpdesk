@@ -15,14 +15,11 @@ import { useDispatch } from "react-redux";
 import { login } from "../store/userSlice";
 import { useEffect } from "react";
 
-
-
 function LoginPage() {
   const [username, setusername] = useState(""); // สร้าง state สำหรับเก็บค่า username
   const [userpassword, setuserpassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -32,40 +29,45 @@ function LoginPage() {
         userpassword,
       });
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
-      console.log('loginresponse', response.data);
-      dispatch(login({
-        username: response.data.payload.user,
-        role: response.data.payload.user.role,
-        token: response.data.token,
-        name: response.data.payload.user.name,
-        users_id: response.data.payload.user.users_id
-      }))
-      localStorage.setItem("user", JSON.stringify({
-        username: response.data.payload.user,
-        role: response.data.payload.user.role,
-        token: response.data.token,
-      }))
+      console.log("loginresponse", response.data);
+      dispatch(
+        login({
+          username: response.data.payload.user,
+          role: response.data.payload.user.role,
+          token: response.data.token,
+          name: response.data.payload.user.name,
+          users_id: response.data.payload.user.users_id,
+        }),
+      );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: response.data.payload.user,
+          role: response.data.payload.user.role,
+          token: response.data.token,
+          users_id: response.data.payload.user.users_id,
+        }),
+      );
       // localStorage.setItem("token", response.data.token)
-      roleRedirects(response.data.payload.user.role)
+      roleRedirects(response.data.payload.user.role);
     } catch (error) {
       // ดำเนินการเมื่อมีข้อผิดพลาดเกิดขึ้นในการเข้าสู่ระบบ
       console.error("There was an error logging in!", error);
-      alert('Failed to login. Please check your username and password.');
+      alert("Failed to login. Please check your username and password.");
     }
   };
   const roleRedirects = (role) => {
     // console.log(role)
     if (role === 1) {
-      navigate('/admin/index')
+      navigate("/admin/index");
     } else if (role == 2) {
-      navigate('/manager/index')
+      navigate("/manager/index");
     } else if (role == 3) {
-      navigate('/technician/index')
+      navigate("/technician/index");
     } else {
-      navigate('/user/index')
+      navigate("/user/index");
     }
-
-  }
+  };
   // useEffect(() => {
   //
   //   handleLogin()
@@ -82,7 +84,7 @@ function LoginPage() {
           height: "100vh", // ตั้งค่าความสูงของ Box เพื่อให้ Card อยู่ตรงกลางหน้าจอ
         }}
       >
-        <Card sx={{ minWidth: 450, minHeight: 450, borderRadius: 4 }}>
+        <Card sx={{ minWidth: 450, minHeight: 400, borderRadius: 4 }}>
           <CardContent>
             <Typography
               sx={{}}
@@ -93,19 +95,11 @@ function LoginPage() {
               textAlign={"center"}
               gutterBottom
             >
-              Sign in to Repair system
-            </Typography>
-            <Typography
-              variant="body2"
-              component="p"
-              gutterBotto
-              marginBottom={3}
-            >
-              Dont have an account? <Link to="/register">Get Started</Link>
+              Repair system
             </Typography>
             <Typography
               component="div"
-              sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+              sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}
             >
               <TextField
                 id="outlined-basic"
@@ -121,16 +115,13 @@ function LoginPage() {
                 onChange={(e) => setuserpassword(e.target.value)}
               />
             </Typography>
-            <Typography variant="body2" mt={4} textAlign={"right"}>
-              Forgot Password?
-            </Typography>
           </CardContent>
           <CardActions>
             <Button
               variant="contained"
               onClick={handleLogin}
               color="primary"
-              sx={{ width: "80%", height: "50px", marginLeft: 5 }}
+              sx={{ width: "80%", height: "50px", marginLeft: 5, mt: 5 }}
             >
               Login
             </Button>

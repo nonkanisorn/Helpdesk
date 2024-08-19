@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -12,12 +13,40 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import TableViewIcon from "@mui/icons-material/TableView";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { useSelector } from "react-redux";
+import Sidebaruser from "../users/Sidebaruser";
 
 const Sidebaradmin = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
+  const name = useSelector((state) => state.user.username.name);
+  const users_id = useSelector((state) => state.user.users_id);
+  const [url, setUrl] = useState("");
 
+  useEffect(() => {
+    if (users_id) {
+      const fetchdata = async () => {
+        const response = await axios.get(
+          `http://localhost:5011/userbyid/${users_id}`,
+        );
+        if (response.data[0].user_img.data.length === 0) {
+          setUrl(
+            "https://images.unsplash.com/photo-1719205153554-33eb4834cc36?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          );
+        } else {
+          const user = response.data[0];
+          console.log(response);
+          const array = new Uint8Array(user.user_img.data);
+          const blob = new Blob([array], { type: "image/jpeg" });
+          const url = URL.createObjectURL(blob);
+          setUrl(url);
+        }
+      };
+
+      fetchdata();
+    }
+  }, [users_id]);
   return (
     <div
       style={{
@@ -73,35 +102,46 @@ const Sidebaradmin = () => {
                       alt="profile-user"
                       width="100px"
                       height="100px"
-                      src={`/assets/123.jpg`}
+                      src={url}
                       style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                   </Box>
                   <Box textAlign="center" color="#ffff">
-                    <Typography sx={{ m: "10px 0 0 0" }}>คุณ </Typography>
+                    <Typography sx={{ m: "10px 0 0 0" }}>คุณ {name}</Typography>
                   </Box>
                 </Box>
               )}
               <Link to="/admin/index" className="menu-bars ">
-                <MenuItem style={{ color: "#fff" }} icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<HomeOutlinedIcon />}>
+                  หน้าหลัก
+                </MenuItem>
               </Link>
               <Link to="/admin/adduser" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการสมาชิก</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการสมาชิก
+                </MenuItem>
               </Link>
               <Link to="/admin/Managerole" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการตำแหน่ง</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการตำแหน่ง
+                </MenuItem>
               </Link>
               <Link to="/admin/Managedevice" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการอุปกรณ์</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการอุปกรณ์
+                </MenuItem>
               </Link>
               <Link to="/admin/Managestatus" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการสถานะ</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการสถานะ
+                </MenuItem>
               </Link>
               <Link to="/admin/Managedepartment" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>จัดการแผนก</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการแผนก
+                </MenuItem>
               </Link>
             </Menu>
-
           </div>
         </div>
       </Sidebar>

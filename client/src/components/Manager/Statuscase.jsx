@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,48 +7,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Button from "@mui/material/Button";
-
-function Reportcase() {
-  const [nametech, setNametech] = useState([]);
-  const [selectedTechnicians, setSelectedTechnicians] = useState({});
+function Statuscase() {
   const [caseData, setcaseData] = useState([]);
   const navigate = useNavigate();
-  const handleChange = (event, case_id) => {
-    const selectedTechnician = event.target.value;
-    setSelectedTechnicians((prevState) => ({
-      ...prevState,
-      [case_id]: selectedTechnician,
-    }));
-  };
-  const sendtech = (case_id) => {
-    const technician_name = selectedTechnicians[case_id];
-    axios
-      .patch(`http://localhost:5011/addtechcase/${case_id}`, {
-        technician_name,
-      })
-      .then(() => {
-        console.log("success");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
   const topagedetail = (case_id) => {
-    navigate(`/manager/detail/${case_id}`);
+    navigate(`/manager/casedetail/${case_id}`);
   };
   console.log(caseData);
   useEffect(() => {
     axios
-      .get("http://localhost:5011/case/")
+      .get(`http://localhost:5011/casestatus`)
       .then(function (response) {
         setcaseData(response.data);
-        console.log(caseData);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -63,13 +35,12 @@ function Reportcase() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>ลำดับ </TableCell>
+            <TableCell>ลำดับ</TableCell>
             <TableCell>ชื่องาน</TableCell>
             <TableCell>รายละเอียดผู้แจ้ง</TableCell>
-            <TableCell>รายละเอียดงาน</TableCell>
             <TableCell>สถานะ</TableCell>
             <TableCell>วันที่แจ้ง</TableCell>
-            <TableCell>เลือกช่าง</TableCell>
+            <TableCell>รายละเอียด</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -78,23 +49,13 @@ function Reportcase() {
               key={index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
+              <TableCell>{index + 1}</TableCell>
               <TableCell component="th" scope="row">
-                {index + 1}
+                {item.case_topic}
               </TableCell>
-              <TableCell>{item.case_topic}</TableCell>
+
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.case_detail}</TableCell>
-              <TableCell>
-                {item.status_id === 1
-                  ? "รอดำเนินการ"
-                  : item.status_id === 2
-                    ? "กำลังดำเนินการ"
-                    : item.status_id === 3
-                      ? "เสร็จสิ้น"
-                      : item.status_id === 4
-                        ? "รอการยืนยัน"
-                        : null}
-              </TableCell>
+              <TableCell>{item.status_name}</TableCell>
               <TableCell>
                 {new Date(item.datecreatecase).toLocaleString("th-TH", {
                   dateStyle: "long",
@@ -107,7 +68,7 @@ function Reportcase() {
                   variant="contained"
                   color="success"
                 >
-                  เลือกช่าง
+                  รายละเอียด
                 </Button>
               </TableCell>
             </TableRow>
@@ -117,5 +78,4 @@ function Reportcase() {
     </TableContainer>
   );
 }
-
-export default Reportcase;
+export default Statuscase;

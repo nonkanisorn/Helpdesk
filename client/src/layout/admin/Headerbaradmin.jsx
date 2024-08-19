@@ -5,7 +5,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
@@ -22,14 +22,13 @@ const Headerbaradmin = () => {
     setAnchorEl(null);
   };
 
-  const dispart = useDispatch()
-  const navigate = useNavigate()
+  const dispart = useDispatch();
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    dispart(logout())
-    navigate('/login')
-  }
+    dispart(logout());
+    navigate("/login");
+  };
   return (
-
     <Box display="flex" justifyContent="right" p={2}>
       {/* search 
       <Box display="flex" borderRadius="3px" backgroundColor="#F5EFE7">
@@ -64,10 +63,10 @@ const Headerbaradmin = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <Link to="#" className="menu-bars">
+            <Link to="/profile" className="menu-bars">
               <MenuItem onClick={handleClose}>Profile</MenuItem>
             </Link>
-            <Link to="#" className="menu-bars">
+            <Link to="/login" className="menu-bars">
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Link>
           </Menu>

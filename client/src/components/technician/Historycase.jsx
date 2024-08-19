@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
-function Reportcasetech() {
+function Historycase() {
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
   const [caseData, setcaseData] = useState([]);
@@ -20,7 +20,7 @@ function Reportcasetech() {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:5011/Casetech/${technician_id}`)
+      .get(`http://localhost:5011/Casetechhistory/${technician_id}`)
       .then(function (response) {
         setcaseData(response.data);
         console.log(response);
@@ -38,11 +38,11 @@ function Reportcasetech() {
           <TableHead>
             <TableRow>
               <TableCell>ลำดับ</TableCell>
-              <TableCell>ชื่องาน</TableCell>
-              <TableCell>รายละเอียดผู้แจ้ง</TableCell>
-              <TableCell>รายละเอียดงาน</TableCell>
+              <TableCell>หัวข้อ</TableCell>
+              <TableCell>รายละเอียด</TableCell>
+              <TableCell>คนที่มอบหมายงาน</TableCell>
               <TableCell>สถานะ</TableCell>
-              <TableCell>ปิดงาน</TableCell>
+              <TableCell>ประวัติ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -55,19 +55,17 @@ function Reportcasetech() {
                   {index + 1}
                 </TableCell>
                 <TableCell>{item.case_topic}</TableCell>
-                <TableCell>{item.usersname}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
+                <TableCell>{item.name}</TableCell>
                 <TableCell>{item.status_name}</TableCell>
-
                 <TableCell>
                   <Button
                     size="small"
-                    // sx={{ fontSize: 7, padding: 0.5 }}
+                    sx={{ padding: 0.5 }}
                     variant="contained"
-                    color="success"
                     onClick={() => topagedetail(item.case_id)}
                   >
-                    ปิดงาน
+                    ประวัติ
                   </Button>
                 </TableCell>
               </TableRow>
@@ -78,4 +76,4 @@ function Reportcasetech() {
     </Box>
   );
 }
-export default Reportcasetech;
+export default Historycase;

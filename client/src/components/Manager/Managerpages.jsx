@@ -3,13 +3,10 @@ import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
-function User() {
+function Managerpages() {
   const [casedata, setcasedata] = useState([]);
   console.log(casedata);
-  const data = useSelector((state) => state.user.users_id);
-  console.log("data", data);
   const casedatalenght = () => {
     return casedata.length;
   };
@@ -28,11 +25,9 @@ function User() {
   };
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5011/caseuserstatus/${data}`)
-      .then((response) => {
-        setcasedata(response.data);
-      });
+    axios.get(`http://localhost:5011/caseall`).then((response) => {
+      setcasedata(response.data);
+    });
   }, []);
   console.log("casedata4", datafilterstatuscase4());
   console.log("casedata3", datafilterstatuscase3());
@@ -137,4 +132,4 @@ function User() {
     </Box>
   );
 }
-export default User;
+export default Managerpages;
