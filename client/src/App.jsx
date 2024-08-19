@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
 
 import "./App.css";
@@ -32,51 +32,71 @@ import { useState } from "react";
 import Notfound404 from "./components/Notfound404";
 import ResponsiveAppBar from "./layout/ResponsiveAppBar";
 import TechnicianRoute from "./Routes/TechnicianRoute";
+import Profile from "./components/Profile";
+import { useSelector } from "react-redux";
+import Headerbarmanager from "./layout/manager/Headerbarmanager";
+import Sidebarmanager from "./layout/manager/Sidebarmanager";
+import Headerbartech from "./layout/tech/Headerbartech";
+import Sidebartech from "./layout/tech/Sidebartech";
+import Testapi from "./components/Testapi";
 function App() {
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const role_id = useSelector((state) => state.user.role);
+  console.log("role", role_id);
   const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
   const currentUser = async (idToken) => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/current-user`, {}, {
-        headers: {
-          authtoken: idToken
-        }
-      });
-      dispatch(login({
-        username: res.data[0].username,
-        role: res.data[0].role_id,
-        token: idToken,
-        name: res.data[0].name,
-        users_id: res.data[0].users_id,
-      }))
-      setLoading(false)
-      console.log('resdata', res.data);
-      return res.data
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/current-user`,
+        {},
+        {
+          headers: {
+            authtoken: idToken,
+          },
+        },
+      );
+      dispatch(
+        login({
+          username: res.data[0].username,
+          role: res.data[0].role_id,
+          token: idToken,
+          name: res.data[0].name,
+          users_id: res.data[0].users_id,
+        }),
+      );
+      setLoading(false);
+      console.log("resdata", res.data);
+      console.log("currentrole", res.data[0].role_id);
+      return res.data;
     } catch (error) {
       console.error("Error fetching current user:", error);
-      setLoading(false)
+      setLoading(false);
     }
   };
   useEffect(() => {
-    const Token = localStorage.getItem('user');
+    const Token = localStorage.getItem("user");
     if (Token) {
-      const idToken = JSON.parse(Token)
+      const idToken = JSON.parse(Token);
       // dispatch(login({
       //   username: res.data[0].username,
       //   role: res.data[0].role,
       //   token: idToken,
       //
       // }))
-      dispatch(login(idToken))
-      console.log(idToken.token)
-      currentUser(idToken.token).then(() => console.log("sucess")).catch((error) => {
-        console.log(error)
-      }).finally(() => {
-        setLoading(false)
-      })
+      dispatch(login(idToken));
+      console.log(idToken.token);
+      currentUser(idToken.token)
+        .then(() => console.log("sucess"))
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       console.log("No token found");
-      setLoading(false)
+      setLoading(false);
     }
   }, [dispatch]);
   if (loading) {
@@ -88,6 +108,69 @@ function App() {
         <Route path="*" element={<Notfound404 text="ไม่มีpath" />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/testapi" element={<Testapi />} />
+        <Route
+          path="/profile"
+          element={
+            role_id === 1 ? (
+              <React.Fragment>
+                <div className="app">
+                  <Sidebaradmin />
+                  <main className="content">
+                    <Headerbaradmin />
+                    <div className="content_body">
+                      <Box m="19px">
+                        <Profile />
+                      </Box>
+                    </div>
+                  </main>
+                </div>
+              </React.Fragment>
+            ) : role_id === 2 ? (
+              <React.Fragment>
+                <div className="app">
+                  <Sidebarmanager />
+                  <main className="content">
+                    <Headerbarmanager />
+                    <div className="content_body">
+                      <Box m="19px">
+                        <Profile />
+                      </Box>
+                    </div>
+                  </main>
+                </div>
+              </React.Fragment>
+            ) : role_id === 3 ? (
+              <React.Fragment>
+                <div className="app">
+                  <Sidebartech />
+                  <main className="content">
+                    <Headerbartech />
+                    <div className="content_body">
+                      <Box m="19px">
+                        <Profile />
+                      </Box>
+                    </div>
+                  </main>
+                </div>
+              </React.Fragment>
+            ) : role_id === 4 ? (
+              <React.Fragment>
+                <div className="app">
+                  <Sidebaruser />
+                  <main className="content">
+                    <Headerbaruser />
+                    <div className="content_body">
+                      <Box m="19px">
+                        <Profile />
+                      </Box>
+                    </div>
+                  </main>
+                </div>
+              </React.Fragment>
+            ) : null
+          }
+        />
         <Route path="/admin/*" element={<AdminRoute />} />
         <Route path="/user/*" element={<UserRoute />} />
         <Route path="/manager/*" element={<ManagerRoute />} />
