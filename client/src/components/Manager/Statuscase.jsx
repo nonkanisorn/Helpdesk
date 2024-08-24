@@ -51,13 +51,13 @@ function Statuscase() {
             >
               <TableCell>{index + 1}</TableCell>
               <TableCell component="th" scope="row">
-                {item.case_topic}
+                {item.case_title}
               </TableCell>
 
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.status_name}</TableCell>
               <TableCell>
-                {new Date(item.datecreatecase).toLocaleString("th-TH", {
+                {new Date(item.created_date).toLocaleString("th-TH", {
                   dateStyle: "long",
                   timeStyle: "medium",
                 })}

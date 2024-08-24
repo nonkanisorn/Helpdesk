@@ -24,7 +24,7 @@ function Detailcase() {
     <Box border={1} sx={{ p: 3 }}>
       {caseData.map((data, index) => (
         <Box key={data.case_id}>
-          <Typography sx={{ mb: 1 }}>ชื่องาน : {data.case_topic}</Typography>
+          <Typography sx={{ mb: 1 }}>ชื่องาน : {data.case_title}</Typography>
           <Typography sx={{ mb: 1 }}>
             รายละเอียด : {data.case_detail}
           </Typography>

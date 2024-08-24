@@ -17,7 +17,7 @@ import { useRef, useState, useEffect } from "react";
 
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
-  const [case_topic, setCase_topic] = useState("");
+  const [case_title, setcase_title] = useState("");
   const [caseImg, setCaseImg] = useState("");
   const [buildingName, setBuildingname] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -38,7 +38,7 @@ function Addcase() {
   const handlefilechange = (e) => {
     setFile(e.target.files[0]);
   };
-  console.log(case_topic);
+  console.log(case_title);
   const createcase = async (e) => {
     e.preventDefault();
 
@@ -53,7 +53,7 @@ function Addcase() {
           case_detail: caseDetail,
           user_id: userId,
           status_id,
-          case_topic,
+          case_title,
         },
         {
           headers: {
@@ -80,7 +80,7 @@ function Addcase() {
       setBuildingname("");
       setDepname("");
       setSelectedDepartment("");
-      setCase_topic("");
+      setcase_title("");
 
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
@@ -92,8 +92,6 @@ function Addcase() {
   };
 
   useEffect(() => {
-    console.log("this.state.first", userId);
-
     axios
       .get(`http://localhost:5011/department`)
       .then(function (response) {
@@ -124,10 +122,10 @@ function Addcase() {
         >
           <Typography sx={{ ml: 1 }}>test:</Typography>
           <TextField
-            id="case_topic"
+            id="case_title"
             type="text"
-            value={case_topic}
-            onChange={(e) => setCase_topic(e.target.value)}
+            value={case_title}
+            onChange={(e) => setcase_title(e.target.value)}
             placeholder="ใส่หัวข้อ"
           />
         </div>

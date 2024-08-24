@@ -1,13 +1,11 @@
 const mysql = require("mysql");
-require('dotenv').config();
+require("dotenv").config();
 const db = mysql.createConnection({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-
-
 
 exports.list = async (req, res) => {
   db.query("SELECT * FROM tbl_status ", (err, results) => {
@@ -32,7 +30,7 @@ exports.create = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
@@ -48,7 +46,7 @@ exports.remove = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
@@ -65,18 +63,22 @@ exports.update = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 exports.statusupdate = async (req, res) => {
-  const status_id = req.body.status_id
-  const case_id = req.params.case_id
-  db.query("UPDATE tbl_case SET status_id = ? WHERE case_id = ? ", [status_id, case_id], (err, result) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send("error update status")
-    } else {
-      res.send(result)
-    }
-  })
-}
+  const status_id = req.body.status_id;
+  const case_id = req.params.case_id;
+  db.query(
+    "UPDATE cases SET status_id = ? WHERE case_id = ? ",
+    [status_id, case_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("error update status");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};

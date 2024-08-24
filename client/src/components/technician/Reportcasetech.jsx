@@ -54,7 +54,7 @@ function Reportcasetech() {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell>{item.case_topic}</TableCell>
+                <TableCell>{item.case_title}</TableCell>
                 <TableCell>{item.usersname}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
                 <TableCell>{item.status_name}</TableCell>

@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-require('dotenv').config();
+require("dotenv").config();
 const db = mysql.createConnection({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -17,16 +17,18 @@ exports.list = async (req, res) => {
   });
 };
 exports.listbyrole = async (req, res) => {
-  db.query("SELECT u.users_id, u.username ,u.name,r.role_name FROM tbl_users u JOIN tbl_role r ON u.role_id = r.role_id WHERE r.role_name = 'Technician';", (err, result) => {
-
-    if (err) {
-      console.log(err)
-      res.status(500).send('db query error')
-    } else {
-      res.send(result)
-    }
-  })
-}
+  db.query(
+    "SELECT u.user_img,u.user_email,u.user_phone,u.users_id, u.username ,u.name,r.role_name FROM tbl_users u JOIN tbl_role r ON u.role_id = r.role_id WHERE r.role_name = 'Technician';",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("db query error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};
 
 exports.create = (req, res) => {
   console.log(req.body);
@@ -43,10 +45,9 @@ exports.create = (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
-
 
 exports.remove = async (req, res) => {
   const technician_id = req.params.technician_id;
@@ -60,19 +61,23 @@ exports.remove = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
 exports.update = async (req, res) => {
   const technician_id = req.params.technician_id;
-  const { technician_name } = req.body
-  db.query("UPDATE tbl_technician SET technician_name = ? WHERE technician_id = ?", [technician_name, technician_id], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("server error");
-    } else {
-      res.send(result)
-    }
-  })
-}
+  const { technician_name } = req.body;
+  db.query(
+    "UPDATE tbl_technician SET technician_name = ? WHERE technician_id = ?",
+    [technician_name, technician_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};

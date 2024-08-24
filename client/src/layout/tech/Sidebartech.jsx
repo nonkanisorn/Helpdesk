@@ -112,7 +112,7 @@ const Sidebartech = () => {
                   </Box>
                 </Box>
               )}
-              <Link to="/user" className="menu-bars">
+              <Link to="/technician/index" className="menu-bars">
                 <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
               </Link>
               <Link to="/technician/reportcasetech" className="menu-bars">
@@ -125,47 +125,6 @@ const Sidebartech = () => {
                   ประวัติการซ่อม
                 </MenuItem>
               </Link>
-
-              <SubMenu icon={<MapOutlinedIcon />} label="Data">
-                <Link to={"/"} className="menu-bars">
-                  <MenuItem icon={<TableViewIcon />}> Tabledd</MenuItem>
-                </Link>
-                <MenuItem icon={<BarChartOutlinedIcon />}>
-                  {" "}
-                  Line charts
-                </MenuItem>
-              </SubMenu>
-
-              <SubMenu label="Manage" icon={<PeopleOutlinedIcon />}>
-                <Link to={"/admin/manage"} className="menu-bars">
-                  <MenuItem>Admin</MenuItem>
-                </Link>
-                <MenuItem> Admin</MenuItem>
-              </SubMenu>
-            </Menu>
-
-            <div
-              style={{
-                padding: "0 24px",
-                marginBottom: "8px",
-                marginTop: "32px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                style={{
-                  opacity: isCollapsed ? 0 : 0.5,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Extra
-              </Typography>
-            </div>
-
-            <Menu>
-              <MenuItem icon={<CalendarTodayOutlinedIcon />}>Calendar</MenuItem>
-              <MenuItem icon={<ReceiptOutlinedIcon />}>Documentation</MenuItem>
             </Menu>
           </div>
         </div>

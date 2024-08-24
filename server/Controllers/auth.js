@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 exports.register = async (req, res) => {
   try {
     const { username, userpassword, role_id, name } = req.body;
-    const user_img = req.file.buffer;
+    const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
     db.query(
       "SELECT * FROM tbl_users WHERE username = ? ",

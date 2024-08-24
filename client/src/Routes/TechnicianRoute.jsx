@@ -12,6 +12,7 @@ import Sidebartech from "../layout/tech/Sidebartech";
 import Headerbartech from "../layout/tech/Headerbartech";
 import Detailcasetech from "../components/technician/Detailcasetech";
 import Histoyrycase from "../components/technician/Historycase";
+import Detailcasetechfinish from "../components/technician/Detailcasetechfinish";
 const TechnicianRoute = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -36,6 +37,10 @@ const TechnicianRoute = () => {
               <Route
                 path="Detailcasetech/:case_id"
                 element={<Detailcasetech />}
+              />
+              <Route
+                path="detailcasetechfinish/:case_id"
+                element={<Detailcasetechfinish />}
               />
               <Route path="historycase" element={<Histoyrycase />} />
             </Routes>

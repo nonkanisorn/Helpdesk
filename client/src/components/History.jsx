@@ -6,7 +6,7 @@ import { Box, Paper, Typography } from "@mui/material";
 
 import Button from "@mui/material/Button";
 
-function Casedetailstatus() {
+function History() {
   const { case_id } = useParams();
   const [casedatabyID, setcasedatabyID] = useState([]);
   const [imgurl, setImgUrls] = useState([]);
@@ -75,7 +75,7 @@ function Casedetailstatus() {
               วันที่ได้รับการยืนยันว่าซ่อมแล้ว:
               {data.completed_date === null
                 ? "ยังไม่ได้รับการยืนยัน"
-                : new Date(data.completed_date).toLocaleString("th-TH", {
+                : new Date(data.closed_date).toLocaleString("th-TH", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   })}
@@ -84,22 +84,7 @@ function Casedetailstatus() {
         ))}
       </Paper>
     </Box>
-    // <div>
-    //   {casedatabyID.map((casedata) => (
-    //     <div key={casedata.case_id}>
-    //       <h1>หัวข้อ: {casedata.case_title}</h1>
-    //       <img src={imgurl} alt="รุป" width={500} height={400} />
-    //       <div>{casedata.case_detail}</div>
-    //       <span>รายชื่อช่างที่ได้รับมอบหมาย</span> <span>{casedata.name}</span>
-    //       <div>
-    //         <Button onClick={() => navigate("/manager/statuscase")}>
-    //           Back
-    //         </Button>
-    //       </div>
-    //     </div>
-    //   ))}
-    // </div>
   );
 }
 
-export default Casedetailstatus;
+export default History;

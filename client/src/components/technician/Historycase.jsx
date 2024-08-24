@@ -16,7 +16,7 @@ function Historycase() {
   const technician_id = useSelector((state) => state.user.users_id);
   const [caseData, setcaseData] = useState([]);
   const topagedetail = (case_id) => {
-    navigate(`/technician/detailcasetech/${case_id}`);
+    navigate(`/technician/detailcasetechfinish/${case_id}`);
   };
   useEffect(() => {
     axios
@@ -54,7 +54,7 @@ function Historycase() {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell>{item.case_topic}</TableCell>
+                <TableCell>{item.case_title}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.status_name}</TableCell>

@@ -13,7 +13,7 @@ exports.patch = async (req, res) => {
   const manager_id = req.body.manager_id;
   const status_id = req.body.status_id;
   db.query(
-    "UPDATE tbl_case SET technician_id = ?, manager_id=?,status_id =?,assignmentdate = NOW()  WHERE case_id = ?",
+    "UPDATE cases SET technician_id = ?, manager_id=?,status_id =?,assigned_date = NOW()  WHERE case_id = ?",
     [technician_id, manager_id, status_id, caseID],
     (err, result) => {
       if (err) {

@@ -66,7 +66,7 @@ function Statuscase() {
             >
               <TableCell>{index + 1}</TableCell>
               <TableCell component="th" scope="row">
-                {item.case_topic}
+                {item.case_title}
               </TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>{item.status_name}</TableCell>

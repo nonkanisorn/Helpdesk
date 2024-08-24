@@ -9,10 +9,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Historyrepair() {
   const [caseData, setcaseData] = useState([]);
   const user_id = useSelector((state) => state.user.users_id);
+  const navigate = useNavigate();
   console.log("user", user_id);
 
   useEffect(() => {
@@ -48,13 +50,19 @@ function Historyrepair() {
             >
               <TableCell>{index + 1}</TableCell>
               <TableCell component="th" scope="row">
-                {item.case_topic}
+                {item.case_title}
               </TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>{item.status_name}</TableCell>
               <TableCell>
-                <Button variant="contained" color="success">
-                  test
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    navigate(`/user/detailcasefinish/${item.case_id}`);
+                  }}
+                >
+                  เพิ่มเติม
                 </Button>
               </TableCell>
             </TableRow>

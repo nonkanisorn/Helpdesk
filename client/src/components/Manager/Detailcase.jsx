@@ -23,11 +23,12 @@ function Detailcase() {
   const status_id = 2;
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const navigate = useNavigate();
+  const [urlimg, setUrl] = useState("");
 
   const [refresh, setRefresh] = useState(false);
   const manager_id = useSelector((state) => state.user.users_id);
+  const users_id = useSelector((state) => state.user.users_id);
 
-  const [techid, setTechid] = useState();
   const sendtech = async (case_id, techid) => {
     await axios
       .patch(`http://localhost:5011/addtechcase/${case_id}`, {
@@ -49,24 +50,31 @@ function Detailcase() {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const caseResponse = await axios.get(
-          `http://localhost:5011/caseidtest/${case_id}`,
-        );
-        console.log(caseResponse);
-        const caseData = caseResponse.data;
-        setcasedatabyID(caseData);
         console.log("casedatabyID", casedatabyID);
         const technicianResponse = await axios.get(
           "http://localhost:5011/technicianrole",
         );
         const technicianData = await technicianResponse.data.map(
-          (technician) => ({
-            id: technician.users_id,
-            name: technician.name,
-          }),
+          (technician) => {
+            let url;
+            if (technician.user_img !== null && technician.user_img.data) {
+              const array = new Uint8Array(technician.user_img.data);
+              const blob = new Blob([array], { type: "image/jpeg" });
+              url = URL.createObjectURL(blob);
+            } else {
+              url =
+                "https://images.unsplash.com/photo-1724250267025-08b545ab90dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8";
+            }
+            return {
+              id: technician.users_id,
+              name: technician.name,
+              useremail: technician.user_email,
+              userphone: technician.user_phone,
+              user_img: url,
+            };
+          },
         );
         settechnician(technicianData);
-        console.log("tcchData", technicianData);
         console.log("technician", technicianData);
       } catch (error) {
         console.log(error);
@@ -75,7 +83,6 @@ function Detailcase() {
     fetchdata();
     console.log("tec", technician);
   }, [case_id]);
-
   const getTechnicianName = (id) => {
     const tech = technician.find((tech) => tech.id === id);
     return tech ? tech.name : "ยังไม่ได้รับมอบหมาย";
@@ -85,13 +92,13 @@ function Detailcase() {
       setRefresh(false); // รีเซ็ต refresh หลังจากการดึงข้อมูลใหม่เสร็จสมบูรณ์
     }
   }, [refresh]);
-  console.log(selectedTechnicians);
+  console.log("testนะจ้ะ");
   return (
     <Box>
       <Grid container spacing={2}>
         {technician.map((tech, index) => (
           <Grid item key={tech.id} lg={4}>
-            <Card sx={{ height: 250, width: 500, bgcolor: "#eeeeee" }}>
+            <Card sx={{ height: 270, width: 500, bgcolor: "#eeeeee" }}>
               <Box display="flex" justifyContent="space-around">
                 <CardContent>
                   <Typography variant="h5" color="text.secondary">
@@ -100,12 +107,16 @@ function Detailcase() {
                   <br />
                   <Typography variant="h5">{tech.name}</Typography>
                   <br />
-                  <Typography color="text.secondary">Email</Typography>
-                  <Typography color="text.secondary">Phone</Typography>
+                  <Typography color="text.secondary">
+                    Email: {tech.useremail}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Phone: {tech.userphone}
+                  </Typography>
                 </CardContent>
                 <CardMedia
                   component="img"
-                  image="https://images.unsplash.com/photo-1719937206498-b31844530a96?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
+                  image={tech.user_img}
                   sx={{ width: 195, borderRadius: "50%" }}
                 ></CardMedia>
               </Box>
@@ -139,46 +150,6 @@ function Detailcase() {
       </Grid>
     </Box>
   );
-  // <div>
-  //   {casedatabyID.map((casedata) => (
-  //     <div key={casedata.case_id}>
-  //       <h1>หัวข้อ: {casedata.case_topic}</h1>
-  //       <span>รายละเอียด:</span>
-  //       <span>{casedata.case_detail}</span>
-  //       <br></br>
-  //       <span>รายชื่อช่างที่ได้รับมอบหมาย</span>{" "}
-  //       <span>{getTechnicianName(casedata.technician_id)}</span>
-  //       <br></br>
-  //       <Select
-  //         labelId="demo-simple-select-label"
-  //         id="demo-simple-select"
-  //         label="ช่าง"
-  //         value={
-  //           selectedTechnicians[casedata.case_id] ||
-  //           casedata.technician_id ||
-  //           ""
-  //         }
-  //         onChange={(event) => handleChange(event, casedata.case_id)}
-  //         sx={{ mt: 2 }}
-  //       >
-  //         {Array.isArray(technician) &&
-  //           technician.map((tech) => (
-  //             <MenuItem key={tech.id} value={tech.id}>
-  //               {tech.name}
-  //             </MenuItem>
-  //           ))}
-  //       </Select>
-  //       <br></br>
-  //       <Button
-  //         onClick={() => sendtech(casedata.case_id)}
-  //         variant="contained"
-  //         sx={{ mt: 2 }}
-  //       >
-  //         เพิ่มช่าง
-  //       </Button>
-  //     </div>
-  //   ))}
-  // </div>
 }
 
 export default Detailcase;

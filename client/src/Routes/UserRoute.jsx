@@ -14,6 +14,7 @@ import Sidebartech from "../layout/tech/Sidebartech";
 import Headerbartech from "../layout/tech/Headerbartech";
 import Statuscase from "../components/user/Statuscase";
 import Detailcase from "../components/user/Detailcase";
+import Detailcasefinish from "../components/user/Detailcasefinish";
 const UserRoute = ({ children }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -34,6 +35,10 @@ const UserRoute = ({ children }) => {
               <Route path="deletecase" element={<Deletecase />} />
               <Route path="statuscase" element={<Statuscase />} />
               <Route path="Detailcase/:case_id" element={<Detailcase />} />
+              <Route
+                path="Detailcasefinish/:case_id"
+                element={<Detailcasefinish />}
+              />
               <Route path="*" element={<Notfound404 />} />
             </Routes>
           </Box>
