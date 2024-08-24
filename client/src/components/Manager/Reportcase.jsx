@@ -81,7 +81,7 @@ function Reportcase() {
               <TableCell component="th" scope="row">
                 {index + 1}
               </TableCell>
-              <TableCell>{item.case_topic}</TableCell>
+              <TableCell>{item.case_title}</TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.case_detail}</TableCell>
               <TableCell>
@@ -96,7 +96,7 @@ function Reportcase() {
                         : null}
               </TableCell>
               <TableCell>
-                {new Date(item.datecreatecase).toLocaleString("th-TH", {
+                {new Date(item.created_date).toLocaleString("th-TH", {
                   dateStyle: "long",
                   timeStyle: "medium",
                 })}

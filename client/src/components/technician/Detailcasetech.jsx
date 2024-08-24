@@ -21,7 +21,7 @@ function Detailcasetech() {
     axios
       .patch(`http://localhost:5011/case/${case_id}`, {
         status_id,
-        case_completesummary: completesummarydata,
+        case_resolution: completesummarydata,
       })
       .then(() => navigate("/technician/reportcasetech"));
   };
@@ -55,7 +55,7 @@ function Detailcasetech() {
     <Box border={1}>
       <Box sx={{ mt: 2, mb: 2, ml: 2 }}>
         <Typography sx={{ mb: 2 }}>
-          ชื่อเรื่อง : {caseDatabyId.case_topic}
+          ชื่อเรื่อง : {caseDatabyId.case_title}
         </Typography>
         <Typography sx={{ mb: 2 }}>
           รายละเอียดเคส {caseDatabyId.case_detail}

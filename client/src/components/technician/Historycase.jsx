@@ -54,7 +54,7 @@ function Historycase() {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell>{item.case_topic}</TableCell>
+                <TableCell>{item.case_title}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.status_name}</TableCell>

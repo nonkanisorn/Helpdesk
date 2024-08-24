@@ -142,7 +142,7 @@ function Detailcase() {
   // <div>
   //   {casedatabyID.map((casedata) => (
   //     <div key={casedata.case_id}>
-  //       <h1>หัวข้อ: {casedata.case_topic}</h1>
+  //       <h1>หัวข้อ: {casedata.case_title}</h1>
   //       <span>รายละเอียด:</span>
   //       <span>{casedata.case_detail}</span>
   //       <br></br>

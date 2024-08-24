@@ -42,14 +42,14 @@ function Casedetailstatus() {
               รายละเอียดเคส
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
-              ชื่องาน:{data.case_topic}
+              ชื่องาน:{data.case_title}
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               รายละเอียดงาน:{data.case_detail}
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               เวลาที่แจ้ง:
-              {new Date(data.datecreatecase).toLocaleString("th-TH", {
+              {new Date(data.created_date).toLocaleString("th-TH", {
                 dateStyle: "short",
                 timeStyle: "medium",
               })}
@@ -57,25 +57,25 @@ function Casedetailstatus() {
 
             <Typography variant="h6" sx={{ mb: 2 }}>
               เวลาที่มอบหมายงานให้ช่าง:
-              {new Date(data.assignmentdate).toLocaleString("th-TH", {
+              {new Date(data.assigned_date).toLocaleString("th-TH", {
                 dateStyle: "short",
                 timeStyle: "medium",
               })}
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               วันที่ช่างทำเสร็จ:
-              {data.datecomplete === null
+              {data.completed_date === null
                 ? "ยังไม่เสร็จ"
-                : new Date(data.datecomplete).toLocaleString("th-TH", {
+                : new Date(data.completed_date).toLocaleString("th-TH", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   })}
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               วันที่ได้รับการยืนยันว่าซ่อมแล้ว:
-              {data.datecomplete === null
+              {data.completed_date === null
                 ? "ยังไม่ได้รับการยืนยัน"
-                : new Date(data.datecomplete).toLocaleString("th-TH", {
+                : new Date(data.completed_date).toLocaleString("th-TH", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   })}
@@ -87,7 +87,7 @@ function Casedetailstatus() {
     // <div>
     //   {casedatabyID.map((casedata) => (
     //     <div key={casedata.case_id}>
-    //       <h1>หัวข้อ: {casedata.case_topic}</h1>
+    //       <h1>หัวข้อ: {casedata.case_title}</h1>
     //       <img src={imgurl} alt="รุป" width={500} height={400} />
     //       <div>{casedata.case_detail}</div>
     //       <span>รายชื่อช่างที่ได้รับมอบหมาย</span> <span>{casedata.name}</span>

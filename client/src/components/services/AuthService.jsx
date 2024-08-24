@@ -2,8 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-
-const cookies = new Cookies()
+const cookies = new Cookies();
 
 const login = (users_username, users_password) => {
   return axios.post(
@@ -14,7 +13,7 @@ const login = (users_username, users_password) => {
     },
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -41,4 +40,4 @@ const isLoggedIn = () => {
   return false;
 };
 
-export const authService = { login, getToken, getUserRole, isLoggedIn};
+export const authService = { login, getToken, getUserRole, isLoggedIn };
