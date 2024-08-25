@@ -35,9 +35,9 @@ function Editdevice() {
         </Box>
 
         <Box ml={5} mt={5}>
-          <Typography>ชื่ออุปกรณ์ : {dev_name} </Typography>
+          <Typography>ชื่ออุปกรณ์เดิม : {dev_name} </Typography>
           <Box display="flex" mt={5}>
-            <Typography>ชื่อใหม่ :</Typography>
+            <Typography>ชื่ออุปกรณ์ใหม่ :</Typography>
             <TextField
               sx={{ ml: 3 }}
               onChange={(e) => setNewDevName(e.target.value)}
@@ -48,10 +48,15 @@ function Editdevice() {
               variant="contained"
               sx={{ mt: 5, mb: 4 }}
               onClick={handleUpdate}
+              color="success"
             >
-              แก้ไข
+              ยืนยัน
             </Button>
-            <Button variant="contained" sx={{ ml: 5, mt: 5, mb: 4 }}>
+            <Button
+              variant="contained"
+              sx={{ ml: 5, mt: 5, mb: 4 }}
+              color="error"
+            >
               ยกเลิก
             </Button>
           </Box>
