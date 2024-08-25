@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { InputLabel, Select, Typography, MenuItem, Input } from "@mui/material";
+import {
+  InputLabel,
+  Select,
+  Typography,
+  MenuItem,
+  Input,
+  Paper,
+} from "@mui/material";
 
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -53,59 +60,74 @@ function Adduser() {
   }, []);
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& > :not(style)": { m: 1, width: "25ch" },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <Typography variant="h3">เพิ่มสมาชิก</Typography>
-      <Typography>Username</Typography>
-      <TextField
-        id="outlined-basic-username"
-        label="username"
-        variant="outlined"
-        value={username}
-        onChange={(e) => setusername(e.target.value)}
-      />
-      <Typography>Password</Typography>
-      <TextField
-        id="outlined-basic=password"
-        label="password"
-        type="password"
-        variant="outlined"
-        value={userpassword}
-        onChange={(e) => setuserpassword(e.target.value)}
-      />
-      <br />
-      <Typography>ชื่อผู้ใช้</Typography>
-      <TextField value={name} onChange={handlechangename} />
-      <Typography>Role</Typography>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        label="role"
-        value={selectRole}
-        onChange={handlechangerole}
+    <Paper sx={{ pb: 3 }}>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { ml: 5 },
+        }}
+        noValidate
+        autoComplete="off"
       >
-        {role.map((role) => (
-          <MenuItem key={role.id} value={role.role_id}>
-            {role.role_name}
-          </MenuItem>
-        ))}
-      </Select>
-      <br />
-      <Typography>รูปภาพ</Typography>
-      <Input type="file" onChange={handlefile}>
-        test
-      </Input>
-      <br />
-      <Button variant="outlined" onClick={register}>
-        เพิ่มสมาชิก
-      </Button>
-    </Box>
+        <Typography variant="h3" textAlign="center">
+          เพิ่มสมาชิก
+        </Typography>
+        <Typography>ชื่อผู้ใช้</Typography>
+        <TextField
+          id="outlined-basic-username"
+          variant="outlined"
+          value={username}
+          onChange={(e) => setusername(e.target.value)}
+        />
+        <Typography sx={{ mt: 5 }}>รหัสผ่าน</Typography>
+        <TextField
+          id="outlined-basic=password"
+          type="password"
+          variant="outlined"
+          value={userpassword}
+          onChange={(e) => setuserpassword(e.target.value)}
+        />
+        <br />
+        <Typography sx={{ mt: 5 }}>ชื่อ/นามสกุล</Typography>
+        <TextField value={name} onChange={handlechangename} />
+        <Typography sx={{ mt: 5 }}>บทบาท</Typography>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          label="role"
+          value={selectRole}
+          onChange={handlechangerole}
+        >
+          {role.map((role) => (
+            <MenuItem key={role.id} value={role.role_id}>
+              {role.role_name}
+            </MenuItem>
+          ))}
+        </Select>
+        <br />
+        <Typography sx={{ mt: 5 }}>รุปผู้ใช้</Typography>
+        <Input type="file" onChange={handlefile}>
+          test
+        </Input>
+        <br />
+        <Button
+          variant="contained"
+          color="success"
+          onClick={register}
+          sx={{ mt: 5 }}
+        >
+          เพิ่มสมาชิก
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={register}
+          sx={{ mt: 5 }}
+        >
+          ยกเลิก
+        </Button>
+      </Box>
+    </Paper>
   );
 }
 

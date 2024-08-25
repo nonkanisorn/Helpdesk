@@ -1,3 +1,4 @@
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
@@ -23,25 +24,34 @@ function Editdepartment() {
         console.error("Error updateing data: ", error);
       });
   };
+  console.log(typeof newName);
   return (
-    <div>
-      <h1>แก้ไขแผนก</h1>
-      <p>ID: {dep_id}</p>
-      <p>ใส่แผนก: {dep_id} </p>
-      <form>
-        <label>
-          ใส่แผนกใหม่:
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewdepName(e.target.value)}
-          />
-        </label>
-        <button type="button" onClick={handleUpdate}>
-          Update
-        </button>
-      </form>
-    </div>
+    <Paper sx={{ pb: 3 }}>
+      <Typography variant="h3" textAlign="center">
+        แก้ไขแผนก
+      </Typography>
+      <Box ml={5}>
+        <Typography sx={{ mb: 3, mt: 3 }}>ชื่อแผนกเดิม : {dep_name}</Typography>
+        <Typography component="span">ชื่อแผนกใหม่ : </Typography>
+        <TextField
+          onChange={(e) => setNewdepName(e.target.value)}
+        ></TextField>{" "}
+        <br />
+        <Box mt={3}>
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ mr: 5 }}
+            onClick={handleUpdate}
+          >
+            ยืนยัน
+          </Button>
+          <Button variant="contained" color="error">
+            ยกเลิก
+          </Button>
+        </Box>
+      </Box>
+    </Paper>
   );
 }
 

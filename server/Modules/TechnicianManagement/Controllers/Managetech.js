@@ -18,7 +18,7 @@ exports.list = async (req, res) => {
 };
 exports.listbyrole = async (req, res) => {
   db.query(
-    "SELECT u.user_img,u.user_email,u.user_phone,u.users_id, u.username ,u.name,r.role_name FROM tbl_users u JOIN tbl_role r ON u.role_id = r.role_id WHERE r.role_name = 'Technician';",
+    "SELECT u.users_id, u.username ,u.name,r.role_name FROM tbl_users u JOIN tbl_role r ON u.role_id = r.role_id WHERE r.role_name = 'Technician';",
     (err, result) => {
       if (err) {
         console.log(err);

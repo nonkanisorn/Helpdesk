@@ -16,9 +16,8 @@ const {
   listbyidtechstatus3,
   listall,
 } = require("../Controllers/ManageCase");
-const { auth } = require("../Middleware/auth");
 
-router.get("/Case", /* auth, */ list);
+router.get("/Case", list);
 router.get("/caseall", listall);
 router.get("/casestatus", listcase);
 router.get("/Case/:case_id", listbyID);

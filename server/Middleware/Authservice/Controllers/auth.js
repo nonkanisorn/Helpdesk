@@ -9,6 +9,24 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
+exports.auth = async (req, res, next) => {
+  try {
+    const token = req.headers["authtoken"];
+    if (!token) {
+      res.status(401).send("Notoken");
+    }
+    const decoded = jwt.verify(token, "jwtsecret");
+    // console.log(decoded)
+    req.user = decoded.user;
+    // console.log('requser', req.user.username)
+
+    // res.send(req.user)
+    next();
+  } catch (error) {
+    res.status(500).send("Token Valid");
+  }
+};
+
 exports.register = async (req, res) => {
   try {
     const { username, userpassword, role_id, name } = req.body;
@@ -128,5 +146,31 @@ exports.currentUser = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("server error");
+  }
+};
+
+exports.adminCheck = async (req, res, next) => {
+  try {
+    // console.log('admincheck', req.user)
+    db.query(
+      "SELECT username,role_id FROM tbl_users WHERE username = ? ",
+      [req.user.username],
+      (error, result) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).send("Database query error");
+        }
+        // console.log(result)
+        // console.log('result', result[0].role)
+        if (result[0].role_id != 1) {
+          return res.status(403).send("Admin access Denied!!!");
+        } else {
+          next();
+        }
+      },
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(403).send("Admin access Denied!!!");
   }
 };

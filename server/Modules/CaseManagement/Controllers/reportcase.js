@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 exports.list = async (req, res) => {
-  db.query("SELECT * FROM cases", (err, results) => {
+  db.query("SELECT * FROM cases ", (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("server error");

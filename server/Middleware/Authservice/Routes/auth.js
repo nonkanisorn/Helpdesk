@@ -9,7 +9,7 @@ const {
   currentUser,
   testimg,
 } = require("../Controllers/auth");
-const { adminCheck, auth } = require("../Middleware/auth");
+const { adminCheck, auth } = require("../Controllers/auth");
 router.post("/register", upload.single("user_img"), register);
 router.post("/login", login);
 router.post("/current-user", auth, currentUser);
