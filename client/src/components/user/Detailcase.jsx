@@ -22,6 +22,9 @@ function Detailcase() {
   }, []);
   return (
     <Box border={1} sx={{ p: 3 }}>
+      <Typography variant="h3" textAlign="center">
+        รายละเอียด
+      </Typography>
       {caseData.map((data, index) => (
         <Box key={data.case_id}>
           <Typography sx={{ mb: 1 }}>ชื่องาน : {data.case_title}</Typography>

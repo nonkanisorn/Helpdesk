@@ -129,7 +129,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_title,s.status_name,c.case_detail FROM cases c  JOIN tbl_status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id = 3",
+    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM cases c  JOIN tbl_status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id = 3",
     [user_id],
     (err, result) => {
       if (err) {
