@@ -25,6 +25,7 @@ import Adminpages from "../components/admin/adminpages";
 import Addstatus from "../components/admin/ManagestatusPages/Addstatus";
 import Editstatus from "../components/admin/ManagestatusPages/Editstatus";
 import Adduser from "../components/admin/ManageuserPages/Adduser";
+import Edituser from "../components/admin/ManageuserPages/Edituser";
 const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [ok, setOk] = useState(false);
@@ -133,6 +134,7 @@ const AdminRoute = ({ children }) => {
               <Route path="managestatus" element={<Managestatus />} />
               <Route path="managedepartment" element={<Managedepartment />} />
               <Route path="adddevice" element={<Adddevice />} />
+              <Route path="edituser/:users_id" element={<Edituser />} />
               <Route
                 path="editdevice/:dev_id/:dev_name"
                 element={<Editdevice />}
