@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { list, listbyid } = require("../Controllers/Manageuser");
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const { list, listbyid, remove, update } = require("../Controllers/Manageuser");
 router.get("/user", list);
 router.get("/userbyid/:users_id", listbyid);
+router.delete("/userdelete/:users_id", remove);
+router.patch("/userupdate/:users_id", upload.single("user_img"), update);
 module.exports = router;

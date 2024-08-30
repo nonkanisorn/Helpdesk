@@ -30,10 +30,11 @@ const Sidebaradmin = () => {
         const response = await axios.get(
           `http://localhost:5011/userbyid/${users_id}`,
         );
-        if (response.data[0].user_img.data.length === 0) {
-          setUrl(
-            "https://images.unsplash.com/photo-1719205153554-33eb4834cc36?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          );
+        if (
+          !response.data[0].user_img ||
+          response.data[0].user_img.data.length === 0
+        ) {
+          setUrl("../../../public/assets/user.png");
         } else {
           const user = response.data[0];
           console.log(response);
@@ -116,7 +117,7 @@ const Sidebaradmin = () => {
                   หน้าหลัก
                 </MenuItem>
               </Link>
-              <Link to="/admin/adduser" className="menu-bars">
+              <Link to="/admin/manageuser" className="menu-bars">
                 <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
                   จัดการสมาชิก
                 </MenuItem>

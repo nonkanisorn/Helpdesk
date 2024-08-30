@@ -5,19 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import TableViewIcon from "@mui/icons-material/TableView";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
-import { Navigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../../store/userSlice";
 import { useSelector } from "react-redux";
 const Sidebaruser = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
@@ -26,6 +16,7 @@ const Sidebaruser = () => {
   const userName = useSelector((state) => state.user.name);
   const users_id = useSelector((state) => state.user.users_id);
   const [url, setUrl] = useState("");
+  const [checkurl, setcheckurl] = useState("");
 
   useEffect(() => {
     if (users_id) {
@@ -33,13 +24,15 @@ const Sidebaruser = () => {
         const response = await axios.get(
           `http://localhost:5011/userbyid/${users_id}`,
         );
-        if (response.data[0].user_img.data.length === 0) {
-          setUrl(
-            "https://images.unsplash.com/photo-1719205153554-33eb4834cc36?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          );
+        if (
+          !response.data[0].user_img ||
+          !response.data[0].user_img.data ||
+          response.data[0].user_img.data.length === 0
+        ) {
+          setUrl("../../../public/assets/user.png");
+          setcheckurl(response.data);
         } else {
           const user = response.data[0];
-          console.log(response);
           const array = new Uint8Array(user.user_img.data);
           const blob = new Blob([array], { type: "image/jpeg" });
           const url = URL.createObjectURL(blob);
@@ -50,7 +43,10 @@ const Sidebaruser = () => {
       fetchdata();
     }
   }, [users_id]);
-
+  useEffect(() => {
+    console.log("URL updated:", url);
+  }, [url]);
+  console.log("url", url);
   return (
     <div
       style={{

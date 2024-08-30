@@ -12,51 +12,41 @@ import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function Manageuser() {
-  const [departmentData, setDepartmentdata] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [refresh, setrefresh] = useState(false);
 
-  const Deletedepartment = async (dep_id) => {
+  const confirmDelete = async (dep_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
       return;
     }
-
-    axios
-      .delete(`http://localhost:5000/Department/${dep_id}`)
-      .then((response) => {
-        console.log(response.data);
-        axios
-          .get("http://localhost:5000/Department")
-          .then((response) => {
-            setDepartmentdata(response.data);
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error deeteing data: ", error``);
-      });
   };
-
+  const handleDelete = (users_id) => {
+    axios.delete(`http://localhost:5011/userdelete/${users_id}`).then(() => {
+      console.log("ลบสําเร็จ");
+      setrefresh((prev) => !prev);
+    });
+  };
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/Department")
-      .then(function (response) {
-        setDepartmentdata(response.data);
-        console.log(departmentData);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {});
-  }, []);
-
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5011/user");
+        setUserData(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [refresh]);
+  if (!userData || userData.length === 0) {
+    return null; // หรือแสดงข้อความแจ้งเตือนอื่นๆ
+  }
+  console.log(userData);
   return (
     <div>
       <h1>
         จัดการผู้ใช้ {"\u00A0"}
-        <Link to="/admin/Adddepartment">
+        <Link to="/admin/adduser">
           <Button variant="contained" size="small">
             +ADD
           </Button>
@@ -68,12 +58,12 @@ function Manageuser() {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>ชื่อ</TableCell>
-              <TableCell>รูปภาพ</TableCell>
+              <TableCell>บทบาท</TableCell>
               <TableCell>แก้ไข / ลบ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {departmentData.map((item, index) => (
+            {userData.map((item, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -81,14 +71,12 @@ function Manageuser() {
                 {/* <TableCell component="th" scope="row">
                   {item.dev_id}
                 </TableCell> */}
-                <TableCell>{item.dep_id} </TableCell>
+                <TableCell>{item.users_id} </TableCell>
 
-                <TableCell>{item.dep_name}</TableCell>
-                <TableCell>{item.dep_name}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.role_name}</TableCell>
                 <TableCell>
-                  <Link
-                    to={`/admin/Editdepartment/${item.dep_id}/${item.dep_name}`}
-                  >
+                  <Link to={`/admin/edituser/${item.users_id}`}>
                     <Button
                       variant="contained"
                       sx={{ fontSize: "12px", backgroundColor: "#FF9933" }}
@@ -98,7 +86,9 @@ function Manageuser() {
                   </Link>
 
                   <Button
-                    onClick={() => Deletedepartment(item.dep_id)}
+                    onClick={() => {
+                      handleDelete(item.users_id);
+                    }}
                     variant="contained"
                     sx={{
                       fontSize: "12px",

@@ -19,6 +19,7 @@ exports.list = async (req, res) => {
     },
   );
 };
+
 exports.listall = async (req, res) => {
   db.query(
     "SELECT * FROM cases c INNER JOIN tbl_users u on c.user_id = u.users_id",
