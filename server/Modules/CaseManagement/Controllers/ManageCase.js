@@ -22,7 +22,7 @@ exports.list = async (req, res) => {
 
 exports.listall = async (req, res) => {
   db.query(
-    "SELECT * FROM cases c INNER JOIN tbl_users u on c.user_id = u.users_id",
+    "SELECT * FROM cases c INNER JOIN tbl_users u on c.user_id = u.users_id ",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -115,7 +115,7 @@ exports.listbyidtech = async (req, res) => {
 exports.listbyidtechstatus3 = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT c.case_title,u2.name,s.status_name,c.created_date,c.case_id,c.case_detail,c.manager_id FROM cases c  INNER JOIN tbl_users u1 ON c.technician_id = u1.users_id INNER JOIN tbl_status s ON c.status_id = s.status_id INNER JOIN tbl_users u2 on c.manager_id = u2.users_id  WHERE c.technician_id = ? AND c.status_id = 3;",
+    "SELECT c.case_title,u2.name,s.status_name,c.created_date,c.case_id,c.case_detail,c.manager_id FROM cases c  INNER JOIN tbl_users u1 ON c.technician_id = u1.users_id INNER JOIN tbl_status s ON c.status_id = s.status_id INNER JOIN tbl_users u2 on c.manager_id = u2.users_id  WHERE c.technician_id = ? AND c.status_id IN (3,4);",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -145,7 +145,7 @@ exports.listbyIduser = async (req, res) => {
 exports.listbyIduserstatuscase = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM cases c  JOIN tbl_status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,4)",
+    "SELECT c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM cases c  JOIN tbl_status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4)",
     [user_id],
     (err, result) => {
       if (err) {

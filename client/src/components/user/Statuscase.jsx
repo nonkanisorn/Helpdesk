@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { Box } from "@mui/material";
 function Statuscase() {
   const [caseData, setcaseData] = useState([]);
   const user_id = useSelector((state) => state.user.users_id);
@@ -59,46 +59,49 @@ function Statuscase() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {caseData.map((item, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell>{index + 1}</TableCell>
-              <TableCell component="th" scope="row">
-                {item.case_title}
-              </TableCell>
-              <TableCell>{item.case_detail}</TableCell>
-              <TableCell>{item.status_name}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  onClick={() => topagedetail(item.case_id)}
-                >
-                  เพิ่มเติม
-                </Button>
-              </TableCell>
-              <TableCell>
-                {item.status_id === 4 ? (
+          {caseData.map((item, index) =>
+            item.status_id === 3 ? null : (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell component="th" scope="row">
+                  {item.case_title}
+                </TableCell>
+
+                <TableCell>{item.status_name}</TableCell>
+                <TableCell>{item.case_detail}</TableCell>
+                <TableCell>
                   <Button
-                    onClick={() => {
-                      if (window.confirm("ยืนยันการซ่อม")) {
-                        updatestatuscase(item.case_id);
-                      }
-                    }}
                     variant="contained"
-                    color="success"
+                    onClick={() => topagedetail(item.case_id)}
                   >
-                    ยืนยันการซ่อม
+                    เพิ่มเติม
                   </Button>
-                ) : item.status_id !== 4 ? (
-                  <Button variant="contained" color="error">
-                    ยืนยันการซ่อม
-                  </Button>
-                ) : null}
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell>
+                  {item.status_id === 4 ? (
+                    <Button
+                      onClick={() => {
+                        if (window.confirm("ยืนยันการซ่อม")) {
+                          updatestatuscase(item.case_id);
+                        }
+                      }}
+                      variant="contained"
+                      color="success"
+                    >
+                      ยืนยันการซ่อม
+                    </Button>
+                  ) : item.status_id !== 4 ? (
+                    <Button variant="contained" color="error">
+                      ยืนยันการซ่อม
+                    </Button>
+                  ) : null}
+                </TableCell>
+              </TableRow>
+            ),
+          )}
         </TableBody>
       </Table>
     </TableContainer>
