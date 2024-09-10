@@ -120,13 +120,16 @@ function Addcase() {
         <div
           style={{ display: "flex", alignItems: "center", marginBottom: 15 }}
         >
-          <Typography sx={{ ml: 1 }}>test:</Typography>
+          <Typography sx={{ ml: 1 }}>หัวข้อ : </Typography>
           <TextField
             id="case_title"
             type="text"
             value={case_title}
             onChange={(e) => setcase_title(e.target.value)}
             placeholder="ใส่หัวข้อ"
+            sx={{
+              ml: 3,
+            }}
           />
         </div>
         <Box sx={{ display: "flex", alignItems: "center" }}>
