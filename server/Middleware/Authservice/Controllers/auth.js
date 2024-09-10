@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
     const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
     db.query(
-      "SELECT * FROM tbl_users WHERE username = ? ",
+      "SELECT * FROM Users WHERE username = ? ",
       [username],
       (error, results) => {
         if (error) {
@@ -43,7 +43,7 @@ exports.register = async (req, res) => {
           res.send("มีคนใช้แล้ว").status(400);
         }
         db.query(
-          "INSERT INTO tbl_users (username,userpassword,role_id,name,user_img)values(?,?,?,?,?)",
+          "INSERT INTO Users (username,userpassword,role_id,name,user_img)values(?,?,?,?,?)",
           [username, passwordHash, role_id, name, user_img],
         ),
           (err, results) => {
@@ -69,7 +69,7 @@ exports.testimg = async (req, res) => {
     const users_id = req.params.users_id;
     console.log(user_img);
     db.query(
-      "UPDATE tbl_users SET user_img = ? WHERE users_id = ? ",
+      "UPDATE Users SET user_img = ? WHERE users_id = ? ",
       [user_img, users_id],
       (error, results) => {
         if (error) {
@@ -90,11 +90,11 @@ exports.login = async (req, res) => {
     //check user 1.เช็คusername ว่าในdatabaseไหม ท่าไม่มี 401 2 ท่ามีไปเช็ตpassword ต่อ 3 จากนั้น สร้างpayload ที่จะส่งไปหน้าบ้าน 4.สร้างtoken
     const { username, userpassword } = req.body;
     db.query(
-      "SELECT * FROM tbl_users WHERE username = ? ",
+      "SELECT * FROM Users WHERE username = ? ",
       [username],
       async (error, results) => {
         if (error) {
-          res.send(err).status(500);
+          res.send(error).status(500);
         }
 
         if (results.length > 0) {
@@ -133,7 +133,7 @@ exports.currentUser = async (req, res) => {
   try {
     console.log("currentUser", req.user);
     db.query(
-      "SELECT users_id,username,role_id,name FROM tbl_users WHERE username = ? ",
+      "SELECT users_id,username,role_id,name FROM Users WHERE username = ? ",
       [req.user.username],
       async (error, result) => {
         if (error) {
@@ -153,7 +153,7 @@ exports.adminCheck = async (req, res, next) => {
   try {
     // console.log('admincheck', req.user)
     db.query(
-      "SELECT username,role_id FROM tbl_users WHERE username = ? ",
+      "SELECT username,role_id FROM Users WHERE username = ? ",
       [req.user.username],
       (error, result) => {
         if (error) {

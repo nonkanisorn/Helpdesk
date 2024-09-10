@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 exports.list = async (req, res) => {
   db.query(
-    "SELECT * FROM tbl_users u INNER JOIN tbl_role r ON u.role_id = r.role_id",
+    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -25,7 +25,7 @@ exports.list = async (req, res) => {
 exports.listbyid = async (req, res) => {
   const users_id = req.params.users_id;
   db.query(
-    "SELECT * FROM tbl_users u INNER JOIN tbl_role r ON u.role_id = r.role_id WHERE users_id = ? ",
+    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id WHERE users_id = ? ",
     [users_id],
     (err, results) => {
       if (err) {
@@ -42,7 +42,7 @@ exports.remove = async (req, res) => {
   const users_id = req.params.users_id;
   console.log(users_id);
   db.query(
-    "DELETE FROM tbl_users WHERE users_id = ? ",
+    "DELETE FROM Users WHERE users_id = ? ",
     [users_id],
     (err, result) => {
       if (err) {
@@ -59,7 +59,7 @@ exports.update = async (req, res) => {
   const users_id = req.params.users_id;
   const { name, role_id, username, userpassword } = req.body;
   const user_img = req.file ? req.file.buffer : null;
-  let query = "UPDATE tbl_users SET ";
+  let query = "UPDATE Users SET ";
   const params = [];
   if (name) {
     query += "name = ? ,";
@@ -99,7 +99,7 @@ exports.update = async (req, res) => {
     }
   });
   // db.query(
-  //   "UPDATE tbl_users SET name = ? , user_email = ?  WHERE users_id =? ",
+  //   "UPDATE Users SET name = ? , user_email = ?  WHERE users_id =? ",
   //   [name, user_email, users_id],
   //   (err, result) => {
   //     if (err) {

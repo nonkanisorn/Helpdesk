@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-require('dotenv').config();
+require("dotenv").config();
 const db = mysql.createConnection({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 });
 
 exports.list = async (req, res) => {
-  db.query("SELECT * FROM tbl_role ", (err, results) => {
+  db.query("SELECT * FROM Role ", (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("server error");
@@ -21,7 +21,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   const role_name = req.body.role_name;
   db.query(
-    "INSERT INTO tbl_role(role_name) VALUES(?)",
+    "INSERT INTO Role(role_name) VALUES(?)",
     [role_name],
     (err, result) => {
       if (err) {
@@ -30,30 +30,27 @@ exports.create = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
 
 exports.remove = async (req, res) => {
   const role_id = req.params.role_id;
-  db.query(
-    "DELETE FROM tbl_role WHERE role_id = ? ",
-    [role_id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("server error");
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM Role WHERE role_id = ? ", [role_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("server error");
+    } else {
+      res.send(result);
     }
-  );
+  });
 };
 
 exports.update = async (req, res) => {
   const role_id = req.params.role_id;
-  const role_name = req.params.role_name; db.query(
-    "UPDATE tbl_role SET role_name = ? WHERE role_id =? ",
+  const role_name = req.params.role_name;
+  db.query(
+    "UPDATE Role SET role_name = ? WHERE role_id =? ",
     [role_name, role_id],
     (err, result) => {
       if (err) {
@@ -62,6 +59,6 @@ exports.update = async (req, res) => {
       } else {
         res.send(result);
       }
-    }
+    },
   );
 };
