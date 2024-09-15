@@ -7,16 +7,20 @@ function Profile() {
   const name = useSelector((state) => state.user.name);
   const users_id = useSelector((state) => state.user.users_id);
   const [url, setUrl] = useState("");
+  const [dep, setDep] = useState("");
   useEffect(() => {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
           `http://localhost:5011/userbyid/${users_id}`,
         );
-        if (response.data[0].user_img.data.length === 0) {
-          setUrl(
-            "https://images.unsplash.com/photo-1719205153554-33eb4834cc36?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          );
+        setDep(response.data[0].dep_name);
+        console.log(response);
+        if (
+          response.data[0].user_img === null ||
+          response.data[0].user_img.data.length === 0
+        ) {
+          setUrl("../../public/assets/user.png");
         } else {
           const user = response.data[0];
           console.log(response);
@@ -46,6 +50,7 @@ function Profile() {
       </Box>
 
       <Typography>ชื่อผู้ใช้ : {name}</Typography>
+      <Typography>แผนก : {dep}</Typography>
       <Typography>ตำแหน่ง : Admin</Typography>
     </Box>
   ) : role_id === 2 ? (
@@ -64,6 +69,8 @@ function Profile() {
       </Box>
 
       <Typography>ชื่อผู้ใช้ : {name}</Typography>
+      <Typography>แผนก : {dep}</Typography>
+
       <Typography>ตำแหน่ง : Manager</Typography>
     </Box>
   ) : role_id === 3 ? (
@@ -82,6 +89,7 @@ function Profile() {
       </Box>
 
       <Typography>ชื่อผู้ใช้ : {name}</Typography>
+      <Typography>แผนก : {dep}</Typography>
       <Typography>ตำแหน่ง : Technician</Typography>
     </Box>
   ) : role_id === 4 ? (

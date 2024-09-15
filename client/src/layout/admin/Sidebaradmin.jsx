@@ -14,7 +14,6 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import TableViewIcon from "@mui/icons-material/TableView";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useSelector } from "react-redux";
-import Sidebaruser from "../users/Sidebaruser";
 
 const Sidebaradmin = () => {
   const [isCollapsed, setisCollapsed] = useState(false);

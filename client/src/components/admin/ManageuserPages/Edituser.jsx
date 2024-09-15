@@ -19,12 +19,13 @@ function Edituser() {
   const { users_id } = useParams();
   const [userData, setUserData] = useState([]);
   const [roleData, setRoleData] = useState([]);
+  const [depName, setDepName] = useState([]);
   const [newUsername, setNewUsername] = useState("");
   const [newName, setNewName] = useState("");
   const [newUserpassword, setNewUserpassword] = useState("");
   const [newRolename, setNewRolename] = useState("");
   const [newProfile, setNewProfile] = useState(null);
-  const [refresh, setRefresh] = useState(false);
+  const [newDepname, setNewDepname] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
   const formData = new FormData();
   formData.append("name", newName);
@@ -32,6 +33,7 @@ function Edituser() {
   formData.append("userpassword", newUserpassword);
   formData.append("role_id", newRolename);
   formData.append("user_img", newProfile);
+  formData.append("dep_id", newDepname);
   const handleSubmit = () => {
     axios
       .patch(`${apiUrl}/userupdate/${users_id}`, formData, {
@@ -75,9 +77,20 @@ function Edituser() {
         console.log(error);
       }
     };
+    const fetchDepData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5011/department");
+        setDepName(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchRoleData();
+    fetchDepData();
   }, []);
 
+  console.log("depname", depName);
   if (!userData || userData.length === 0) {
     return null;
   }
@@ -91,6 +104,7 @@ function Edituser() {
     newRolename,
     newProfile,
   );
+  console.log("newdep", newDepname);
   return (
     <Box>
       <Paper sx={{ pb: 3 }}>
@@ -125,6 +139,16 @@ function Edituser() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
             ></TextField>
+          </Box>
+          <Box>
+            <Typography>แผนกผู้ใช้เดิม : {userData[0].dep_id}</Typography>
+            <Select onChange={(e) => setNewDepname(e.target.value)}>
+              {depName.map((item) => (
+                <MenuItem key={item.id} value={item.dep_id}>
+                  {item.dep_name}
+                </MenuItem>
+              ))}
+            </Select>
           </Box>
           <br />
           <Box>

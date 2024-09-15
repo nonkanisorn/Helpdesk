@@ -63,6 +63,7 @@ function Detailcase() {
           (technician) => ({
             id: technician.users_id,
             name: technician.name,
+            user_img: technician.user_img,
           }),
         );
         settechnician(technicianData);
@@ -86,6 +87,7 @@ function Detailcase() {
     }
   }, [refresh]);
   console.log(selectedTechnicians);
+  console.log("testeiei");
   return (
     <Box>
       <Grid container spacing={2}>
@@ -142,4 +144,3 @@ function Detailcase() {
 }
 
 export default Detailcase;
-

@@ -20,6 +20,8 @@ function Adduser() {
   const [role, setRole] = useState([]);
   const [selectRole, setSelectRole] = useState("");
   const [fileimg, setFileimg] = useState(null);
+  const [selectDepName, setSelectDepName] = useState([]);
+  const [depName, setDepName] = useState([]);
   const register = () => {
     const formData = new FormData();
     formData.append("username", username);
@@ -27,6 +29,7 @@ function Adduser() {
     formData.append("role_id", selectRole);
     formData.append("name", name);
     formData.append("user_img", fileimg);
+    formData.append("dep_id", selectDepName);
     axios
       .post("http://localhost:5011/register", formData, {
         headers: {
@@ -47,6 +50,9 @@ function Adduser() {
   const handlechangename = (event) => {
     setName(event.target.value);
   };
+  const handleSelectDepName = (event) => {
+    setSelectDepName(event.target.value);
+  };
   const handlefile = (e) => {
     console.log(e.target.files[0]);
     setFileimg(e.target.files[0]);
@@ -57,8 +63,12 @@ function Adduser() {
       setRole(res.data);
       console.log(res.data);
     });
+    axios.get("http://localhost:5011/department").then((res) => {
+      setDepName(res.data);
+    });
   }, []);
 
+  console.log("dep", selectDepName);
   return (
     <Paper sx={{ pb: 3 }}>
       <Box
@@ -90,6 +100,14 @@ function Adduser() {
         <br />
         <Typography sx={{ mt: 5 }}>ชื่อ/นามสกุล</Typography>
         <TextField value={name} onChange={handlechangename} />
+        <Typography sx={{ mt: 5 }}>แผนก</Typography>
+        <Select value={selectDepName} onChange={handleSelectDepName}>
+          {depName.map((item, idx) => (
+            <MenuItem key={item.id} value={item.dep_id}>
+              {item.dep_name}
+            </MenuItem>
+          ))}
+        </Select>
         <Typography sx={{ mt: 5 }}>บทบาท</Typography>
         <Select
           labelId="demo-simple-select-label"
@@ -106,9 +124,7 @@ function Adduser() {
         </Select>
         <br />
         <Typography sx={{ mt: 5 }}>รุปผู้ใช้</Typography>
-        <Input type="file" onChange={handlefile}>
-          test
-        </Input>
+        <Input type="file" onChange={handlefile}></Input>
         <br />
         <Button
           variant="contained"

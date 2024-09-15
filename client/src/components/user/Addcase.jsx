@@ -18,33 +18,13 @@ import { useRef, useState, useEffect } from "react";
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
   const [case_title, setcase_title] = useState("");
-  const [caseImg, setCaseImg] = useState("");
-  const [buildingName, setBuildingname] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [depname, setDepname] = useState([]);
   const [fetchtrigger, setFetchtrigger] = useState(false);
-  const [file, setFile] = useState(null);
   const status_id = 1;
-  const inputFileRef = useRef();
   const apiUrl = process.env.REACT_APP_API_URL;
   const userId = useSelector((state) => state.user.users_id);
   const userName = useSelector((state) => state.user.name);
-  const handlebuildingChange = (event) => {
-    setBuildingname(event.target.value);
-  };
-  const handledepartmentChange = (event) => {
-    setSelectedDepartment(event.target.value);
-  };
-  const handlefilechange = (e) => {
-    setFile(e.target.files[0]);
-  };
   console.log(case_title);
   const createcase = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("photo", file);
-
     try {
       const response = await axios.post(
         "http://localhost:5011/Case",
@@ -61,25 +41,7 @@ function Addcase() {
           },
         },
       );
-      axios
-        .post(`${apiUrl}/upload`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          console.log("success file");
-          console.log(file);
-        });
-      if (inputFileRef.current) {
-        inputFileRef.current.value = "";
-      }
-      setFile(null);
       setCaseDetail("");
-      setCaseImg(null);
-      setBuildingname("");
-      setDepname("");
-      setSelectedDepartment("");
       setcase_title("");
 
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
@@ -91,16 +53,6 @@ function Addcase() {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5011/department`)
-      .then(function (response) {
-        setDepname(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, [fetchtrigger]);
   return (
     <Box
       component="form"
@@ -143,7 +95,16 @@ function Addcase() {
             sx={{ marginLeft: 2, mb: 2 }}
           />
         </Box>
-        <Button color="success" variant="contained" onClick={createcase}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography component="div">อุปกรณ์</Typography>
+          <Select sx={{ ml: 3 }}></Select>
+        </Box>
+        <Button
+          color="success"
+          variant="contained"
+          onClick={createcase}
+          sx={{ mt: 5 }}
+        >
           เพิ่มการแจ้งซ่อม
         </Button>
       </FormControl>

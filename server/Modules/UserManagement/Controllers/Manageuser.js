@@ -25,7 +25,7 @@ exports.list = async (req, res) => {
 exports.listbyid = async (req, res) => {
   const users_id = req.params.users_id;
   db.query(
-    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id WHERE users_id = ? ",
+    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id INNER JOIN Department d ON u.dep_id = d.dep_id WHERE users_id = ? ",
     [users_id],
     (err, results) => {
       if (err) {
@@ -57,7 +57,7 @@ exports.remove = async (req, res) => {
 
 exports.update = async (req, res) => {
   const users_id = req.params.users_id;
-  const { name, role_id, username, userpassword } = req.body;
+  const { name, role_id, username, userpassword, dep_id } = req.body;
   const user_img = req.file ? req.file.buffer : null;
   let query = "UPDATE Users SET ";
   const params = [];
@@ -81,6 +81,10 @@ exports.update = async (req, res) => {
   if (user_img) {
     query += "user_img = ? ,";
     params.push(user_img);
+  }
+  if (dep_id) {
+    query += "dep_id = ? ,";
+    params.push(dep_id);
   }
 
   query = query.slice(0, -1);

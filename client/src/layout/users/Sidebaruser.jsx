@@ -26,7 +26,6 @@ const Sidebaruser = () => {
         );
         if (
           !response.data[0].user_img ||
-          !response.data[0].user_img.data ||
           response.data[0].user_img.data.length === 0
         ) {
           setUrl("../../../public/assets/user.png");
@@ -46,7 +45,6 @@ const Sidebaruser = () => {
   useEffect(() => {
     console.log("URL updated:", url);
   }, [url]);
-  console.log("url", url);
   return (
     <div
       style={{
