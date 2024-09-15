@@ -20,7 +20,7 @@ const Sidebaradmin = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
-  const name = useSelector((state) => state.user.username.name);
+  const name = useSelector((state) => state.user.name);
   const users_id = useSelector((state) => state.user.users_id);
   const [url, setUrl] = useState("");
 
