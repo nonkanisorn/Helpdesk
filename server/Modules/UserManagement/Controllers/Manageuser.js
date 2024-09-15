@@ -25,7 +25,7 @@ exports.list = async (req, res) => {
 exports.listbyid = async (req, res) => {
   const users_id = req.params.users_id;
   db.query(
-    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id INNER JOIN Department d ON u.dep_id = d.dep_id WHERE users_id = ? ",
+    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id WHERE users_id = ? ",
     [users_id],
     (err, results) => {
       if (err) {
