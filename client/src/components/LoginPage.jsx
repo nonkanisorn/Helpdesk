@@ -23,11 +23,12 @@ function LoginPage() {
         username,
         userpassword,
       });
+      console.log("responseuser", response.data.payload.user);
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
       console.log("loginresponse", response.data);
       dispatch(
         login({
-          username: response.data.payload.user,
+          // username: response.data.payload.user,
           role: response.data.payload.user.role,
           token: response.data.token,
           name: response.data.payload.user.name,
@@ -37,7 +38,8 @@ function LoginPage() {
       localStorage.setItem(
         "user",
         JSON.stringify({
-          username: response.data.payload.user,
+          // username: response.data.payload.user,
+          name: response.data.payload.user.name,
           role: response.data.payload.user.role,
           token: response.data.token,
           users_id: response.data.payload.user.users_id,

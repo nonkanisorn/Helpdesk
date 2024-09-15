@@ -45,32 +45,18 @@ const AdminRoute = ({ children }) => {
       );
       console.log(res);
       return res.data;
-      // dispatch(login({
-      //   username: user.user.username,
-      //   role: user.user.role,
-      //   token: user.user.token
-      // }))
     } catch (error) {
       console.log(error);
       throw error;
     }
   };
 
-  // console.log('adminroute', user.token)
-  // useEffect(() => {
-  //   currentAdmin(user.user.token)
-  //     .then(res => {
-  //       console.log('res', res)
-  //       setOk(true)
-  //     }).catch((err) => {
-  //       console.log(err)
-  //       setOk(false)
-  // }, [user])
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       dispatch(login(storedUser));
     }
+    console.log("store", storedUser);
   }, [dispatch]);
   useEffect(() => {
     const verifyAdmin = async () => {
@@ -97,27 +83,6 @@ const AdminRoute = ({ children }) => {
   if (loading) {
     return null; // ไม่แสดงอะไรในขณะที่กำลังโหลด
   }
-  // useEffect(() => {
-  //   if (user.token) {
-  // <Route path="*" element={<Notfound404 />} />
-  //     currentAdmin(user.token)
-  //       .then(() => setOk(true))
-  //       .catch((err) => {
-  //         console.log(err);
-  //         setOk(false);
-  //         // navigate('/login');
-  //       }).finally(() =>
-  //         setLoading(false)
-  //       );
-  //   }
-  // }, [user, navigate]);
-  // if (loading) {
-  //   return null; // ไม่แสดงอะไรในขณะที่กำลังโหลด
-  // }
-  // useEffect(() => {
-  //
-  //   currentAdmin(user.user.token).then(() => setOk(true)).catch((err) => console.log(err))
-  // }, [user.user.username])
   const text = "No permission";
   return ok ? (
     <div className="app">
