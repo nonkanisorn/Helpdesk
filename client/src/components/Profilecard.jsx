@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -7,6 +9,16 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 function Profilecard({ tech, sendtech }) {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  console.log("api", apiUrl);
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const response = await axios.get();
+      };
+    } catch (error) {}
+  });
+
   return (
     <Card sx={{ height: 250, width: 500 }}>
       <Box display="flex" justifyContent="space-around">
@@ -17,7 +29,7 @@ function Profilecard({ tech, sendtech }) {
           <br />
           <Typography variant="h5">{tech.name}</Typography>
           <br />
-          <Typography color="text.secondary">Email</Typography>
+          <Typography color="text.secondary">Emailsddas</Typography>
           <Typography color="text.secondary">Phone</Typography>
         </CardContent>
         <CardMedia

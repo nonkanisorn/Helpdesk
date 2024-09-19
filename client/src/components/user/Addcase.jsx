@@ -19,6 +19,8 @@ function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
   const [case_title, setcase_title] = useState("");
   const [fetchtrigger, setFetchtrigger] = useState(false);
+  const [dataDev, setDataDev] = useState([]);
+  const [selectDev, setSelectDev] = useState("");
   const status_id = 1;
   const apiUrl = process.env.REACT_APP_API_URL;
   const userId = useSelector((state) => state.user.users_id);
@@ -30,10 +32,11 @@ function Addcase() {
         "http://localhost:5011/Case",
         {
           // dep_name: selectedDepartment,
+          case_title,
           case_detail: caseDetail,
+          case_device_id: selectDev,
           user_id: userId,
           status_id,
-          case_title,
         },
         {
           headers: {
@@ -43,6 +46,7 @@ function Addcase() {
       );
       setCaseDetail("");
       setcase_title("");
+      setSelectDev("");
 
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
@@ -53,6 +57,20 @@ function Addcase() {
     }
   };
 
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const response = await axios.get(apiUrl + "/device");
+        setDataDev(response.data);
+        console.log(response.data);
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  console.log("datadep", dataDev);
+  console.log(selectDev);
   return (
     <Box
       component="form"
@@ -97,7 +115,17 @@ function Addcase() {
         </Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography component="div">อุปกรณ์</Typography>
-          <Select sx={{ ml: 3 }}></Select>
+          <Select
+            sx={{ ml: 3 }}
+            onChange={(e) => setSelectDev(e.target.value)}
+            value={selectDev}
+          >
+            {dataDev.map((item, idx) => (
+              <MenuItem key={item.id} value={item.dev_id}>
+                {item.dev_name}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
         <Button
           color="success"

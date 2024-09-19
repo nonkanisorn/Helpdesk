@@ -16,6 +16,7 @@ function Profile() {
         );
         setDep(response.data[0].dep_name);
         console.log(response);
+        console.log("dep", response.data[0].dep_id);
         if (
           response.data[0].user_img === null ||
           response.data[0].user_img.data.length === 0
@@ -70,7 +71,6 @@ function Profile() {
 
       <Typography>ชื่อผู้ใช้ : {name}</Typography>
       <Typography>แผนก : {dep}</Typography>
-
       <Typography>ตำแหน่ง : Manager</Typography>
     </Box>
   ) : role_id === 3 ? (
@@ -106,8 +106,9 @@ function Profile() {
           style={{ borderRadius: "50%" }}
         />
       </Box>
-      <Input type="file"></Input>
       <Typography>ชื่อผู้ใช้ : {name}</Typography>
+      <Typography>{dep ? `แผนก : ${dep}` : "ไม่มีแผนก"}</Typography>
+      <Typography>ตำแหน่ง : User</Typography>
     </Box>
   ) : (
     <Typography>no role</Typography>

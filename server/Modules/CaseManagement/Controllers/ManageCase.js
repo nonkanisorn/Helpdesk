@@ -160,7 +160,8 @@ exports.listbyIduserstatuscase = async (req, res) => {
 
 exports.create = (req, res) => {
   // console.log(req.headers)
-  const { case_title, case_detail, user_id, status_id } = req.body;
+  const { case_title, case_detail, case_device_id, user_id, status_id } =
+    req.body;
   // const case_img = req.files.case_img
   console.log(req.body);
 
@@ -168,8 +169,8 @@ exports.create = (req, res) => {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,user_id,status_id ,created_date  ) VALUES (?,?,?,?,NOW())",
-    [case_title, case_detail, user_id, status_id],
+    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date  ) VALUES (?,?,?,?,?,NOW())",
+    [case_title, case_detail, case_device_id, user_id, status_id],
     (err, result) => {
       if (err) {
         console.log(err);
