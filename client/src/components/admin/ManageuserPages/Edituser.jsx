@@ -61,6 +61,7 @@ function Edituser() {
           `http://localhost:5011/userbyid/${users_id}`,
         );
         setUserData(response.data);
+        console.log("userdata", userData);
       } catch (error) {
         console.log(error);
       }
@@ -112,6 +113,13 @@ function Edituser() {
           แก้ไข้ข้อมูลผู้ใช้
         </Typography>
         <hr />
+        <Box display="flex" justifyContent="center">
+          <img
+            width="200px"
+            height="200px"
+            src="../../../../public/assets/user.png"
+          />
+        </Box>
         <Box ml={5} mt={5}>
           <Typography>ชื่อผู้ใช้เดิม: {userData[0].username}</Typography>
           <Box mt={3}>
@@ -141,14 +149,22 @@ function Edituser() {
             ></TextField>
           </Box>
           <Box>
-            <Typography>แผนกผู้ใช้เดิม : {userData[0].dep_id}</Typography>
-            <Select onChange={(e) => setNewDepname(e.target.value)}>
-              {depName.map((item) => (
-                <MenuItem key={item.id} value={item.dep_id}>
-                  {item.dep_name}
-                </MenuItem>
-              ))}
-            </Select>
+            <Typography>
+              แผนกผู้ใช้เดิม : {userData[0].dep_name || "ยังไม่มีแผนก"}
+            </Typography>
+            <Box display="flex">
+              <Typography>แผนกผู้ใช้ใหม่: {userData[0].dep_id}</Typography>
+              <Select
+                sx={{ ml: 3 }}
+                onChange={(e) => setNewDepname(e.target.value)}
+              >
+                {depName.map((item) => (
+                  <MenuItem key={item.id} value={item.dep_id}>
+                    {item.dep_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
           </Box>
           <br />
           <Box>

@@ -7,10 +7,6 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 
 import CardMedia from "@mui/material/CardMedia";
-import Profilecard from "../Profilecard";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -19,8 +15,8 @@ function Detailcase() {
   const { case_id } = useParams();
   const [casedatabyID, setcasedatabyID] = useState([]);
   const [imgurl, setImgUrls] = useState([]);
-  const [technician, settechnician] = useState([]);
   const status_id = 2;
+  const [technician, settechnician] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const navigate = useNavigate();
 
@@ -36,8 +32,6 @@ function Detailcase() {
         status_id,
       })
       .then(() => {
-        console.log("selectech", selectedTechnicians);
-        console.log("success");
         setSelectedTechnicians({});
         setRefresh(true); // ตั้งค่า refresh ให้เป็น true หลังจากการส่งข้อมูลสำเร็จ
         navigate("/manager/reportcase");
@@ -49,13 +43,6 @@ function Detailcase() {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const caseResponse = await axios.get(
-          `http://localhost:5011/caseidtest/${case_id}`,
-        );
-        console.log(caseResponse);
-        const caseData = caseResponse.data;
-        setcasedatabyID(caseData);
-        console.log("casedatabyID", casedatabyID);
         const technicianResponse = await axios.get(
           "http://localhost:5011/technicianrole",
         );
@@ -67,27 +54,29 @@ function Detailcase() {
           }),
         );
         settechnician(technicianData);
-        console.log("tcchData", technicianData);
-        console.log("technician", technicianData);
+        const imgUrlArray = technician.map((item, idx) => {
+          if (item.user_img) {
+            console.log("มีค่า", idx);
+            const user = item.user_img;
+            const array = new Uint8Array(user.data);
+            const blob = new Blob([array], { type: "image/jpeg" });
+            return URL.createObjectURL(blob);
+          } else {
+            return null;
+          }
+        });
+        setImgUrls(imgUrlArray);
       } catch (error) {
         console.log(error);
       }
     };
     fetchdata();
-    console.log("tec", technician);
   }, [case_id]);
-
-  const getTechnicianName = (id) => {
-    const tech = technician.find((tech) => tech.id === id);
-    return tech ? tech.name : "ยังไม่ได้รับมอบหมาย";
-  };
   useEffect(() => {
     if (refresh) {
       setRefresh(false); // รีเซ็ต refresh หลังจากการดึงข้อมูลใหม่เสร็จสมบูรณ์
     }
   }, [refresh]);
-  console.log(selectedTechnicians);
-  console.log("testeiei");
   return (
     <Box>
       <Grid container spacing={2}>
@@ -107,7 +96,7 @@ function Detailcase() {
                 </CardContent>
                 <CardMedia
                   component="img"
-                  image="https://images.unsplash.com/photo-1719937206498-b31844530a96?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
+                  image={imgurl[index] || "../../../public/assets/user.png"}
                   sx={{ width: 195, borderRadius: "50%" }}
                 ></CardMedia>
               </Box>
