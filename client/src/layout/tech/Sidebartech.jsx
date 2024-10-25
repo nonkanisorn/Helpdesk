@@ -117,7 +117,7 @@ const Sidebartech = () => {
               </Link>
               <Link to="/technician/reportcasetech" className="menu-bars">
                 <MenuItem icon={<ConstructionOutlinedIcon />}>
-                  รายการแจ้งซ่อมtec
+                  รายการแจ้งซ่อม
                 </MenuItem>
               </Link>
               <Link to="/technician/Historycase" className="menu-bars">

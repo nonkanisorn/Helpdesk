@@ -114,11 +114,7 @@ function Edituser() {
         </Typography>
         <hr />
         <Box display="flex" justifyContent="center">
-          <img
-            width="200px"
-            height="200px"
-            src="../../../../public/assets/user.png"
-          />
+          <img width="200px" height="200px" src="/assets/user.png" />
         </Box>
         <Box ml={5} mt={5}>
           <Typography>ชื่อผู้ใช้เดิม: {userData[0].username}</Typography>

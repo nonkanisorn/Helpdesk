@@ -35,7 +35,7 @@ function History() {
   console.log(casedatabyID);
   return (
     <Box>
-      <Paper sx={{ height: 400, width: "100%" }}>
+      <Paper sx={{ height: 500, width: "100%" }}>
         {casedatabyID.map((data, index) => (
           <Box key={data.id}>
             <Typography align="center" variant="h3" mb={3}>
