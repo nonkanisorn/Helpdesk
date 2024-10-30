@@ -16,7 +16,7 @@ function Statuscase() {
   const user_id = useSelector((state) => state.user.users_id);
   const [reFresh, setRefresh] = useState(true);
   const navigate = useNavigate();
-  const status_id = 3;
+  const status_id = 4;
   const topagedetail = (case_id) => {
     navigate(`/user/Detailcase/${case_id}`);
   };
@@ -60,7 +60,7 @@ function Statuscase() {
         </TableHead>
         <TableBody>
           {caseData.map((item, index) =>
-            item.status_id === 3 ? null : (
+            item.status_id === 4 ? null : (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -70,8 +70,8 @@ function Statuscase() {
                   {item.case_title}
                 </TableCell>
 
-                <TableCell>{item.status_name}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
+                <TableCell>{item.status_name}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
@@ -81,7 +81,7 @@ function Statuscase() {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  {item.status_id === 4 ? (
+                  {item.status_id === 3 ? (
                     <Button
                       onClick={() => {
                         if (window.confirm("ยืนยันการซ่อม")) {

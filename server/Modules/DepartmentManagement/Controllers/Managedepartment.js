@@ -17,6 +17,20 @@ exports.list = async (req, res) => {
     }
   });
 };
+exports.listbyuserid = async (req, res) => {
+  const user_id = req.params.user_id;
+  db.query(
+    "SELECT * FROM Department WHERE user_id = ? ",
+    [user_id],
+    (err, result) => {
+      if (err) {
+        res.status(500).send("server error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};
 
 exports.create = async (req, res) => {
   const dep_name = req.body.dep_name;

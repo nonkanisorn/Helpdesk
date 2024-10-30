@@ -68,9 +68,6 @@ function Manageuser() {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                {/* <TableCell component="th" scope="row">
-                  {item.dev_id}
-                </TableCell> */}
                 <TableCell>{item.users_id} </TableCell>
 
                 <TableCell>{item.name}</TableCell>

@@ -123,7 +123,7 @@ const Sidebaradmin = () => {
               </Link>
               <Link to="/admin/Managerole" className="menu-bars">
                 <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
-                  จัดการตำแหน่ง
+                  จัดการบทบาท
                 </MenuItem>
               </Link>
               <Link to="/admin/Managedevice" className="menu-bars">

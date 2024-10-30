@@ -22,12 +22,16 @@ function Adduser() {
   const [fileimg, setFileimg] = useState(null);
   const [selectDepName, setSelectDepName] = useState([]);
   const [depName, setDepName] = useState([]);
+  const [useremail, setUserEmail] = useState();
+  const [userphone, setUserPhone] = useState();
   const register = () => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("userpassword", userpassword);
     formData.append("role_id", selectRole);
     formData.append("name", name);
+    formData.append("user_email", useremail);
+    formData.append("user_phone", userphone);
     formData.append("user_img", fileimg);
     formData.append("dep_id", selectDepName);
     axios
@@ -67,8 +71,7 @@ function Adduser() {
       setDepName(res.data);
     });
   }, []);
-
-  console.log("dep", selectDepName);
+  console.log(userphone);
   return (
     <Paper sx={{ pb: 3 }}>
       <Box
@@ -100,6 +103,10 @@ function Adduser() {
         <br />
         <Typography sx={{ mt: 5 }}>ชื่อ/นามสกุล</Typography>
         <TextField value={name} onChange={handlechangename} />
+        <Typography sx={{ mt: 5 }}>Email</Typography>
+        <TextField onChange={(e) => setUserEmail(e.target.value)}></TextField>
+        <Typography sx={{ mt: 5 }}>Phone</Typography>
+        <TextField onChange={(e) => setUserPhone(e.target.value)}></TextField>
         <Typography sx={{ mt: 5 }}>แผนก</Typography>
         <Select value={selectDepName} onChange={handleSelectDepName}>
           {depName.map((item, idx) => (

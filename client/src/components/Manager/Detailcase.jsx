@@ -51,6 +51,8 @@ function Detailcase() {
             id: technician.users_id,
             name: technician.name,
             user_img: technician.user_img,
+            user_email: technician.user_email,
+            user_phone: technician.user_phone,
           }),
         );
         settechnician(technicianData);
@@ -77,12 +79,13 @@ function Detailcase() {
       setRefresh(false); // รีเซ็ต refresh หลังจากการดึงข้อมูลใหม่เสร็จสมบูรณ์
     }
   }, [refresh]);
+  console.log("te", technician);
   return (
     <Box>
       <Grid container spacing={2}>
         {technician.map((tech, index) => (
           <Grid item key={tech.id} lg={4}>
-            <Card sx={{ height: 250, width: 500, bgcolor: "#eeeeee" }}>
+            <Card sx={{ height: 300, width: 500, bgcolor: "#eeeeee" }}>
               <Box display="flex" justifyContent="space-around">
                 <CardContent>
                   <Typography variant="h5" color="text.secondary">
@@ -91,8 +94,12 @@ function Detailcase() {
                   <br />
                   <Typography variant="h5">{tech.name}</Typography>
                   <br />
-                  <Typography color="text.secondary">Email</Typography>
-                  <Typography color="text.secondary">Phone</Typography>
+                  <Typography color="text.secondary">
+                    Email: {tech.user_email}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Phone: {tech.user_phone}
+                  </Typography>
                 </CardContent>
                 <CardMedia
                   component="img"
@@ -111,17 +118,13 @@ function Detailcase() {
                   variant="contained"
                   size="medium"
                   color="success"
-                  sx={{ ml: 2 }}
+                  sx={{ mb: 3, mr: 3 }}
                   onClick={() => {
                     sendtech(case_id, tech.id);
                   }}
                 >
                   {" "}
                   เพิ่มช่าง
-                </Button>
-                <Button variant="contained" size="medium" color="info">
-                  {" "}
-                  ดูตารางงานช่าง
                 </Button>
               </CardActions>
             </Card>

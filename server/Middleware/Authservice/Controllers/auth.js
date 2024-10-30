@@ -29,7 +29,15 @@ exports.auth = async (req, res, next) => {
 
 exports.register = async (req, res) => {
   try {
-    const { username, userpassword, role_id, name, dep_id } = req.body;
+    const {
+      username,
+      userpassword,
+      role_id,
+      name,
+      dep_id,
+      user_email,
+      user_phone,
+    } = req.body;
     const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
     db.query(
@@ -43,8 +51,17 @@ exports.register = async (req, res) => {
           res.send("มีคนใช้แล้ว").status(400);
         }
         db.query(
-          "INSERT INTO Users (username,userpassword,role_id,name,user_img,dep_id)values(?,?,?,?,?,?)",
-          [username, passwordHash, role_id, name, user_img, dep_id],
+          "INSERT INTO Users (username,userpassword,role_id,name,user_email,user_phone,user_img,dep_id)values(?,?,?,?,?,?,?,?)",
+          [
+            username,
+            passwordHash,
+            role_id,
+            name,
+            user_email,
+            user_phone,
+            user_img,
+            dep_id,
+          ],
         ),
           (err, results) => {
             if (err) {
@@ -112,6 +129,7 @@ exports.login = async (req, res) => {
               role: results[0].role_id,
               name: results[0].name,
               users_id: results[0].users_id,
+              dep_id: results[0].dep_id,
             },
           };
         } else {

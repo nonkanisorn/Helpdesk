@@ -33,6 +33,7 @@ function LoginPage() {
           token: response.data.token,
           name: response.data.payload.user.name,
           users_id: response.data.payload.user.users_id,
+          dep_id: response.data.payload.user.dep_id,
         }),
       );
       localStorage.setItem(
@@ -43,6 +44,7 @@ function LoginPage() {
           role: response.data.payload.user.role,
           token: response.data.token,
           users_id: response.data.payload.user.users_id,
+          dep_id: response.data.payload.user.dep_id,
         }),
       );
       // localStorage.setItem("token", response.data.token)
@@ -83,6 +85,18 @@ function LoginPage() {
       >
         <Card sx={{ minWidth: 450, minHeight: 400, borderRadius: 4 }}>
           <CardContent>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <img src="../../public/assets/205.jpg" height={150}></img>
+            </Box>
+
+            <Typography textAlign="center" fontSize={40}>
+              Sing in
+            </Typography>
             <Typography
               sx={{}}
               fontWeight="bold"
@@ -91,9 +105,7 @@ function LoginPage() {
               color="text.primary"
               textAlign={"center"}
               gutterBottom
-            >
-              Repair system
-            </Typography>
+            ></Typography>
             <Typography
               component="div"
               sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}
@@ -118,7 +130,12 @@ function LoginPage() {
               variant="contained"
               onClick={handleLogin}
               color="primary"
-              sx={{ width: "80%", height: "50px", marginLeft: 5, mt: 5 }}
+              sx={{
+                width: "80%",
+                height: "50px",
+                marginLeft: 5,
+                mb: 3,
+              }}
             >
               Login
             </Button>

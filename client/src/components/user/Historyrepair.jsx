@@ -15,7 +15,6 @@ function Historyrepair() {
   const [caseData, setcaseData] = useState([]);
   const user_id = useSelector((state) => state.user.users_id);
   const navigate = useNavigate();
-  console.log("user", user_id);
 
   useEffect(() => {
     axios

@@ -15,7 +15,7 @@ function Detailcasetech() {
   const [caseDatabyId, setCaseDatabyId] = useState({});
   const [completesummarydata, setCompletesummarydata] = useState("");
   console.log(case_id);
-  const status_id = 4;
+  const status_id = 3;
 
   const updatestatuscase = () => {
     axios
@@ -45,7 +45,6 @@ function Detailcasetech() {
         }
       } catch (error) {
         console.error("Error fetching case data:", error);
-      } finally {
       }
     };
 

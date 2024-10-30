@@ -130,7 +130,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id = 3",
+    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id = 4",
     [user_id],
     (err, result) => {
       if (err) {
@@ -162,8 +162,8 @@ exports.create = (req, res) => {
   // console.log(req.headers)
   const { case_title, case_detail, case_device_id, user_id, status_id } =
     req.body;
-  // const case_img = req.files.case_img
   console.log(req.body);
+  // const case_img = req.files.case_img
 
   if (!case_detail) {
     return res.status(400).send("case_detail is require");
@@ -215,7 +215,7 @@ exports.casestatusupdate = async (req, res) => {
   const status_id = req.body.status_id;
   const case_id = req.params.case_id;
   const case_resolution = req.body.case_resolution;
-  if (status_id === 3) {
+  if (status_id === 4) {
     db.query(
       "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
       [status_id, case_id],
@@ -255,7 +255,7 @@ exports.casestatusupdate = async (req, res) => {
         }
       },
     );
-  } else if (status_id === 4) {
+  } else if (status_id === 3) {
     db.query(
       "UPDATE Cases SET status_id = ?, completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
       [status_id, case_resolution, case_id],
