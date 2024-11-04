@@ -16,7 +16,7 @@ function Statuscase() {
   const user_id = useSelector((state) => state.user.users_id);
   const [reFresh, setRefresh] = useState(true);
   const navigate = useNavigate();
-  const status_id = 4;
+  const status_id = 5;
   const topagedetail = (case_id) => {
     navigate(`/user/Detailcase/${case_id}`);
   };
@@ -60,7 +60,7 @@ function Statuscase() {
         </TableHead>
         <TableBody>
           {caseData.map((item, index) =>
-            item.status_id === 4 ? null : (
+            item.status_id === 5 ? null : (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -93,7 +93,7 @@ function Statuscase() {
                     >
                       ยืนยันการซ่อม
                     </Button>
-                  ) : item.status_id !== 4 ? (
+                  ) : item.status_id !== 5 ? (
                     <Button variant="contained" color="error">
                       ยืนยันการซ่อม
                     </Button>

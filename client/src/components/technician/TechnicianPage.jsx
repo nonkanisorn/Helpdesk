@@ -108,7 +108,7 @@ function Technicianpage() {
             mr: "10px",
           }}
         >
-          รอการยืนยัน : {datafilterstatuscase4()}{" "}
+          รอการยืนยัน : {datafilterstatuscase3()}{" "}
         </Typography>{" "}
         <Typography
           sx={{
@@ -126,7 +126,7 @@ function Technicianpage() {
             mr: "10px",
           }}
         >
-          เสร็จสิน : {datafilterstatuscase3()}{" "}
+          เสร็จสิน : {datafilterstatuscase4()}{" "}
         </Typography>{" "}
       </Box>
     </Box>

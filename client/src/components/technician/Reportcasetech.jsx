@@ -15,8 +15,14 @@ function Reportcasetech() {
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
   const [caseData, setcaseData] = useState([]);
+  const status_id = 4;
   const topagedetail = (case_id) => {
     navigate(`/technician/detailcasetech/${case_id}`);
+  };
+  const waitingforpart = (case_id) => {
+    axios.patch(`http://localhost:5011/Case/${case_id}`, {
+      status_id,
+    });
   };
   useEffect(() => {
     axios
@@ -42,7 +48,7 @@ function Reportcasetech() {
               <TableCell>รายละเอียดผู้แจ้ง</TableCell>
               <TableCell>รายละเอียดงาน</TableCell>
               <TableCell>สถานะ</TableCell>
-              <TableCell>ปิดงาน</TableCell>
+              <TableCell>ดำเนินการ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,8 +72,17 @@ function Reportcasetech() {
                     variant="contained"
                     color="success"
                     onClick={() => topagedetail(item.case_id)}
+                    sx={{ mr: 3 }}
                   >
                     ปิดงาน
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    onClick={() => waitingforpart(item.case_id)}
+                  >
+                    รออะไหล่
                   </Button>
                 </TableCell>
               </TableRow>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 import {
   InputLabel,
   Select,
@@ -24,6 +25,7 @@ function Adduser() {
   const [depName, setDepName] = useState([]);
   const [useremail, setUserEmail] = useState();
   const [userphone, setUserPhone] = useState();
+  const navigate = useNavigate();
   const register = () => {
     const formData = new FormData();
     formData.append("username", username);
@@ -43,6 +45,7 @@ function Adduser() {
       .then((response) => {
         console.log("เพิ่มสมาชิกสำเร็จ");
         console.log(response);
+        navigate("/admin/manageuser ");
       })
       .catch((error) => {
         console.error("เพิ่มไม่สำเร็จ", error);

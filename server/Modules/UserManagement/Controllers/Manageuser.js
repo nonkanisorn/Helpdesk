@@ -57,8 +57,16 @@ exports.remove = async (req, res) => {
 
 exports.update = async (req, res) => {
   const users_id = req.params.users_id;
-  const { name, role_id, username, userpassword, dep_id } = req.body;
   const user_img = req.file ? req.file.buffer : null;
+  const {
+    name,
+    role_id,
+    username,
+    userpassword,
+    dep_id,
+    user_email,
+    user_phone,
+  } = req.body;
   let query = "UPDATE Users SET ";
   const params = [];
   if (name) {
@@ -85,6 +93,14 @@ exports.update = async (req, res) => {
   if (dep_id) {
     query += "dep_id = ? ,";
     params.push(dep_id);
+  }
+  if (user_email) {
+    query += "user_email = ? ,";
+    params.push(user_email);
+  }
+  if (user_phone) {
+    query += "user_phone = ? ,";
+    params.push(user_phone);
   }
 
   query = query.slice(0, -1);

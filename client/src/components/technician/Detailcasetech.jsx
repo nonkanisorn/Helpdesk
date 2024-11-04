@@ -16,6 +16,7 @@ function Detailcasetech() {
   const [completesummarydata, setCompletesummarydata] = useState("");
   console.log(case_id);
   const status_id = 3;
+  const statuswait_id = 5;
 
   const updatestatuscase = () => {
     axios
@@ -24,6 +25,11 @@ function Detailcasetech() {
         case_resolution: completesummarydata,
       })
       .then(() => navigate("/technician/reportcasetech"));
+  };
+  const waitingforpart = () => {
+    axios.patch(`http://localhost:5011/Case/${case_id}`, {
+      status_id,
+    });
   };
 
   const completesummary = (e) => {

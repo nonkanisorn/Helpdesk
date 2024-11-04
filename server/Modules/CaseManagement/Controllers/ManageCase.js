@@ -144,18 +144,22 @@ exports.listbyIduser = async (req, res) => {
 };
 exports.listbyIduserstatuscase = async (req, res) => {
   const user_id = req.params.user_id;
-  db.query(
-    "SELECT c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4)",
-    [user_id],
-    (err, result) => {
-      if (err) {
-        res.status(500).send("query database error no user_id");
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    },
-  );
+  try {
+    db.query(
+      "SELECT c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4)",
+      [user_id],
+      (err, result) => {
+        if (err) {
+          res.status(500).send("query database error no user_id");
+          console.log(err);
+        } else {
+          res.send(result);
+        }
+      },
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.create = (req, res) => {
@@ -215,6 +219,21 @@ exports.casestatusupdate = async (req, res) => {
   const status_id = req.body.status_id;
   const case_id = req.params.case_id;
   const case_resolution = req.body.case_resolution;
+  if (status_id === 5) {
+    db.query(
+      "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
+      [status_id, case_id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send("server error ");
+        } else {
+          res.send(result);
+        }
+      },
+    );
+  }
+
   if (status_id === 4) {
     db.query(
       "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",

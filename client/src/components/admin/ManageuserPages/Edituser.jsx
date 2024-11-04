@@ -26,14 +26,18 @@ function Edituser() {
   const [newRolename, setNewRolename] = useState("");
   const [newProfile, setNewProfile] = useState(null);
   const [newDepname, setNewDepname] = useState("");
+  const [user_email, setUserEmail] = useState("");
+  const [user_phone, setUserPhone] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
   const formData = new FormData();
   formData.append("name", newName);
   formData.append("username", newUsername);
   formData.append("userpassword", newUserpassword);
   formData.append("role_id", newRolename);
-  formData.append("user_img", newProfile);
   formData.append("dep_id", newDepname);
+  formData.append("user_img", newProfile);
+  formData.append("user_email", user_email);
+  formData.append("user_phone", user_phone);
   const handleSubmit = () => {
     axios
       .patch(`${apiUrl}/userupdate/${users_id}`, formData, {
@@ -142,6 +146,23 @@ function Edituser() {
             <TextField
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
+            ></TextField>
+          </Box>
+          <Box>
+            <Typography component="span">
+              Email: {userData[0].user_email}
+            </Typography>
+            <TextField
+              onChange={(e) => setUserEmail(e.target.value)}
+            ></TextField>
+          </Box>
+
+          <Box>
+            <Typography component="span">
+              Phone: {userData[0].user_phone}
+            </Typography>
+            <TextField
+              onChange={(e) => setUserPhone(e.target.value)}
             ></TextField>
           </Box>
           <Box>
