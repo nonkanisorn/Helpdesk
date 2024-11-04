@@ -16,13 +16,16 @@ function Reportcasetech() {
   const technician_id = useSelector((state) => state.user.users_id);
   const [caseData, setcaseData] = useState([]);
   const status_id = 4;
+  const [refresh, setRefresh] = useState(false);
   const topagedetail = (case_id) => {
     navigate(`/technician/detailcasetech/${case_id}`);
   };
   const waitingforpart = (case_id) => {
-    axios.patch(`http://localhost:5011/Case/${case_id}`, {
-      status_id,
-    });
+    axios
+      .patch(`http://localhost:5011/Case/${case_id}`, {
+        status_id,
+      })
+      .then(setRefresh(true));
   };
   useEffect(() => {
     axios
@@ -35,7 +38,7 @@ function Reportcasetech() {
         console.log(error);
       })
       .finally(function () {});
-  }, []);
+  }, [refresh]);
 
   return (
     <Box>
