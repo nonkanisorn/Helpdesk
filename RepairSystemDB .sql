@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2024 at 04:07 PM
+-- Generation Time: Nov 08, 2024 at 07:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,8 +48,8 @@ CREATE TABLE `Cases` (
 --
 
 INSERT INTO `Cases` (`case_id`, `user_id`, `technician_id`, `manager_id`, `status_id`, `case_title`, `case_detail`, `case_device_id`, `case_resolution`, `created_date`, `closed_date`, `assigned_date`, `completed_date`) VALUES
-(1, 2, NULL, NULL, 5, 'พัง1', 'พัง1', 1, NULL, '2024-10-31 17:25:33', NULL, NULL, NULL),
-(2, 2, 5, 3, 4, 'test1', 'test1', 3, NULL, '2024-11-01 19:53:16', '2024-11-01 12:56:20', '2024-11-01 12:53:51', NULL);
+(1, 2, 5, 3, 3, 'พัง1', 'พัง1', 1, NULL, '2024-10-31 17:25:33', '2024-11-04 16:10:07', '2024-11-06 15:39:49', NULL),
+(4, 2, 5, 3, 5, 'test1', 'test1', 3, NULL, '2024-11-01 19:53:16', '2024-11-04 16:10:12', '2024-11-01 12:53:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,8 @@ INSERT INTO `Status` (`status_id`, `status_name`) VALUES
 (2, 'กำลังดำเนินการ'),
 (3, 'รอการยืนยันการซ่อม'),
 (4, 'รออะไหล่'),
-(5, 'เสร็จสิ้น');
+(5, 'เลยกำหนดเวลาซ่อม'),
+(6, 'เสร็จสิ้น');
 
 -- --------------------------------------------------------
 
@@ -256,7 +257,7 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Cases`
 --
 ALTER TABLE `Cases`
-  MODIFY `case_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `case_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Categoriesdevice`
@@ -292,7 +293,7 @@ ALTER TABLE `Role`
 -- AUTO_INCREMENT for table `Status`
 --
 ALTER TABLE `Status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `Users`
