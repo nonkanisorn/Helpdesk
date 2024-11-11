@@ -58,6 +58,7 @@ function Adminpages() {
             textAlign: "center",
             borderRadius: "10px",
             color: "white",
+            mr: "1rem",
           }}
           variant="h6"
         >
@@ -72,6 +73,7 @@ function Adminpages() {
             textAlign: "center",
             color: "white",
             borderRadius: "10px",
+            mr: "1rem",
           }}
           variant="h6"
         >
@@ -86,6 +88,7 @@ function Adminpages() {
             textAlign: "center",
             color: "white",
             borderRadius: "10px",
+            mr: "1rem",
           }}
           variant="h6"
         >
@@ -100,6 +103,7 @@ function Adminpages() {
             textAlign: "center",
             color: "white",
             borderRadius: "10px",
+            mr: "1rem",
           }}
           variant="h6"
         >
@@ -114,6 +118,7 @@ function Adminpages() {
             textAlign: "center",
             color: "white",
             borderRadius: "10px",
+            mr: "1rem",
           }}
           variant="h6"
         >
@@ -125,4 +130,3 @@ function Adminpages() {
 }
 
 export default Adminpages;
-
