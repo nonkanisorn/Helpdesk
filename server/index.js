@@ -33,7 +33,7 @@ app.use(cors());
 app.use(cookieParser());
 
 var db = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "",
   database: "RepairSystemDB",
@@ -65,8 +65,6 @@ readdirSync("./Modules").forEach((module) => {
 });
 readdirSync("./Middleware").forEach((module) => {
   const routesPath = `./Middleware/${module}/Routes`;
-  console.log("checkmodule", module);
-  console.log("checkpath", routesPath);
 
   // ตรวจสอบว่ามีโฟลเดอร์ routes อยู่หรือไม่
   if (existsSync(routesPath)) {

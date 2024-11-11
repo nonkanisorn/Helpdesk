@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const moment = require("moment");
 require("dotenv").config();
 const db = mysql.createConnection({
   user: process.env.DB_USER,
@@ -301,4 +302,33 @@ exports.casestatusupdate = async (req, res) => {
       },
     );
   }
+};
+
+exports.checktimecase = async (req, res) => {
+  db.query("SELECT * FROM Cases ", (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+
+    result.map((item) => {
+      const currenttime = moment();
+      const assigndate = moment(item.assigned_date);
+      const diffInDays = currenttime.diff(assigndate, "days");
+      if (assigndate.days() == currenttime.days()) {
+        res.send("sameday");
+      }
+      if (diffInDays >= 3) {
+        db.query(
+          "UPDATE Cases SET status_id = 5 WHERE case_id = ? ",
+          [item.case_id],
+          (err, result) => {
+            res.send(result);
+          },
+        );
+        console.log(`เลยมา${item.case_id}`);
+      } else {
+        console.log(`ยังไม่เลย${item.case_id}`);
+      }
+    });
+  });
 };
