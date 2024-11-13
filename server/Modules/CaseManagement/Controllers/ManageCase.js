@@ -37,7 +37,7 @@ exports.listall = async (req, res) => {
 
 exports.listcase = async (req, res) => {
   db.query(
-    "SELECT * FROM Cases c INNER JOIN Status s on c.status_id = s.status_id  INNER JOIN Users u ON c.user_id = u.users_id WHERE c.status_id IN (2,3,4)",
+    "SELECT * FROM Cases c INNER JOIN Status s on c.status_id = s.status_id  INNER JOIN Users u ON c.user_id = u.users_id WHERE c.status_id IN (2,3,4,5)",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -100,7 +100,7 @@ exports.listbyID = async (req, res) => {
 exports.listbyidtech = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id = 2; ",
+    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,5) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -304,28 +304,25 @@ exports.casestatusupdate = async (req, res) => {
   }
 };
 
-exports.checktimecase = async (req, res) => {
+exports.checktimecase = async () => {
   db.query("SELECT * FROM Cases ", (err, result) => {
     if (err) {
-      res.send(err);
+      console.log(err);
+      return;
     }
 
     result.map((item) => {
       const currenttime = moment();
       const assigndate = moment(item.assigned_date);
       const diffInDays = currenttime.diff(assigndate, "days");
-      if (assigndate.days() == currenttime.days()) {
-        res.send("sameday");
-      }
       if (diffInDays >= 3) {
         db.query(
           "UPDATE Cases SET status_id = 5 WHERE case_id = ? ",
           [item.case_id],
           (err, result) => {
-            res.send(result);
+            console.log(result);
           },
         );
-        console.log(`เลยมา${item.case_id}`);
       } else {
         console.log(`ยังไม่เลย${item.case_id}`);
       }

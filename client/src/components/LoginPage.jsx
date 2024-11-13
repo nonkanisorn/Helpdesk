@@ -94,7 +94,11 @@ function LoginPage() {
               <img src="../../public/assets/205.jpg" height={150}></img>
             </Box>
 
-            <Typography textAlign="center" fontSize={40}>
+            <Typography
+              variant="h4"
+              textAlign="center"
+              sx={{ mt: 3, fontStyle: "italic" }}
+            >
               Sing in
             </Typography>
             <Typography

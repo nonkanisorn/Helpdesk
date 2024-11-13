@@ -1,3 +1,6 @@
+// const {
+//   checktimecase,
+// } = require("./Modules/CaseManagement/Controllers/ManageCase");
 var mysql = require("mysql");
 const express = require("express");
 const { readdirSync } = require("fs");
@@ -8,16 +11,21 @@ const cookieParser = require("cookie-parser");
 const Cookies = require("universal-cookie");
 const morgan = require("morgan");
 const { existsSync } = require("fs");
+const {
+  checktimecase,
+} = require("./Modules/CaseManagement/Controllers/ManageCase");
 const cookies = new Cookies();
-
 app.use(morgan("dev"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', 'http://localhost:5174'); // แทนที่ด้วยโดเมนของ React
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // แทนที่ด้วยโดเมนของ React
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept",
+//   );
 //   next();
 // });
 // app.use(
@@ -26,9 +34,9 @@ app.use(bodyParser.json());
 //     credentials: true,
 //
 //     optionsSuccessStatus: 205,
-//   })
+//   }),
 // );
-//
+
 app.use(cors());
 app.use(cookieParser());
 
@@ -38,7 +46,9 @@ var db = mysql.createConnection({
   password: "",
   database: "RepairSystemDB",
 });
-
+setInterval(() => {
+  checktimecase();
+}, 86400000);
 db.connect(function (err) {
   if (err) {
     console.error("error connecting: " + err.stack);

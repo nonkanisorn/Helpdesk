@@ -84,7 +84,7 @@ function Detailcase() {
     <Box>
       <Grid container spacing={2}>
         {technician.map((tech, index) => (
-          <Grid item key={tech.id} lg={4}>
+          <Grid item key={tech.id} lg={6} sm={12} xs={12} md={12} xl={6}>
             <Card sx={{ height: 300, width: 500, bgcolor: "#eeeeee" }}>
               <Box display="flex" justifyContent="space-around">
                 <CardContent>

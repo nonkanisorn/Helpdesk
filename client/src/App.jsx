@@ -45,6 +45,17 @@ function App() {
   const role_id = useSelector((state) => state.user.role);
   console.log("role", role_id);
   const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
+  const checktimerepair = async () => {
+    try {
+      const res = await axios
+        .get(`${process.env.REACT_APP_API_URL}/checktimecase`)
+        .then((res) => {
+          console.log("respo", res);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const currentUser = async (idToken) => {
     try {
       const res = await axios.post(
@@ -66,14 +77,15 @@ function App() {
         }),
       );
       setLoading(false);
-      console.log("resdata", res.data);
-      console.log("currentrole", res.data[0].role_id);
       return res.data;
     } catch (error) {
       console.error("Error fetching current user:", error);
       setLoading(false);
     }
   };
+  useEffect(() => {
+    checktimerepair();
+  });
   useEffect(() => {
     const Token = localStorage.getItem("user");
     if (Token) {
@@ -85,7 +97,6 @@ function App() {
       //
       // }))
       dispatch(login(idToken));
-      console.log(idToken.token);
       currentUser(idToken.token)
         .then(() => console.log("sucess"))
         .catch((error) => {
