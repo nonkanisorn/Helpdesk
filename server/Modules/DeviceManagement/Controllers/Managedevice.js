@@ -66,3 +66,18 @@ exports.update = async (req, res) => {
     },
   );
 };
+exports.listhistorydevice = async (req, res) => {
+  const dev_id = req.params.dev_id;
+  db.query(
+    "SELECT * FROM Cases WHERE case_device_id = ? ",
+    [dev_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("no case_device_id");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};

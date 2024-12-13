@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import Notfound404 from "../components/Notfound404";
 import Statuscase from "../components/Manager/Statuscase";
 import Casedetailstatus from "../components/Manager/Casedetailstatus";
+import Historydevice from "../components/Manager/Historydevice";
+import Devicehistory from "../components/Manager/Devicehistory";
 const ManagerRoute = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -35,6 +37,8 @@ const ManagerRoute = () => {
               <Route path="detail/:case_id" element={<Detailcase />} />
               <Route path="adduser" element={<Adduser />} />
               <Route path="statuscase" element={<Statuscase />} />
+              <Route path="historydevice" element={<Historydevice />} />
+              <Route path="devicehistory/:dev_id" element={<Devicehistory />} />
               <Route
                 path="casedetail/:case_id"
                 element={<Casedetailstatus />}

@@ -60,7 +60,7 @@ function Statuscase() {
         </TableHead>
         <TableBody>
           {caseData.map((item, index) =>
-            item.status_id === 5 ? null : (
+            item.status_id === 6 ? null : (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -93,7 +93,7 @@ function Statuscase() {
                     >
                       ยืนยันการซ่อม
                     </Button>
-                  ) : item.status_id !== 5 ? (
+                  ) : item.status_id !== 6 ? (
                     <Button variant="contained" color="error">
                       ยืนยันการซ่อม
                     </Button>

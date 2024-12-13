@@ -5,14 +5,7 @@ import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import TableViewIcon from "@mui/icons-material/TableView";
 import HistoryToggleOffIcon from "@mui/icons-material/HistoryToggleOff";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import { useSelector } from "react-redux";
@@ -126,6 +119,9 @@ const Sidebarmanager = () => {
                 <MenuItem icon={<HistoryToggleOffIcon />}>
                   สถานะการซ่อม
                 </MenuItem>
+              </Link>
+              <Link to="/manager/historydevice" className="menu-bars">
+                <MenuItem>ประวัติการซ่อม</MenuItem>
               </Link>
             </Menu>
           </div>
