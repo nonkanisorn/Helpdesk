@@ -1,0 +1,17 @@
+const mysql = require("mysql");
+require("dotenv").config();
+const db = mysql.createConnection({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+});
+exports.listcategoriesdevice = async (_, res) => {
+  db.query("SELECT * FROM Categoriesdevice", (err, result) => {
+    if (err) {
+      res.status(500).send("error query categoriesdevice");
+    } else {
+      res.send(result);
+    }
+  });
+};
