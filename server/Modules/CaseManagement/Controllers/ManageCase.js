@@ -164,18 +164,29 @@ exports.listbyIduserstatuscase = async (req, res) => {
 };
 
 exports.create = (req, res) => {
-  // console.log(req.headers)
-  const { case_title, case_detail, case_device_id, user_id, status_id } =
-    req.body;
+  const {
+    case_title,
+    case_detail,
+    case_device_id,
+    user_id,
+    status_id,
+    case_categories_id,
+  } = req.body;
   console.log(req.body);
-  // const case_img = req.files.case_img
 
   if (!case_detail) {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date  ) VALUES (?,?,?,?,?,NOW())",
-    [case_title, case_detail, case_device_id, user_id, status_id],
+    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,case_categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
+    [
+      case_title,
+      case_detail,
+      case_device_id,
+      user_id,
+      status_id,
+      case_categories_id,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -315,12 +326,12 @@ exports.checktimecase = async () => {
       const currenttime = moment();
       const assigndate = moment(item.assigned_date);
       const diffInDays = currenttime.diff(assigndate, "days");
-      if (diffInDays >= 3) {
+      if (diffInDays >= 3 && item.status_id !== 4) {
         db.query(
           "UPDATE Cases SET status_id = 5 WHERE case_id = ? ",
           [item.case_id],
           (err, result) => {
-            console.log(result);
+            console.log(`เลยแล้ว ${item.case_id}`);
           },
         );
       } else {
