@@ -4,15 +4,22 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 
-import { store } from './store/store'
-import { Provider } from 'react-redux'
+import { store } from "./store/store";
+import { Provider } from "react-redux";
+import { DevSupport } from "@react-buddy/ide-toolbox";
+import { ComponentPreviews, useInitial } from "./dev/index.js";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <DevSupport
+          ComponentPreviews={ComponentPreviews}
+          useInitialHook={useInitial}
+        >
+          <App />
+        </DevSupport>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

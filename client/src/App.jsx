@@ -90,12 +90,6 @@ function App() {
     const Token = localStorage.getItem("user");
     if (Token) {
       const idToken = JSON.parse(Token);
-      // dispatch(login({
-      //   username: res.data[0].username,
-      //   role: res.data[0].role,
-      //   token: idToken,
-      //
-      // }))
       dispatch(login(idToken));
       currentUser(idToken.token)
         .then(() => console.log("sucess"))
