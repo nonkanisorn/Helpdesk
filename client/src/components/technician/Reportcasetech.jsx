@@ -75,7 +75,7 @@ function Reportcasetech() {
                     variant="contained"
                     color="success"
                     onClick={() => topagedetail(item.case_id)}
-                    sx={{ mr: 3 }}
+                    sx={{ mr: 2 }}
                   >
                     ปิดงาน
                   </Button>
@@ -83,9 +83,13 @@ function Reportcasetech() {
                     variant="contained"
                     color="secondary"
                     size="small"
+                    sx={{ mr: 2 }}
                     onClick={() => waitingforpart(item.case_id)}
                   >
                     รออะไหล่
+                  </Button>
+                  <Button variant="contained" color="error" size="small">
+                    ซ่อมไม่ได้
                   </Button>
                 </TableCell>
               </TableRow>
