@@ -27,12 +27,25 @@ function User() {
     return casedata.filter((data) => data.status_id === 1).length;
   };
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5011/caseuserstatus/${data}`)
+  //     .then((response) => {
+  //       setcasedata(response.data);
+  //     });
+  // }, []);
   useEffect(() => {
-    axios
-      .get(`http://localhost:5011/caseuserstatus/${data}`)
-      .then((response) => {
+    const fetchdata = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5011/caseuserstatus/${data}`,
+        );
         setcasedata(response.data);
-      });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchdata();
   }, []);
   console.log("casedata4", datafilterstatuscase4());
   console.log("casedata3", datafilterstatuscase3());
