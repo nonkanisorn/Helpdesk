@@ -18,14 +18,14 @@ import { useRef, useState, useEffect } from "react";
 function Addcase() {
   const [caseDetail, setCaseDetail] = useState("");
   const [case_title, setcase_title] = useState("");
+  const [categories, setCategories] = useState([]);
   const [fetchtrigger, setFetchtrigger] = useState(false);
   const [dataDev, setDataDev] = useState([]);
-  const [selectDev, setSelectDev] = useState("");
+  const [selectcategory, setSelectcategory] = useState("");
   const status_id = 1;
   const apiUrl = process.env.REACT_APP_API_URL;
   const userId = useSelector((state) => state.user.users_id);
   const userName = useSelector((state) => state.user.name);
-  console.log(case_title);
   const createcase = async (e) => {
     try {
       const response = await axios.post(
@@ -34,9 +34,10 @@ function Addcase() {
           // dep_name: selectedDepartment,
           case_title,
           case_detail: caseDetail,
-          case_device_id: selectDev,
+          case_device_id: 1,
           user_id: userId,
           status_id,
+          case_categories_id: selectcategory,
         },
         {
           headers: {
@@ -46,8 +47,7 @@ function Addcase() {
       );
       setCaseDetail("");
       setcase_title("");
-      setSelectDev("");
-
+      setSelectcategory("");
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
 
@@ -69,8 +69,18 @@ function Addcase() {
       console.log(error);
     }
   }, []);
-  console.log("datadep", dataDev);
-  console.log(selectDev);
+  useEffect(() => {
+    try {
+      const fetchdata = async () => {
+        const response = await axios.get(apiUrl + "/categoriesdevice");
+        setCategories(response.data);
+      };
+      fetchdata();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  console.log(categories);
   return (
     <Box
       component="form"
@@ -114,15 +124,15 @@ function Addcase() {
           />
         </Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography component="div">อุปกรณ์</Typography>
+          <Typography component="div">ประเภทปัญหา</Typography>
           <Select
             sx={{ ml: 3 }}
-            onChange={(e) => setSelectDev(e.target.value)}
-            value={selectDev}
+            onChange={(e) => setSelectcategory(e.target.value)}
+            value={selectcategory}
           >
-            {dataDev.map((item, idx) => (
-              <MenuItem key={item.id} value={item.dev_id}>
-                {item.dev_name}
+            {categories.map((item, idx) => (
+              <MenuItem key={item.id} value={item.categories_id}>
+                {item.categories_name}
               </MenuItem>
             ))}
           </Select>
