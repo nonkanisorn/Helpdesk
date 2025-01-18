@@ -28,7 +28,7 @@ const Sidebaruser = () => {
           !response.data[0].user_img ||
           response.data[0].user_img.data.length === 0
         ) {
-          setUrl("../../../public/assets/user.png");
+          setUrl("/assets/user.png");
           setcheckurl(response.data);
         } else {
           const user = response.data[0];
