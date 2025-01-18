@@ -81,3 +81,12 @@ exports.listhistorydevice = async (req, res) => {
     },
   );
 };
+exports.listcategoriesdevice = async (_, res) => {
+  db.query("SELECT * FROM Categoriesdevice", (err, result) => {
+    if (err) {
+      res.status(500).send("error query categoriesdevice");
+    } else {
+      res.send(result);
+    }
+  });
+};
