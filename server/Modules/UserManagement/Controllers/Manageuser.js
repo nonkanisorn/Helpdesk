@@ -9,7 +9,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-exports.list = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   db.query(
     "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id",
     (err, results) => {
@@ -39,11 +39,11 @@ exports.listbyid = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
-  const users_id = req.params.users_id;
-  console.log(users_id);
+  const user_id = req.params.user_id;
+  // console.log(users_id);
   db.query(
     "DELETE FROM Users WHERE users_id = ? ",
-    [users_id],
+    [user_id],
     (err, result) => {
       if (err) {
         console.log(err);

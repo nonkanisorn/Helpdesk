@@ -170,7 +170,7 @@ exports.create = (req, res) => {
     case_device_id,
     user_id,
     status_id,
-    case_categories_id,
+    categories_id,
   } = req.body;
   console.log(req.body);
 
@@ -178,14 +178,14 @@ exports.create = (req, res) => {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,case_categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
+    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
     [
       case_title,
       case_detail,
       case_device_id,
       user_id,
       status_id,
-      case_categories_id,
+      categories_id,
     ],
     (err, result) => {
       if (err) {
