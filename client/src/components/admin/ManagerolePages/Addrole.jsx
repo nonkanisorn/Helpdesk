@@ -20,17 +20,13 @@ function Addrole() {
   const createrole = async (e, event) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${apiUrl}/role`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json", // ระบุ Content-Type ไปยัง server
-          },
-        }
-      );
+      const response = await axios.post(`${apiUrl}/roles`, formData, {
+        headers: {
+          "Content-Type": "application/json", // ระบุ Content-Type ไปยัง server
+        },
+      });
       setrolename("");
-      navigate("/admin/Managerole")
+      navigate("/admin/Managerole");
       console.log(response);
     } catch (error) {
       console.log(error);
