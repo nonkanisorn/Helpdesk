@@ -22,11 +22,11 @@ function Managerole() {
     }
 
     axios
-      .delete(`${apiUrl}/role/${role_id}`)
+      .delete(`${apiUrl}/roles/${role_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get(`${apiUrl}/role`)
+          .get(`${apiUrl}/roles`)
           .then((response) => {
             setroledata(response.data);
             console.log(response);
@@ -42,15 +42,15 @@ function Managerole() {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/role`)
-      .then(function(response) {
+      .get(`${apiUrl}/roles`)
+      .then(function (response) {
         setroledata(response.data);
         console.log(roleData);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
 
   return (
