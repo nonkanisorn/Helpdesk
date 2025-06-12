@@ -26,6 +26,7 @@ function Adduser() {
   const [useremail, setUserEmail] = useState();
   const [userphone, setUserPhone] = useState();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
   const register = () => {
     const formData = new FormData();
     formData.append("username", username);
@@ -37,7 +38,7 @@ function Adduser() {
     formData.append("user_img", fileimg);
     formData.append("dep_id", selectDepName);
     axios
-      .post("http://localhost:5011/register", formData, {
+      .post(`${apiUrl}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -66,11 +67,11 @@ function Adduser() {
   };
   console.log(selectRole);
   useEffect(() => {
-    axios.get("http://localhost:5011/role").then((res) => {
+    axios.get(`${apiUrl}/roles`).then((res) => {
       setRole(res.data);
       console.log(res.data);
     });
-    axios.get("http://localhost:5011/department").then((res) => {
+    axios.get(`${apiUrl}/departments`).then((res) => {
       setDepName(res.data);
     });
   }, []);
