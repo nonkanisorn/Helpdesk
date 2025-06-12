@@ -22,11 +22,11 @@ function Managestatus() {
     }
 
     axios
-      .delete(`${apiUrl}/Status/${status_id}`)
+      .delete(`${apiUrl}/status/${status_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get(`${apiUrl}/Status`)
+          .get(`${apiUrl}/status`)
           .then((response) => {
             setStatusdata(response.data);
             console.log(response);
@@ -42,15 +42,15 @@ function Managestatus() {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/Status`)
-      .then(function(response) {
+      .get(`${apiUrl}/status`)
+      .then(function (response) {
         setStatusdata(response.data);
         console.log(statusData);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
 
   return (
