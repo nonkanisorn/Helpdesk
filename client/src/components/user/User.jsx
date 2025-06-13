@@ -47,11 +47,6 @@ function User() {
     };
     fetchdata();
   }, []);
-  console.log("casedata4", datafilterstatuscase4());
-  console.log("casedata3", datafilterstatuscase3());
-  console.log("casedata2", datafilterstatuscase2());
-  console.log("casedata1", datafilterstatuscase1());
-  console.log("allcase", casedatalenght());
   return (
     <Box>
       <Typography fontSize={70}>เคส</Typography>

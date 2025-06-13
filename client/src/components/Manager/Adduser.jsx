@@ -12,7 +12,6 @@ function Adduser() {
 
   const register = () => {
     axios.post("http://localhost:5011/register", { username, userpassword }).then(() => {
-      console.log("เพิ่มสมาชิกสำเร็จ")
     }).catch((error) => {
       console.error("เพิ่มไม่สำเร็จ", error)
     })

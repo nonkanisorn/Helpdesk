@@ -15,6 +15,8 @@ function Historyrepair() {
   const [caseData, setcaseData] = useState([]);
   const user_id = useSelector((state) => state.user.users_id);
   const navigate = useNavigate();
+  const [showFinish, setShowFinish] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
 
   useEffect(() => {
     axios
@@ -28,47 +30,75 @@ function Historyrepair() {
       })
       .finally(function () {});
   }, []);
-
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ลำดับ</TableCell>
-            <TableCell>ชื่องาน</TableCell>
-            <TableCell>รายละเอียดงาน</TableCell>
-            <TableCell>สถานะ</TableCell>
-            <TableCell>เพิ่มเติม</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {caseData.map((item, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell>{index + 1}</TableCell>
-              <TableCell component="th" scope="row">
-                {item.case_title}
-              </TableCell>
-              <TableCell>{item.case_detail}</TableCell>
-              <TableCell>{item.status_name}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => {
-                    navigate(`/user/detailcasefinish/${item.case_id}`);
-                  }}
-                >
-                  เพิ่มเติม
-                </Button>
-              </TableCell>
+    <>
+      <Button
+        onClick={() => {
+          setShowFinish(true);
+          setShowCancel(false);
+        }}
+      >
+        เสร็จสิ้น
+      </Button>
+      <Button
+        onClick={() => {
+          setShowCancel(true);
+          setShowFinish(false);
+        }}
+      >
+        ยกเลิก
+      </Button>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ลำดับ</TableCell>
+              <TableCell>ชื่องาน</TableCell>
+              <TableCell>รายละเอียดงาน</TableCell>
+              <TableCell>สถานะ</TableCell>
+              <TableCell>เพิ่มเติม</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {caseData.map((item, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell component="th" scope="row">
+                  {item.case_title}
+                </TableCell>
+                <TableCell>{item.case_detail}</TableCell>
+                {showFinish === true ? (
+                  <>
+                    {item.status === 6 ? (
+                      <TableCell>{item.status_name}fisish</TableCell>
+                    ) : null}
+                  </>
+                ) : null}
+                {showCancel === true ? (
+                  <>
+                    <TableCell>{item.status_name}cancel</TableCell>
+                  </>
+                ) : null}
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      navigate(`/user/detailcasefinish/${item.case_id}`);
+                    }}
+                  >
+                    เพิ่มเติม
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 export default Historyrepair;

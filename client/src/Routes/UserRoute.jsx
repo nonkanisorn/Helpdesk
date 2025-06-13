@@ -18,8 +18,6 @@ import Detailcasefinish from "../components/user/Detailcasefinish";
 const UserRoute = ({ children }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
-  console.log("userRoute", user);
-  console.log("tokenn", user.token);
   // return user && user.token ? children : <h1>No Login</h1>
   return user?.token ? (
     <div className="app">

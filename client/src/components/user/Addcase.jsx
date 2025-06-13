@@ -50,8 +50,6 @@ function Addcase() {
       setSelectcategory("");
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
-
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +60,6 @@ function Addcase() {
       const fetchData = async () => {
         const response = await axios.get(apiUrl + "/device");
         setDataDev(response.data);
-        console.log(response.data);
       };
       fetchData();
     } catch (error) {
@@ -80,7 +77,6 @@ function Addcase() {
       console.log(error);
     }
   }, []);
-  console.log(categories);
   return (
     <Box
       component="form"

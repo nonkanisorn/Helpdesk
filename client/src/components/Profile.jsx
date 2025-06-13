@@ -12,11 +12,9 @@ function Profile() {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         setDep(response.data[0].dep_name);
-        console.log(response);
-        console.log("dep", response.data[0].dep_id);
         if (
           response.data[0].user_img === null ||
           response.data[0].user_img.data.length === 0
@@ -24,7 +22,6 @@ function Profile() {
           setUrl("/assets/user.png");
         } else {
           const user = response.data[0];
-          console.log(response);
           const array = new Uint8Array(user.user_img.data);
           const blob = new Blob([array], { type: "image/jpeg" });
           const url = URL.createObjectURL(blob);

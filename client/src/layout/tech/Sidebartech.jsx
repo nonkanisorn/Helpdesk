@@ -30,7 +30,7 @@ const Sidebartech = () => {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         if (
           !response.data[0].user_img ||
@@ -39,7 +39,6 @@ const Sidebartech = () => {
           setUrl("/assets/user.png");
         } else {
           const user = response.data[0];
-          console.log(response);
           const array = new Uint8Array(user.user_img.data);
           const blob = new Blob([array], { type: "image/jpeg" });
           const url = URL.createObjectURL(blob);
