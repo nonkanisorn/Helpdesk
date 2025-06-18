@@ -21,17 +21,13 @@ function Adddepartment() {
   const createdepartment = async (e, event) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${apiUrl}/Department`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json", // ระบุ Content-Type ไปยัง server
-          },
-        }
-      );
+      const response = await axios.post(`${apiUrl}/departments`, formData, {
+        headers: {
+          "Content-Type": "application/json", // ระบุ Content-Type ไปยัง server
+        },
+      });
       setDepartmentname("");
-      navigate("/admin/Managedepartment")
+      navigate("/admin/Managedepartment");
       console.log(response);
     } catch (error) {
       console.log(error);
