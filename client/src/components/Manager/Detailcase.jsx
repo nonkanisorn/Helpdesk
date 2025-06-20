@@ -18,7 +18,7 @@ function Detailcase() {
   const status_id = 2;
   const [technician, settechnician] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [refresh, setRefresh] = useState(false);
   const manager_id = useSelector((state) => state.user.users_id);
@@ -44,7 +44,7 @@ function Detailcase() {
     const fetchdata = async () => {
       try {
         const technicianResponse = await axios.get(
-          "http://localhost:5011/technicianrole",
+          "http://localhost:5011/technicians/role",
         );
         const technicianData = await technicianResponse.data.map(
           (technician) => ({

@@ -23,7 +23,7 @@ const Sidebarmanager = () => {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         if (
           !response.data[0].user_img ||
