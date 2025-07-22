@@ -17,27 +17,28 @@ function Reportcasetech() {
   const [caseData, setcaseData] = useState([]);
   const status_id = 4;
   const [refresh, setRefresh] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const topagedetail = (case_id) => {
     navigate(`/technician/detailcasetech/${case_id}`);
   };
   const waitingforpart = (case_id) => {
     axios
-      .patch(`http://localhost:5011/Case/${case_id}`, {
+      .patch(`${apiUrl}/Case/${case_id}`, {
         status_id,
       })
       .then(setRefresh(true));
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:5011/Casetech/${technician_id}`)
-      .then(function (response) {
+      .get(`${apiUrl}/Casetech/${technician_id}`)
+      .then(function(response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, [refresh]);
 
   return (
