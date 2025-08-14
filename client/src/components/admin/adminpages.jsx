@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Box, Typography } from "@mui/material";
+import Paperui from "../ui/Paperui";
 function Adminpages() {
   const [role, setRole] = useState();
   const [user, setUser] = useState();
@@ -12,10 +13,10 @@ function Adminpages() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchRoleData = await axios.get(`http://localhost:5011/role`);
+        const fetchRoleData = await axios.get(`http://localhost:5011/roles`);
         setRole(fetchRoleData.data.length);
 
-        const fetchUserData = await axios.get(`http://localhost:5011/user`);
+        const fetchUserData = await axios.get(`http://localhost:5011/users`);
         setUser(fetchUserData.data.length);
 
         const fetchDeviceData = await axios.get(`http://localhost:5011/device`);
@@ -25,7 +26,7 @@ function Adminpages() {
         setStatus(fetchStatusData.data.length);
 
         const fetchDepartmentData = await axios.get(
-          `http://localhost:5011/department`,
+          `http://localhost:5011/departments`,
         );
         setDepartment(fetchDepartmentData.data.length);
       } catch (error) {
@@ -36,94 +37,17 @@ function Adminpages() {
   }, []);
   return (
     <>
-      <Typography textAlign="center" variant="h3">
-        หน้าแรก
-      </Typography>
-      <Typography variant="h5" sx={{ mt: 5 }}>
-        จำนวนทั้งหมด
-      </Typography>
-
       <Box
         display="flex"
         justifyContent="space-around"
         mt={5}
         alignItems="center"
+        gap={2}
       >
-        <Typography
-          sx={{
-            bgcolor: "#42A5F5",
-            width: "200px",
-            lineHeight: "100px",
-            height: "100px",
-            textAlign: "center",
-            borderRadius: "10px",
-            color: "white",
-            mr: "1rem",
-          }}
-          variant="h6"
-        >
-          ผู้ใช้ {user}
-        </Typography>
-        <Typography
-          sx={{
-            bgcolor: "#66BB6A",
-            width: "200px",
-            lineHeight: "100px",
-            height: "100px",
-            textAlign: "center",
-            color: "white",
-            borderRadius: "10px",
-            mr: "1rem",
-          }}
-          variant="h6"
-        >
-          แผนก {department}
-        </Typography>
-        <Typography
-          sx={{
-            bgcolor: "#FFA726",
-            width: "200px",
-            lineHeight: "100px",
-            height: "100px",
-            textAlign: "center",
-            color: "white",
-            borderRadius: "10px",
-            mr: "1rem",
-          }}
-          variant="h6"
-        >
-          อุปกรณ์ {device}
-        </Typography>
-        <Typography
-          sx={{
-            bgcolor: "#FFD700",
-            width: "200px",
-            lineHeight: "100px",
-            height: "100px",
-            textAlign: "center",
-            color: "white",
-            borderRadius: "10px",
-            mr: "1rem",
-          }}
-          variant="h6"
-        >
-          สถานะ {status}
-        </Typography>
-        <Typography
-          sx={{
-            bgcolor: "#AB47BC",
-            width: "200px",
-            lineHeight: "100px",
-            height: "100px",
-            textAlign: "center",
-            color: "white",
-            borderRadius: "10px",
-            mr: "1rem",
-          }}
-          variant="h6"
-        >
-          บทบาท {role}
-        </Typography>
+        <Paperui title="จำนวนผู้ใช้" data={user} />
+        <Paperui title="จำนวนบทบาท" data={role} />
+        <Paperui title="จำนวนอุปกรณ์" data={device} />
+        <Paperui title="จำนวนแผนก" data={department} />
       </Box>
     </>
   );

@@ -8,9 +8,9 @@ const {
   statusupdate,
 } = require("../Controllers/Managestatus");
 
-router.get("/Status", list);
-router.post("/Status", create);
-router.delete("/Status/:status_id", remove);
-router.put("/Status/:status_id/:status_name", update);
+router.get("/status", list);
+router.post("/status", create);
+router.delete("/status/:status_id", remove);
+router.put("/status/:status_id/:status_name", update);
 router.patch(`/status/:case_id`, statusupdate);
 module.exports = router;

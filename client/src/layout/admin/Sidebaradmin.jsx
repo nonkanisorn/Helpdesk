@@ -27,7 +27,7 @@ const Sidebaradmin = () => {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         if (
           !response.data[0].user_img ||
@@ -62,7 +62,7 @@ const Sidebaradmin = () => {
         onBreakPoint={setBroken}
         backgroundColor="#234"
         breakPoint="md"
-        style={{ height: "100%" }}
+        style={{ height: "100%", border: "none" }}
       >
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
@@ -73,9 +73,11 @@ const Sidebaradmin = () => {
               <MenuItem
                 onClick={() => setisCollapsed(!isCollapsed)}
                 icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-                style={{
-                  margin: "10px 0 20px 0",
-                }}
+                style={
+                  {
+                    // margin: "10px 0 20px 0",
+                  }
+                }
               >
                 {!isCollapsed && (
                   <Box
@@ -85,7 +87,7 @@ const Sidebaradmin = () => {
                     ml="15px"
                     bgcolor="#234"
                   >
-                    <Typography sx={{ color: "#ffff" }}>Repair APP</Typography>
+                    <Typography sx={{ color: "#ffff" }}>HELPDESK</Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon />
                     </IconButton>
@@ -108,7 +110,7 @@ const Sidebaradmin = () => {
                     />
                   </Box>
                   <Box textAlign="center" color="#ffff">
-                    <Typography sx={{ m: "10px 0 0 0" }}>คุณ {name}</Typography>
+                    <Typography sx={{ m: "10px 0 0 0" }}>{name}</Typography>
                   </Box>
                 </Box>
               )}
@@ -147,7 +149,7 @@ const Sidebaradmin = () => {
         </div>
       </Sidebar>
       <main>
-        <div style={{ padding: "16px 2px ", color: "#44596e" }}>
+        <div style={{ color: "#44596e" }}>
           <div style={{ marginBottom: "16px" }}>
             {broken && (
               <IconButton onClick={() => setToggled(!toggled)}>

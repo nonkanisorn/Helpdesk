@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
-  list,
-  create,
-  remove,
   update,
-  listbyuserid,
+  getAllDepartments,
+  getDepartmentByUserId,
+  createDepartment,
+  removeDepartment,
 } = require("../Controllers/Managedepartment");
 
-router.get("/Department", list);
-router.get("/departmentuserid/:user_id", listbyuserid);
-router.post("/Department", create);
-router.delete("/Department/:dep_id", remove);
-router.put("/Department/:dep_id/:dep_name", update);
+router.get("/departments", getAllDepartments);
+router.get("/departments/users/:user_id", getDepartmentByUserId);
+router.post("/departments", createDepartment);
+router.delete("/departments/:dep_id", removeDepartment);
+router.put("/departments/:dep_id/:dep_name", update);
 
 module.exports = router;

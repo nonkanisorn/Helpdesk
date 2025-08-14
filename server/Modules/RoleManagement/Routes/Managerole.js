@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const {
-  list,
-  create,
-  remove,
+  getRoles,
+  createRoles,
+  removeRoles,
   update,
 } = require("../Controllers/Managerole.js");
 
-router.get("/role", list);
-router.post("/role", create);
-router.delete("/role/:role_id", remove);
-router.put("/role/:role_id/:role_name", update);
+router.get("/roles", getRoles);
+router.post("/roles", createRoles);
+router.delete("/roles/:role_id", removeRoles);
+router.put("/roles/:role_id/:role_name", update);
 
 module.exports = router;

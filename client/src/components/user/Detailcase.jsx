@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Paper } from "@mui/material";
 function Detailcase() {
   const { case_id } = useParams();
   const navigate = useNavigate();
@@ -11,17 +11,17 @@ function Detailcase() {
   useEffect(() => {
     axios
       .get(`http://localhost:5011/caseid/${case_id}`)
-      .then(function (response) {
+      .then(function(response) {
         setcaseData(response.data);
         console.log("response", response.data);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
   return (
-    <Box border={1} sx={{ p: 3 }}>
+    <Paper border={1} sx={{ p: 3 }}>
       <Typography variant="h3" textAlign="center">
         รายละเอียด
       </Typography>
@@ -32,7 +32,8 @@ function Detailcase() {
             รายละเอียด : {data.case_detail}
           </Typography>
           <Typography sx={{ mb: 1 }}>
-            รายชื่อช่างที่ได้รับมอบหมาย : {data.name}
+            รายชื่อช่างที่ได้รับมอบหมาย :{" "}
+            {data.name ? date.name : "ยังไม่ได้รับมอบหมาย"}
           </Typography>
         </Box>
       ))}
@@ -43,7 +44,7 @@ function Detailcase() {
       >
         ย้อนกลับ
       </Button>
-    </Box>
+    </Paper>
   );
 }
 

@@ -87,9 +87,9 @@ const AdminRoute = ({ children }) => {
   return ok ? (
     <div className="app">
       <Sidebaradmin />
-      <main className="content">
+      <main className="content" style={{ backgroundColor: "#f5f6fa" }}>
         <Headerbaradmin />
-        <div className="content_body">
+        <Box>
           <Box m="19px">
             <Routes>
               <Route path="manageuser" element={<Manageuser />} />
@@ -123,7 +123,7 @@ const AdminRoute = ({ children }) => {
               <Route path="*" element={<Notfound404 text="ไม่มีpathนี้" />} />
             </Routes>
           </Box>
-        </div>
+        </Box>
       </main>
     </div>
   ) : (

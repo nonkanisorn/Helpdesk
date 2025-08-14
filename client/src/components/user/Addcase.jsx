@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 
 import InputLabel from "@mui/material/InputLabel";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Button, IconButton, Typography, Paper } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 
@@ -37,7 +37,7 @@ function Addcase() {
           case_device_id: 1,
           user_id: userId,
           status_id,
-          case_categories_id: selectcategory,
+          categories_id: selectcategory,
         },
         {
           headers: {
@@ -50,8 +50,6 @@ function Addcase() {
       setSelectcategory("");
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
-
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +60,6 @@ function Addcase() {
       const fetchData = async () => {
         const response = await axios.get(apiUrl + "/device");
         setDataDev(response.data);
-        console.log(response.data);
       };
       fetchData();
     } catch (error) {
@@ -80,13 +77,13 @@ function Addcase() {
       console.log(error);
     }
   }, []);
-  console.log(categories);
+  console.log(selectcategory);
   return (
-    <Box
-      component="form"
+    <Paper
       sx={{
         "& > :not(style)": { m: 1 },
-        border: 1,
+        // border: 1,
+        padding: 7,
       }}
       noValidate
       autoComplete="off"
@@ -146,7 +143,7 @@ function Addcase() {
           เพิ่มการแจ้งซ่อม
         </Button>
       </FormControl>
-    </Box>
+    </Paper>
   );
 }
 

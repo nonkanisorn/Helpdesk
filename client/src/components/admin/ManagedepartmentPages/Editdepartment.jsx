@@ -15,7 +15,7 @@ function Editdepartment() {
 
     const apiUrl = process.env.REACT_APP_API_URL;
     axios
-      .put(`${apiUrl}/Department/${dep_id}/${newName}`, formData)
+      .put(`${apiUrl}/departments/${dep_id}/${newName}`, formData)
       .then((response) => {
         console.log(`Updated device name to: ${newName}`);
         navigate("/admin/Managedepartment");

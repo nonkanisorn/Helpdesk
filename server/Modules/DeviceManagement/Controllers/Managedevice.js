@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 });
 
 exports.list = async (req, res) => {
-  db.query("SELECT * FROM Device", (err, results) => {
+  db.query("SELECT dev_id,dev_name FROM Device", (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("server errror");

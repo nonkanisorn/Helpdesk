@@ -1,3 +1,4 @@
+//น่าจะลบได้เพราะว่าไม่มีการใช้techniciansแล้วย้ายไป ใช้role techniciansเลย
 const mysql = require("mysql");
 require("dotenv").config();
 const db = mysql.createConnection({
@@ -16,7 +17,7 @@ exports.list = async (req, res) => {
     }
   });
 };
-exports.listbyrole = async (req, res) => {
+exports.getTechnicianRole = async (req, res) => {
   db.query(
     "SELECT u.user_img,u.users_id, u.username ,u.name,r.role_name,user_email,user_phone FROM Users u JOIN Role r ON u.role_id = r.role_id WHERE r.role_name = 'Technician';",
     (err, result) => {

@@ -1,7 +1,8 @@
+//ลบได้ไม่ได้ใช้
 const express = require("express");
 const router = express.Router();
 const {
-  listcategoriesdevice,
+  getCategoriesDevice,
 } = require("../Controllers/Managecategoriesdevice.js");
-router.get("/categoriesdevice", listcategoriesdevice);
+router.get("/categoriesdevice", getCategoriesDevice);
 module.exports = router;
