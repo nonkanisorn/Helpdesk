@@ -56,7 +56,8 @@ const Sidebaruser = () => {
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
         breakPoint="md"
-        style={{ height: "100%", backgroundColor: "#1a237e" }}
+        backgroundColor="#234"
+        style={{ height: "100%" }}
       >
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
@@ -77,8 +78,9 @@ const Sidebaruser = () => {
                     justifyContent="space-between"
                     alignItems="center"
                     ml="15px"
+                    color="#fff"
                   >
-                    <Typography>REPAIR APP</Typography>
+                    <Typography>HELPDESK </Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon />
                     </IconButton>
@@ -101,25 +103,38 @@ const Sidebaruser = () => {
                     />
                   </Box>
                   <Box textAlign="center">
-                    <Typography sx={{ m: "10px 0 0 0" }}>{userName}</Typography>
+                    <Typography sx={{ m: "10px 0 0 0", color: "#fff" }}>
+                      {userName}
+                    </Typography>
                   </Box>
                 </Box>
               )}
               <Link to="/user/index" className="menu-bars">
-                <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<HomeOutlinedIcon />}>
+                  หน้าหลัก
+                </MenuItem>
               </Link>
               <Link to="/user/Addcase" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<ConstructionOutlinedIcon />}
+                >
                   แจ้งซ่อม
                 </MenuItem>
               </Link>
               <Link to="/user/statuscase" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<ConstructionOutlinedIcon />}
+                >
                   สถานะการแจ้งซ่อม
                 </MenuItem>
               </Link>
               <Link to="/user/Historyrepair" className="menu-bars">
-                <MenuItem icon={<HistoryToggleOffIcon />}>
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<HistoryToggleOffIcon />}
+                >
                   ประวัติการแจ้งซ่อม
                 </MenuItem>
               </Link>

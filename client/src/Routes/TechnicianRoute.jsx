@@ -26,9 +26,9 @@ const TechnicianRoute = () => {
   return user && user.token && user.role === 3 ? (
     <div className="app">
       <Sidebartech />
-      <main className="content">
+      <main className="content" style={{ backgroundColor: "#F5F6Fa" }}>
         <Headerbartech />
-        <div className="content_body">
+        <Box>
           <Box m="20px">
             <Routes>
               <Route path="index" element={<TechnicianPage />} />
@@ -45,7 +45,7 @@ const TechnicianRoute = () => {
               <Route path="historycase" element={<Histoyrycase />} />
             </Routes>
           </Box>
-        </div>
+        </Box>
       </main>
     </div>
   ) : (

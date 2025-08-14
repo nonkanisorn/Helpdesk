@@ -7,6 +7,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
+
 exports.list = async (req, res) => {
   db.query(
     "SELECT * FROM Cases c INNER JOIN Users u on c.user_id = u.users_id WHERE status_id = 1",
@@ -339,4 +340,20 @@ exports.checktimecase = async () => {
       }
     });
   });
+};
+exports.listcasebyuserid = async (req, res) => {
+  const technician_id = req.params.technician_id;
+  console.log("user_id", technician_id);
+  db.query(
+    "SELECT * FROM Cases WHERE technician_id = ?",
+    [technician_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("error query casebyid");
+      } else {
+        res.send(result);
+      }
+    },
+  );
 };

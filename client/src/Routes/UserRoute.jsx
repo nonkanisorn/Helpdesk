@@ -22,9 +22,9 @@ const UserRoute = ({ children }) => {
   return user?.token ? (
     <div className="app">
       <Sidebaruser />
-      <main className="content">
+      <main className="content" style={{ backgroundColor: "#F5F6Fa" }}>
         <Headerbaruser />
-        <div className="content_body">
+        <Box>
           <Box m="19px">
             <Routes>
               <Route path="index" element={<User />} />
@@ -40,7 +40,7 @@ const UserRoute = ({ children }) => {
               <Route path="*" element={<Notfound404 />} />
             </Routes>
           </Box>
-        </div>
+        </Box>
       </main>
     </div>
   ) : (

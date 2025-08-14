@@ -21,33 +21,17 @@ function Historyrepair() {
   useEffect(() => {
     axios
       .get(`http://localhost:5011/caseuser/${user_id}`)
-      .then(function (response) {
+      .then(function(response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
   return (
     <>
-      <Button
-        onClick={() => {
-          setShowFinish(true);
-          setShowCancel(false);
-        }}
-      >
-        เสร็จสิ้น
-      </Button>
-      <Button
-        onClick={() => {
-          setShowCancel(true);
-          setShowFinish(false);
-        }}
-      >
-        ยกเลิก
-      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

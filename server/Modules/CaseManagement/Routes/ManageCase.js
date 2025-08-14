@@ -16,6 +16,7 @@ const {
   listbyidtechstatus3,
   listall,
   checktimecase,
+  listcasebyuserid,
 } = require("../Controllers/ManageCase");
 
 router.get("/Case", list);
@@ -33,5 +34,6 @@ router.delete("/Case/:case_id", remove);
 router.put("/Case/:case_id", update);
 router.patch("/Case/:case_id", casestatusupdate);
 router.get("/checktimecase", checktimecase);
+router.get("/case/user/:technician_id", listcasebyuserid);
 
 module.exports = router;

@@ -62,8 +62,9 @@ const Sidebartech = () => {
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
         // image="/assets/123.jpg"
+        backgroundColor="#234"
         breakPoint="md"
-        style={{ height: "100%", backgroundColor: "rgb(120, 120, 120)" }}
+        style={{ height: "100%" }}
       >
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
@@ -85,9 +86,9 @@ const Sidebartech = () => {
                     alignItems="center"
                     ml="15px"
                   >
-                    <Typography>REPAIR APP</Typography>
+                    <Typography sx={{ color: "white" }}>REPAIR APP</Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
+                      <MenuOutlinedIcon sx={{ color: "white" }} />
                     </IconButton>
                   </Box>
                 )}
@@ -107,20 +108,30 @@ const Sidebartech = () => {
                     />
                   </Box>
                   <Box textAlign="center">
-                    <Typography sx={{ m: "10px 0 0 0" }}>{name}</Typography>
+                    <Typography sx={{ m: "10px 0 0 0", color: "white" }}>
+                      {name}
+                    </Typography>
                   </Box>
                 </Box>
               )}
               <Link to="/technician/index" className="menu-bars">
-                <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
+                <MenuItem style={{ color: "#fff" }} icon={<HomeOutlinedIcon />}>
+                  หน้าหลัก
+                </MenuItem>
               </Link>
               <Link to="/technician/reportcasetech" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<ConstructionOutlinedIcon />}
+                >
                   รายการแจ้งซ่อม
                 </MenuItem>
               </Link>
               <Link to="/technician/Historycase" className="menu-bars">
-                <MenuItem icon={<HistoryToggleOffIcon />}>
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<HistoryToggleOffIcon />}
+                >
                   ประวัติการซ่อม
                 </MenuItem>
               </Link>

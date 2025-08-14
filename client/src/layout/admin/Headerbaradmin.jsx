@@ -1,5 +1,5 @@
 import react, { useState } from "react";
-import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Paper } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
@@ -29,7 +29,13 @@ const Headerbaradmin = () => {
     navigate("/login");
   };
   return (
-    <Box display="flex" justifyContent="right" p={2}>
+    <Box
+      component={Paper}
+      display="flex"
+      justifyContent="right"
+      p={2}
+      sx={{ bgcolor: "#ffffff" }}
+    >
       {/* search 
       <Box display="flex" borderRadius="3px" backgroundColor="#F5EFE7">
         <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />

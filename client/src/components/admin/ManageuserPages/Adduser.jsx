@@ -78,10 +78,20 @@ function Adduser() {
   console.log(userphone);
   return (
     <Paper sx={{ pb: 3 }}>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={register}
+        sx={{ mt: 5 }}
+      >
+        เพิ่มสมาชิก
+      </Button>
       <Box
         component="form"
         sx={{
           "& > :not(style)": { ml: 5 },
+          height: "50vh",
+          overflow: "auto",
         }}
         noValidate
         autoComplete="off"
@@ -153,6 +163,7 @@ function Adduser() {
         >
           ยกเลิก
         </Button>
+        <Button>test</Button>
       </Box>
     </Paper>
   );
