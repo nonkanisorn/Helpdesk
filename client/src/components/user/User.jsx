@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import Paperui from "../ui/Paperui";
 
 function User() {
   const [casedata, setcasedata] = useState([]);
@@ -47,105 +48,104 @@ function User() {
     };
     fetchdata();
   }, []);
-  console.log("casedata4", datafilterstatuscase4());
-  console.log("casedata3", datafilterstatuscase3());
-  console.log("casedata2", datafilterstatuscase2());
-  console.log("casedata1", datafilterstatuscase1());
-  console.log("allcase", casedatalenght());
   return (
     <Box>
-      <Typography fontSize={70}>เคส</Typography>
-      <Box sx={{ display: "flex" }}>
-        <Typography
-          sx={{
-            border: 1,
-            borderStyle: "none",
-            borderRadius: "5px",
-            padding: "2px",
-            width: "150px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            bgcolor: "#ADD8E6",
-            mr: "10px",
-          }}
-        >
-          จำนวนทั้งหมด : {casedatalenght()}
-        </Typography>{" "}
-        <Typography
-          sx={{
-            border: 1,
-            borderStyle: "none",
-            borderRadius: "5px",
-            padding: "2px",
-            width: "150px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            bgcolor: "#FFD580",
-            mr: "10px",
-          }}
-        >
-          รอดำเนินการ : {datafilterstatuscase1()}{" "}
-        </Typography>{" "}
-        <Typography
-          sx={{
-            border: 1,
-            borderStyle: "none",
-            borderRadius: "5px",
-            padding: "2px",
-            width: "150px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            bgcolor: "#FFFACD",
-            mr: "10px",
-          }}
-        >
-          กำลังดำเนินการ : {datafilterstatuscase2()}{" "}
-        </Typography>{" "}
-        <Typography
-          sx={{
-            border: 1,
-            borderStyle: "none",
-            borderRadius: "5px",
-            padding: "2px",
-            width: "150px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            bgcolor: "#D8BFD8",
-            mr: "10px",
-          }}
-        >
-          รอการยืนยัน : {datafilterstatuscase4()}{" "}
-        </Typography>{" "}
-        <Typography
-          sx={{
-            border: 1,
-            borderStyle: "none",
-            borderRadius: "5px",
-            padding: "2px",
-            width: "150px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            bgcolor: "#90EE90",
-            mr: "10px",
-          }}
-        >
-          เสร็จสิน : {datafilterstatuscase3()}{" "}
-        </Typography>{" "}
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <Paperui title="จำนวทั้งหมด" data={casedatalenght()} />
+        <Paperui title="รอดำเนินการ" data={datafilterstatuscase1()} />
+        <Paperui title="กำลังดำเนินการ" data={datafilterstatuscase2()} />
+        <Paperui title="รอการยืนยัน" data={datafilterstatuscase3()} />
+        <Paperui title="เสร็จสิ้น" data={datafilterstatuscase4()} />
+        {/* <Typography */}
+        {/*   sx={{ */}
+        {/*     border: 1, */}
+        {/*     borderStyle: "none", */}
+        {/*     borderRadius: "5px", */}
+        {/*     padding: "2px", */}
+        {/*     width: "150px", */}
+        {/*     height: "40px", */}
+        {/*     display: "flex", */}
+        {/*     justifyContent: "center", */}
+        {/*     alignItems: "center", */}
+        {/*     textAlign: "center", */}
+        {/*     bgcolor: "#ADD8E6", */}
+        {/*     mr: "10px", */}
+        {/*   }} */}
+        {/* > */}
+        {/*   จำนวนทั้งหมด : {casedatalenght()} */}
+        {/* </Typography>{" "} */}
+        {/* <Typography */}
+        {/*   sx={{ */}
+        {/*     border: 1, */}
+        {/*     borderStyle: "none", */}
+        {/*     borderRadius: "5px", */}
+        {/*     padding: "2px", */}
+        {/*     width: "150px", */}
+        {/*     height: "40px", */}
+        {/*     display: "flex", */}
+        {/*     justifyContent: "center", */}
+        {/*     alignItems: "center", */}
+        {/*     textAlign: "center", */}
+        {/*     bgcolor: "#FFD580", */}
+        {/*     mr: "10px", */}
+        {/*   }} */}
+        {/* > */}
+        {/*   รอดำเนินการ : {datafilterstatuscase1()}{" "} */}
+        {/* </Typography>{" "} */}
+        {/* <Typography */}
+        {/*   sx={{ */}
+        {/*     border: 1, */}
+        {/*     borderStyle: "none", */}
+        {/*     borderRadius: "5px", */}
+        {/*     padding: "2px", */}
+        {/*     width: "150px", */}
+        {/*     height: "40px", */}
+        {/*     display: "flex", */}
+        {/*     justifyContent: "center", */}
+        {/*     alignItems: "center", */}
+        {/*     textAlign: "center", */}
+        {/*     bgcolor: "#FFFACD", */}
+        {/*     mr: "10px", */}
+        {/*   }} */}
+        {/* > */}
+        {/*   กำลังดำเนินการ : {datafilterstatuscase2()}{" "} */}
+        {/* </Typography>{" "} */}
+        {/* <Typography */}
+        {/*   sx={{ */}
+        {/*     border: 1, */}
+        {/*     borderStyle: "none", */}
+        {/*     borderRadius: "5px", */}
+        {/*     padding: "2px", */}
+        {/*     width: "150px", */}
+        {/*     height: "40px", */}
+        {/*     display: "flex", */}
+        {/*     justifyContent: "center", */}
+        {/*     alignItems: "center", */}
+        {/*     textAlign: "center", */}
+        {/*     bgcolor: "#D8BFD8", */}
+        {/*     mr: "10px", */}
+        {/*   }} */}
+        {/* > */}
+        {/*   รอการยืนยัน : {datafilterstatuscase4()}{" "} */}
+        {/* </Typography>{" "} */}
+        {/* <Typography */}
+        {/*   sx={{ */}
+        {/*     border: 1, */}
+        {/*     borderStyle: "none", */}
+        {/*     borderRadius: "5px", */}
+        {/*     padding: "2px", */}
+        {/*     width: "150px", */}
+        {/*     height: "40px", */}
+        {/*     display: "flex", */}
+        {/*     justifyContent: "center", */}
+        {/*     alignItems: "center", */}
+        {/*     textAlign: "center", */}
+        {/*     bgcolor: "#90EE90", */}
+        {/*     mr: "10px", */}
+        {/*   }} */}
+        {/* > */}
+        {/*   เสร็จสิน : {datafilterstatuscase3()}{" "} */}
+        {/* </Typography>{" "} */}
       </Box>
     </Box>
   );

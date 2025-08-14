@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 
-exports.list = async (req, res) => {
+exports.getAllDepartments = async (req, res) => {
   db.query("SELECT * FROM Department", (err, results) => {
     if (err) {
       console.log(err);
@@ -17,14 +17,14 @@ exports.list = async (req, res) => {
     }
   });
 };
-exports.listbyuserid = async (req, res) => {
+exports.getDepartmentByUserId = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
     "SELECT * FROM Department WHERE user_id = ? ",
     [user_id],
     (err, result) => {
       if (err) {
-        res.status(500).send("server error");
+        res.status(500).send(err);
       } else {
         res.send(result);
       }
@@ -32,7 +32,7 @@ exports.listbyuserid = async (req, res) => {
   );
 };
 
-exports.create = async (req, res) => {
+exports.createDepartment = async (req, res) => {
   const dep_name = req.body.dep_name;
   db.query(
     "INSERT INTO Department(dep_name) VALUES(?)",
@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
   );
 };
 
-exports.remove = async (req, res) => {
+exports.removeDepartment = async (req, res) => {
   const dep_id = req.params.dep_id;
   db.query(
     "DELETE FROM Department WHERE dep_id = ? ",

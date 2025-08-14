@@ -43,18 +43,13 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const role_id = useSelector((state) => state.user.role);
-  console.log("role", role_id);
   const [loading, setLoading] = useState(true); // เพิ่ม state สำหรับตรวจสอบการโหลด
   const checktimerepair = async () => {
     try {
       const res = await axios
         .get(`${process.env.REACT_APP_API_URL}/checktimecase`)
-        .then((res) => {
-          console.log("respo", res);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+        .then((res) => {});
+    } catch (error) {}
   };
   const currentUser = async (idToken) => {
     try {
@@ -92,15 +87,11 @@ function App() {
       const idToken = JSON.parse(Token);
       dispatch(login(idToken));
       currentUser(idToken.token)
-        .then(() => console.log("sucess"))
-        .catch((error) => {
-          console.log(error);
-        })
+        .catch(() => {})
         .finally(() => {
           setLoading(false);
         });
     } else {
-      console.log("No token found");
       setLoading(false);
     }
   }, [dispatch]);

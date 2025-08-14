@@ -27,9 +27,9 @@ const ManagerRoute = () => {
   return user && user.token && user.role === 2 ? (
     <div className="app">
       <Sidebarmanager />
-      <main className="content">
+      <main className="content" style={{ backgroundColor: "#F5F6Fa" }}>
         <Headerbarmanager />
-        <div className="content_body">
+        <Box>
           <Box m="20px">
             <Routes>
               <Route path="index" element={<Managerpages />} />
@@ -46,7 +46,7 @@ const ManagerRoute = () => {
               <Route path="*" element={<Notfound404 />} />
             </Routes>
           </Box>
-        </div>
+        </Box>
       </main>
     </div>
   ) : (

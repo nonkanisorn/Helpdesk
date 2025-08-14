@@ -8,10 +8,10 @@ const {
   listhistorydevice,
 } = require("../Controllers/Managedevice.js");
 
-router.get("/Device", list);
-router.get("/historydevice/:dev_id", listhistorydevice);
-router.post("/Device", create);
-router.delete("/Device/:dev_id", remove);
-router.put("/Device/:dev_id/:newName", update);
+router.get("/device", list);
+router.get("/device/:dev_id/history", listhistorydevice);
+router.post("/device", create);
+router.delete("/device/:dev_id", remove);
+router.put("/device/:dev_id/:newName", update);
 
 module.exports = router;

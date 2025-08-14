@@ -18,15 +18,13 @@ import Detailcasefinish from "../components/user/Detailcasefinish";
 const UserRoute = ({ children }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
-  console.log("userRoute", user);
-  console.log("tokenn", user.token);
   // return user && user.token ? children : <h1>No Login</h1>
   return user?.token ? (
     <div className="app">
       <Sidebaruser />
-      <main className="content">
+      <main className="content" style={{ backgroundColor: "#F5F6Fa" }}>
         <Headerbaruser />
-        <div className="content_body">
+        <Box>
           <Box m="19px">
             <Routes>
               <Route path="index" element={<User />} />
@@ -42,7 +40,7 @@ const UserRoute = ({ children }) => {
               <Route path="*" element={<Notfound404 />} />
             </Routes>
           </Box>
-        </div>
+        </Box>
       </main>
     </div>
   ) : (

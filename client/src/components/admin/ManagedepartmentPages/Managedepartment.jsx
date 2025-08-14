@@ -21,11 +21,11 @@ function Managedepartment() {
     }
 
     axios
-      .delete(`${apiUrl}/Department/${dep_id}`)
+      .delete(`${apiUrl}/departments/${dep_id}`)
       .then((response) => {
         console.log(response.data);
         axios
-          .get(`${apiUrl}/Department`)
+          .get(`${apiUrl}/departments`)
           .then((response) => {
             setDepartmentdata(response.data);
             console.log(response);
@@ -41,15 +41,15 @@ function Managedepartment() {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/Department`)
-      .then(function(response) {
+      .get(`${apiUrl}/departments`)
+      .then(function (response) {
         setDepartmentdata(response.data);
         console.log(departmentData);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
 
   return (

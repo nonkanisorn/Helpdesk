@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 function Manageuser() {
   const [userData, setUserData] = useState([]);
   const [refresh, setrefresh] = useState(false);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const confirmDelete = async (dep_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -22,7 +22,7 @@ function Manageuser() {
     }
   };
   const handleDelete = (users_id) => {
-    axios.delete(`http://localhost:5011/userdelete/${users_id}`).then(() => {
+    axios.delete(`${apiUrl}/users/${users_id}`).then(() => {
       console.log("ลบสําเร็จ");
       setrefresh((prev) => !prev);
     });
@@ -30,7 +30,7 @@ function Manageuser() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5011/user");
+        const response = await axios.get(`${apiUrl}/users`);
         setUserData(response.data);
       } catch (err) {
         console.log(err);

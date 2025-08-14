@@ -44,7 +44,7 @@ function Detailcase() {
     const fetchdata = async () => {
       try {
         const technicianResponse = await axios.get(
-          "http://localhost:5011/technicianrole",
+          "http://localhost:5011/technicians/role",
         );
         const technicianData = await technicianResponse.data.map(
           (technician) => ({

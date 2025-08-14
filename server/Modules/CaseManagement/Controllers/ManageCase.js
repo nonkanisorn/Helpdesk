@@ -7,6 +7,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
+
 exports.list = async (req, res) => {
   db.query(
     "SELECT * FROM Cases c INNER JOIN Users u on c.user_id = u.users_id WHERE status_id = 1",
@@ -131,7 +132,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id = 4",
+    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (6,7)",
     [user_id],
     (err, result) => {
       if (err) {
@@ -170,7 +171,7 @@ exports.create = (req, res) => {
     case_device_id,
     user_id,
     status_id,
-    case_categories_id,
+    categories_id,
   } = req.body;
   console.log(req.body);
 
@@ -178,14 +179,14 @@ exports.create = (req, res) => {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,case_categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
+    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
     [
       case_title,
       case_detail,
       case_device_id,
       user_id,
       status_id,
-      case_categories_id,
+      categories_id,
     ],
     (err, result) => {
       if (err) {
@@ -339,4 +340,20 @@ exports.checktimecase = async () => {
       }
     });
   });
+};
+exports.listcasebyuserid = async (req, res) => {
+  const technician_id = req.params.technician_id;
+  console.log("user_id", technician_id);
+  db.query(
+    "SELECT * FROM Cases WHERE technician_id = ?",
+    [technician_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("error query casebyid");
+      } else {
+        res.send(result);
+      }
+    },
+  );
 };

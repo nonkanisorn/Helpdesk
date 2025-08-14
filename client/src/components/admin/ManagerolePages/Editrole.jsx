@@ -15,7 +15,7 @@ function Editrole() {
     formData.append("role_name", newName);
 
     axios
-      .put(`${apiUrl}/role/${role_id}/${newName}`, formData)
+      .put(`${apiUrl}/roles/${role_id}/${newName}`, formData)
       .then((response) => {
         console.log(`Updated device name to: ${newName}`);
         navigate("/admin/Managerole");
@@ -25,6 +25,7 @@ function Editrole() {
       });
   };
   console.log(newName);
+  console.log("noneei");
   return (
     <Box>
       <Paper>

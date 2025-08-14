@@ -23,8 +23,12 @@ const userSlice = createSlice({
       state.username = "";
       state.role = "";
       state.token = "";
+      state.name = "";
+      state.users_id = "";
+
       localStorage.removeItem("user");
-      // navigate('/login')
+      // navigate("/login");
+      // window.location.reload();
     },
     loadUserFromStorage: (state, action) => {
       const userData = action.payload;

@@ -16,9 +16,7 @@ function Casedetailstatus() {
     axios
       .get(`http://localhost:5011/caseid/${case_id}`)
       .then(function (response) {
-        // console.log(response)
         setcasedatabyID(response.data);
-        console.log("case", casedatabyID);
         const urls = response.data.map((casedata) => {
           const bufferData = new Uint8Array(casedata.case_img.data);
           const blob = new Blob([bufferData], { type: "image/jpeg" });
@@ -27,12 +25,9 @@ function Casedetailstatus() {
         });
         setImgUrls(urls);
       })
-      .catch(function (error) {
-        console.log(error);
-      })
+      .catch(function (error) {})
       .finally(function () {});
   }, [case_id]);
-  console.log(casedatabyID);
   return (
     <Box>
       <Paper sx={{ height: 400, width: "100%" }}>

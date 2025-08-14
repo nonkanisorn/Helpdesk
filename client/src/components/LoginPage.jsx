@@ -115,13 +115,13 @@ function LoginPage() {
               sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}
             >
               <TextField
-                id="outlined-basic"
+                id="username-input"
                 label="username"
                 variant="outlined"
                 onChange={(e) => setusername(e.target.value)}
               />
               <TextField
-                id="outlined-basic"
+                id="password-input"
                 label="Password"
                 type="password"
                 variant="outlined"

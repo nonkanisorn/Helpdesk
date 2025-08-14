@@ -23,7 +23,7 @@ const Sidebarmanager = () => {
     if (users_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         if (
           !response.data[0].user_img ||
@@ -58,7 +58,8 @@ const Sidebarmanager = () => {
         onBreakPoint={setBroken}
         // image="/assets/123.jpg"
         breakPoint="md"
-        style={{ height: "100%", backgroundColor: "rgb(120, 120, 120)" }}
+        backgroundColor="#234"
+        style={{ height: "100%" }}
       >
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
@@ -80,9 +81,9 @@ const Sidebarmanager = () => {
                     alignItems="center"
                     ml="15px"
                   >
-                    <Typography>REPAIR APP</Typography>
+                    <Typography sx={{ color: "white" }}>REPAIR APP</Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
+                      <MenuOutlinedIcon sx={{ color: "white" }} />
                     </IconButton>
                   </Box>
                 )}
@@ -103,25 +104,43 @@ const Sidebarmanager = () => {
                     />
                   </Box>
                   <Box textAlign="center">
-                    <Typography sx={{ m: "10px 0 0 0" }}>{name}</Typography>
+                    <Typography sx={{ m: "10px 0 0 0", color: "white" }}>
+                      {name}
+                    </Typography>
                   </Box>
                 </Box>
               )}
               <Link to="/manager/index" className="menu-bars">
-                <MenuItem icon={<HomeOutlinedIcon />}>หน้าหลัก</MenuItem>
+                <MenuItem
+                  icon={<HomeOutlinedIcon />}
+                  style={{ color: "white" }}
+                >
+                  หน้าหลัก
+                </MenuItem>
               </Link>
               <Link to="/manager/reportcase" className="menu-bars">
-                <MenuItem icon={<ConstructionOutlinedIcon />}>
+                <MenuItem
+                  icon={<ConstructionOutlinedIcon />}
+                  style={{ color: "white" }}
+                >
                   รายการแจ้งซ่อม
                 </MenuItem>
               </Link>
               <Link to="/manager/statuscase" className="menu-bars">
-                <MenuItem icon={<HistoryToggleOffIcon />}>
+                <MenuItem
+                  icon={<HistoryToggleOffIcon />}
+                  style={{ color: "white" }}
+                >
                   สถานะการซ่อม
                 </MenuItem>
               </Link>
               <Link to="/manager/historydevice" className="menu-bars">
-                <MenuItem>ประวัติการซ่อม</MenuItem>
+                <MenuItem
+                  icon={<HistoryToggleOffIcon />}
+                  style={{ color: "white" }}
+                >
+                  ประวัติการซ่อม
+                </MenuItem>
               </Link>
             </Menu>
           </div>

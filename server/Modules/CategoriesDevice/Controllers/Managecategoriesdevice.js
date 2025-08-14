@@ -1,3 +1,4 @@
+//ลบได้ไม่ได้ใช้
 const mysql = require("mysql");
 require("dotenv").config();
 const db = mysql.createConnection({
@@ -6,7 +7,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-exports.listcategoriesdevice = async (_, res) => {
+exports.getCategoriesDevice = async (_, res) => {
   db.query("SELECT * FROM Categoriesdevice", (err, result) => {
     if (err) {
       res.status(500).send("error query categoriesdevice");
