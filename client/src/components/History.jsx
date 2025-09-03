@@ -33,6 +33,7 @@ function History() {
       .finally(function () {});
   }, [case_id]);
   console.log(casedatabyID);
+  console.log("ddd");
   return (
     <Box>
       <Paper sx={{ height: 500, width: "100%" }}>
@@ -67,7 +68,7 @@ function History() {
                 วันที่ช่างทำเสร็จ:
                 {data.completed_date === null
                   ? "ยังไม่เสร็จ"
-                  : new Date(data.completed_date).toLocaleString("th-TH", {
+                  : new Date(data.work_completed_date).toLocaleString("th-TH", {
                       dateStyle: "short",
                       timeStyle: "medium",
                     })}

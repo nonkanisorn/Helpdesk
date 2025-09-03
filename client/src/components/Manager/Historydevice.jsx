@@ -12,7 +12,7 @@ function Historydevice() {
   }, []);
   console.log(deviceData);
   const tohistorydevice = (dev_id) => {
-    navigate(`/manager/devicehistory/${dev_id}`);
+    navigate(`/manager/device/history/${dev_id}`);
   };
 
   return (

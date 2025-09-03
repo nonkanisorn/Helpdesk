@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
@@ -14,17 +15,27 @@ function Detailcasetech() {
   const navigate = useNavigate();
   const [caseDatabyId, setCaseDatabyId] = useState({});
   const [completesummarydata, setCompletesummarydata] = useState("");
+  const [caseDeviceId, setCaseDeviceId] = useState();
+  const user_id = useSelector((state) => state.user.users_id);
+  console.log("user_id", user_id);
   console.log(case_id);
   const status_id = 3;
   const statuswait_id = 5;
 
   const updatestatuscase = () => {
     axios
-      .patch(`http://localhost:5011/case/${case_id}`, {
+      .patch(`http://localhost:5011/case/${user_id}/${case_id}`, {
         status_id,
+        case_device_id: caseDeviceId,
         case_resolution: completesummarydata,
       })
-      .then(() => navigate("/technician/reportcasetech"));
+      .then(() => navigate("/technician/reportcasetech"))
+      .catch((error) => {
+        if (error) {
+          console.log("error", error.response.data);
+          alert("กรุณาใส่รหัสอุปกรณ์ให้ถูกต้อง");
+        }
+      });
   };
   const waitingforpart = () => {
     axios.patch(`http://localhost:5011/Case/${case_id}`, {
@@ -36,7 +47,7 @@ function Detailcasetech() {
     setCompletesummarydata(e.target.value);
   };
   console.log(completesummarydata);
-
+  console.log(caseDeviceId);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,6 +83,10 @@ function Detailcasetech() {
         <Typography sx={{ mb: 2 }}>
           คนที่มอบหมายงาน : {caseDatabyId.name}
         </Typography>
+        <TextField
+          label="รหัสอุปกรณ์"
+          onChange={(e) => setCaseDeviceId(e.target.value)}
+        ></TextField>
         <TextField
           id="outlined=multiline-static"
           label="สรุปผลการซ่อม"

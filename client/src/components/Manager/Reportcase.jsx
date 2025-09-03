@@ -15,12 +15,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Detailcase from "./Detailcase";
 
 function Reportcase() {
   const [nametech, setNametech] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const [caseData, setcaseData] = useState([]);
   const navigate = useNavigate();
+  console.log("testtt");
   const handleChange = (event, case_id) => {
     const selectedTechnician = event.target.value;
     setSelectedTechnicians((prevState) => ({
@@ -41,10 +43,10 @@ function Reportcase() {
         console.error(error);
       });
   };
+
   const topagedetail = (case_id) => {
-    navigate(`/manager/detail/${case_id}`);
+    navigate(`/manager/detail/${case_id}`, { state: { caseData: caseData } });
   };
-  console.log(caseData);
   useEffect(() => {
     axios
       .get("http://localhost:5011/case/")
@@ -57,7 +59,7 @@ function Reportcase() {
       })
       .finally(function () {});
   }, []);
-
+  console.log("dsadas", caseData);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

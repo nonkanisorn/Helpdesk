@@ -10,26 +10,30 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 function Detailcase() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { case_id } = useParams();
   const [casedatabyID, setcasedatabyID] = useState([]);
   const [imgurl, setImgUrls] = useState([]);
   const status_id = 2;
   const [technician, settechnician] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
-  const navigate = useNavigate();
-
+  const { caseData } = location.state || {};
   const [refresh, setRefresh] = useState(false);
   const manager_id = useSelector((state) => state.user.users_id);
-
-  const [techid, setTechid] = useState();
+  const [caseById, setCaseById] = useState();
+  console.log("case_id", case_id);
   const sendtech = async (case_id, techid) => {
     await axios
       .patch(`http://localhost:5011/addtechcase/${case_id}`, {
         technician_id: techid,
         manager_id,
         status_id,
+
+        // case_device_id: caseData[0].case_device_id,
       })
       .then(() => {
         setSelectedTechnicians({});
@@ -72,14 +76,23 @@ function Detailcase() {
         console.log(error);
       }
     };
+    const fetchCaseById = async () => {
+      // const { case_id } = useParams();
+      try {
+        const res = await axios.get(`http://localhost:5011/caseid/${case_id}`);
+        console.log(res.data[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchdata();
+    fetchCaseById();
   }, [case_id]);
   useEffect(() => {
     if (refresh) {
       setRefresh(false); // รีเซ็ต refresh หลังจากการดึงข้อมูลใหม่เสร็จสมบูรณ์
     }
   }, [refresh]);
-  console.log("te", technician);
   return (
     <Box>
       <Grid container spacing={2}>

@@ -90,3 +90,17 @@ exports.listcategoriesdevice = async (_, res) => {
     }
   });
 };
+exports.listdevicehistory = async (req, res) => {
+  const device_id = req.params.device_id;
+  db.query(
+    "SELECT c.case_id ,c.case_device_id,h.event_type ,c.case_resolution, h.occurred_at ,h.status_from,h.status_to,h.actor_id,u.name   from Historyrepair h JOIN Cases c ON h.case_id  = c.case_id JOIN Users u ON h.actor_id = u.users_id  where c.case_device_id = ? ",
+    [device_id],
+    (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};

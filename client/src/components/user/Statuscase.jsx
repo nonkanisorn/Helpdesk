@@ -12,20 +12,31 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 function Statuscase() {
-  const [caseData, setcaseData] = useState([]);
+  // TODO: เพิ่ม update closed-date ที่ต้องส่งใไปใน updatestatuscase
+  const [caseId, setCaseId] = useState();
+  const [caseDeviceId, setCaseDeviceId] = useState();
   const user_id = useSelector((state) => state.user.users_id);
+  const status_id = 6;
+  const [caseData, setcaseData] = useState([]);
   const [reFresh, setRefresh] = useState(true);
   const navigate = useNavigate();
-  const status_id = 5;
+  console.log("deviceid", caseDeviceId);
+  console.log("caseData: ", caseData);
+  console.log("id", caseId);
   const topagedetail = (case_id) => {
     navigate(`/user/Detailcase/${case_id}`);
   };
-  const updatestatuscase = (case_id) => {
+  const updatestatuscase = (case_id, case_device_id) => {
     axios
-      .patch(`http://localhost:5011/case/${case_id}`, { status_id })
+      .patch(`http://localhost:5011/case/${user_id}/${case_id}`, {
+        case_id: caseId,
+        case_device_id,
+        user_id,
+        status_id,
+      })
       .then((result) => {
         console.log(result);
-        setRefresh(false);
+        setRefresh((prev) => !prev);
       })
       .catch((err) => {
         console.log(err);
@@ -85,7 +96,8 @@ function Statuscase() {
                     <Button
                       onClick={() => {
                         if (window.confirm("ยืนยันการซ่อม")) {
-                          updatestatuscase(item.case_id);
+                          updatestatuscase(item.case_id, item.case_device_id);
+                          setCaseId(item.case_id);
                         }
                       }}
                       variant="contained"

@@ -34,7 +34,7 @@ function Addcase() {
           // dep_name: selectedDepartment,
           case_title,
           case_detail: caseDetail,
-          case_device_id: 1,
+          case_device_id: null,
           user_id: userId,
           status_id,
           categories_id: selectcategory,
