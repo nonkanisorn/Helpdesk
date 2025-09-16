@@ -101,7 +101,7 @@ exports.listbyID = async (req, res) => {
 exports.listbyidtech = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,5) ",
+    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -132,7 +132,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (6,7)",
+    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (6)",
     [user_id],
     (err, result) => {
       if (err) {
@@ -273,6 +273,18 @@ exports.casestatusupdate = async (req, res) => {
               );
               break;
             case 2:
+              // db.query(
+              //   "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
+              //   [status_id, case_id],
+              //   (err, result) => {
+              //     if (err) {
+              //       console.log(err);
+              //       res.status(500).send("error update status");
+              //     } else {
+              //     }
+              //   },
+              // );
+
               db.query(
                 "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
                 [status_id, case_id],
