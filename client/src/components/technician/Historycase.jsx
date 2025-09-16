@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
 function Historycase() {
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
@@ -21,18 +22,19 @@ function Historycase() {
   useEffect(() => {
     axios
       .get(`http://localhost:5011/Casetechhistory/${technician_id}`)
-      .then(function (response) {
+      .then(function(response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
 
   return (
     <Box>
+      <Typography variant="h3">ประวัติการซ่อม</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

@@ -21,14 +21,14 @@ function Historyrepair() {
   useEffect(() => {
     axios
       .get(`http://localhost:5011/caseuser/${user_id}`)
-      .then(function (response) {
+      .then(function(response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       })
-      .finally(function () {});
+      .finally(function() { });
   }, []);
   return (
     <>

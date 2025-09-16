@@ -62,7 +62,8 @@ function Edituser() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5011/userbyid/${users_id}`,
+          // `http://localhost:5011/userbyid/${users_id}`,
+          `http://localhost:5011/users/${users_id}`,
         );
         setUserData(response.data);
         console.log("userdata", userData);
@@ -76,7 +77,7 @@ function Edituser() {
   useEffect(() => {
     const fetchRoleData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5011/role`);
+        const response = await axios.get(`http://localhost:5011/roles`);
         setRoleData(response.data);
       } catch (error) {
         console.log(error);
@@ -84,7 +85,7 @@ function Edituser() {
     };
     const fetchDepData = async () => {
       try {
-        const response = await axios.get("http://localhost:5011/department");
+        const response = await axios.get("http://localhost:5011/departments");
         setDepName(response.data);
       } catch (error) {
         console.log(error);
@@ -112,7 +113,7 @@ function Edituser() {
   console.log("newdep", newDepname);
   return (
     <Box>
-      <Paper sx={{ pb: 3 }}>
+      <Paper sx={{ pb: 3, maxHeight: "80vh", overflow: "auto" }}>
         <Typography variant="h3" textAlign="center" sx={{ mb: 3 }}>
           แก้ไข้ข้อมูลผู้ใช้
         </Typography>

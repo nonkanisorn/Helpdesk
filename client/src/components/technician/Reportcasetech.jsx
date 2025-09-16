@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
 function Reportcasetech() {
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
@@ -23,7 +24,7 @@ function Reportcasetech() {
   };
   const waitingforpart = (case_id) => {
     axios
-      .patch(`${apiUrl}/Case/${case_id}`, {
+      .patch(`${apiUrl}/Case/${technician_id}/${case_id}`, {
         status_id,
       })
       .then(setRefresh(true));
@@ -42,7 +43,9 @@ function Reportcasetech() {
   }, [refresh]);
 
   return (
+    // TODO: เพิ่มปุ่ม เพิ่มเติม ย้ายรายละเอียด ไปอีกหน้า
     <Box>
+      <Typography variant="h3">รายการแจ้งซ่อม</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -89,9 +92,9 @@ function Reportcasetech() {
                   >
                     รออะไหล่
                   </Button>
-                  <Button variant="contained" color="error" size="small">
-                    ซ่อมไม่ได้
-                  </Button>
+                  {/* <Button variant="contained" color="error" size="small"> */}
+                  {/*   ซ่อมไม่ได้ */}
+                  {/* </Button> */}
                 </TableCell>
               </TableRow>
             ))}

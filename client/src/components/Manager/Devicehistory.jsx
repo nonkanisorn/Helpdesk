@@ -13,6 +13,20 @@ function Devicehistory() {
   const { dev_id } = useParams();
   const [deviceData, setDeviceData] = useState([]);
   console.log("devid", dev_id);
+  const statusmap = {
+    1: "รอดำเนินการ",
+    2: "กำลังดำเนินการ",
+    3: "รอยืนยันการซ่อม",
+    4: "รออะไหล่",
+    5: "เลยกำหนดเวลาซ่อม",
+    6: "เสร็จสิ้น",
+  };
+  const eventmap = {
+    created: "สร้างเคส",
+    assigned: "มอบหมายงาน",
+    technician_complete: "ช่างซ่อมเสร็จ",
+    user_confirmed: "ผู้ใช้ยืนยัน",
+  };
   useEffect(() => {
     const fetchdata = async () => {
       const response = await axios.get(
@@ -35,8 +49,8 @@ function Devicehistory() {
             <TableRow>
               <TableCell align="center">เลขเคส</TableCell>
               <TableCell align="center">รหัสอุปกรณ์</TableCell>
-              <TableCell align="center">สเตตัสก่อนหน้า</TableCell>
-              <TableCell align="center">สเตตัสใหม่</TableCell>
+              <TableCell align="center">สถานะก่อนหน้า</TableCell>
+              <TableCell align="center">สถานะใหม่</TableCell>
               <TableCell align="center">ผู้ที่กระทำ</TableCell>
               <TableCell align="center">ประเภทเหตุการณ์</TableCell>
               <TableCell align="center">ผลการซ่อม</TableCell>
@@ -54,14 +68,25 @@ function Devicehistory() {
                       <TableCell align="center">
                         {item.case_device_id}
                       </TableCell>
-                      <TableCell align="center">{item.status_from}</TableCell>
-                      <TableCell align="center">{item.status_to}</TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_from]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_to]}
+                      </TableCell>
                       <TableCell align="center">{item.name}</TableCell>
-                      <TableCell align="center">{item.event_type}</TableCell>
+                      <TableCell align="center">
+                        {eventmap[item.event_type]}
+                      </TableCell>
                       <TableCell align="center">
                         {item.case_resolution}
                       </TableCell>
-                      <TableCell align="center">{item.occurred_at}</TableCell>
+                      <TableCell align="center">
+                        {new Date(item.occurred_at).toLocaleString("th-TH", {
+                          dateStyle: "long",
+                          timeStyle: "medium",
+                        })}
+                      </TableCell>
                     </>
                   ) : (
                     <>
@@ -69,12 +94,23 @@ function Devicehistory() {
                       <TableCell align="center">
                         {item.case_device_id}
                       </TableCell>
-                      <TableCell align="center">{item.status_from}</TableCell>
-                      <TableCell align="center">{item.status_to}</TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_from]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_to]}
+                      </TableCell>
                       <TableCell align="center">{item.name}</TableCell>
-                      <TableCell align="center">{item.event_type}</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">{item.occurred_at}</TableCell>
+                      <TableCell align="center">
+                        {eventmap[item.event_type]}
+                      </TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center">
+                        {new Date(item.occurred_at).toLocaleString("th-TH", {
+                          dateStyle: "long",
+                          timeStyle: "medium",
+                        })}
+                      </TableCell>
                     </>
                   )}
                 </TableRow>
