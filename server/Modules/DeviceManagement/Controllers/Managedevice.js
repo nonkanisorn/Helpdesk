@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 });
 
 exports.list = async (req, res) => {
-  db.query("SELECT dev_id,dev_name FROM Device", (err, results) => {
+  db.query("SELECT dev_id,dev_name FROM Devices", (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("server errror");
@@ -22,7 +22,7 @@ exports.create = async (req, res) => {
   const dev_name = req.body.dev_name;
   //   console.log(dev_name);
   db.query(
-    "INSERT INTO Device(dev_name) VALUES(?)",
+    "INSERT INTO Devices(dev_name) VALUES(?)",
     [dev_name],
     (err, result) => {
       if (err) {
@@ -38,7 +38,7 @@ exports.create = async (req, res) => {
 exports.remove = async (req, res) => {
   const dev_id = req.params.dev_id;
   //   console.log(dev_id);
-  db.query("DELETE FROM Device WHERE dev_id = ? ", [dev_id], (err, result) => {
+  db.query("DELETE FROM Devices WHERE dev_id = ? ", [dev_id], (err, result) => {
     if (err) {
       console.log(err);
       res.status(500).send("server error");
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
 
   //   console.log(dev_id);
   db.query(
-    "UPDATE Device SET dev_name = ? WHERE dev_id = ? ",
+    "UPDATE Devices SET dev_name = ? WHERE dev_id = ? ",
     [newName, dev_id],
     (err, result) => {
       if (err) {
