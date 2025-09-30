@@ -26,6 +26,7 @@ import Addstatus from "../components/admin/ManagestatusPages/Addstatus";
 import Editstatus from "../components/admin/ManagestatusPages/Editstatus";
 import Adduser from "../components/admin/ManageuserPages/Adduser";
 import Edituser from "../components/admin/ManageuserPages/Edituser";
+import Addtypedevice from "../components/admin/ManagedevicePages/Addtypedevice";
 const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [ok, setOk] = useState(false);
@@ -119,6 +120,7 @@ const AdminRoute = ({ children }) => {
                 path="editdepartment/:dep_id/:dep_name"
                 element={<Editdepartment />}
               />
+              <Route path="managetypedevice" element={<Addtypedevice />} />
               <Route path="adduser" element={<Adduser />} />
               <Route path="*" element={<Notfound404 text="ไม่มีpathนี้" />} />
             </Routes>

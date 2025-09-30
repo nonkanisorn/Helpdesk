@@ -135,6 +135,14 @@ const Sidebartech = () => {
                   ประวัติการซ่อม
                 </MenuItem>
               </Link>
+              <Link to="/technician/device" className="menu-bars">
+                <MenuItem
+                  style={{ color: "#fff" }}
+                  icon={<HistoryToggleOffIcon />}
+                >
+                  จัดการอุปกรณ์
+                </MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>

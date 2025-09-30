@@ -9,10 +9,12 @@ function Editdevice() {
   const { dev_id, dev_name } = useParams();
   const [newName, setNewDevName] = useState(dev_name);
 
+
   const apiUrl = process.env.REACT_APP_API_URL;
   const handleUpdate = () => {
     const formData = new FormData();
     formData.append("newName", newName);
+
 
     axios
       .put(`${apiUrl}/Device/${dev_id}/${newName}`, formData)
@@ -26,15 +28,15 @@ function Editdevice() {
   };
   console.log(newName);
   return (
-    <Box>
-      <Paper>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Paper sx={{ maxWidth: 600, p: 8, borderRadius: 3, boxShadow: 3 }}>
         <Box>
           <Typography textAlign="center" variant="h3">
             แก้ไขอุปกรณ์
           </Typography>
         </Box>
 
-        <Box ml={5} mt={5}>
+        <Box mt={5}>
           <Typography>ชื่ออุปกรณ์เดิม : {dev_name} </Typography>
           <Box display="flex" mt={5}>
             <Typography>ชื่ออุปกรณ์ใหม่ :</Typography>
