@@ -273,18 +273,6 @@ exports.casestatusupdate = async (req, res) => {
               );
               break;
             case 2:
-              // db.query(
-              //   "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-              //   [status_id, case_id],
-              //   (err, result) => {
-              //     if (err) {
-              //       console.log(err);
-              //       res.status(500).send("error update status");
-              //     } else {
-              //     }
-              //   },
-              // );
-
               db.query(
                 "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
                 [status_id, case_id],
