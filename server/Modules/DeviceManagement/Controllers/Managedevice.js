@@ -20,7 +20,7 @@ exports.list = async (req, res) => {
 
 exports.create = async (req, res) => {
   const dev_name = req.body.dev_name;
-  const dev_type = req.body.dev_type
+  const dev_type = req.body.dev_type;
   //   console.log(dev_name);
   db.query(
     "INSERT INTO Devices(dev_name,dev_type) VALUES(?,?)",
@@ -120,17 +120,3 @@ exports.listdevicehistory = async (req, res) => {
     },
   );
 };
-exports.listdevicefromid = async (req, res) => {
-  const device_id = req.params.device_id
-  db.query("select di.instance_id,di.device_id,di.serial_number,di.device_number ,d.dev_name from DeviceInstances di join Devices d on di.device_id = d.dev_id  where device_id = ?", [device_id], (error, result) => {
-
-    if (error) {
-      console.log(error)
-      res.status(500).send(error)
-    } else {
-      res.send(result)
-    }
-  }
-
-  )
-}
