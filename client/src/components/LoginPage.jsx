@@ -23,9 +23,11 @@ function LoginPage() {
         username,
         userpassword,
       });
-      console.log("responseuser", response.data.payload.user);
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
-      console.log("loginresponse", response.data);
+      const is_active = response.data.payload.user.is_active;
+      if (is_active === 0) {
+        return alert("คุณไม่มีสิทธื์เข้า");
+      }
       dispatch(
         login({
           // username: response.data.payload.user,

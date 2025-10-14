@@ -37,6 +37,7 @@ exports.register = async (req, res) => {
       dep_id,
       user_email,
       user_phone,
+      is_active,
     } = req.body;
     const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
@@ -50,8 +51,8 @@ exports.register = async (req, res) => {
         if (results.length > 0) {
           res.send("มีคนใช้แล้ว").status(400);
         }
-        db.query(
-          "INSERT INTO Users (username,userpassword,role_id,name,user_email,user_phone,user_img,dep_id)values(?,?,?,?,?,?,?,?)",
+        (db.query(
+          "INSERT INTO Users (username,userpassword,role_id,name,user_email,user_phone,user_img,dep_id,is_active)values(?,?,?,?,?,?,?,?,?)",
           [
             username,
             passwordHash,
@@ -61,6 +62,7 @@ exports.register = async (req, res) => {
             user_phone,
             user_img,
             dep_id,
+            is_active,
           ],
         ),
           (err, results) => {
@@ -68,7 +70,7 @@ exports.register = async (req, res) => {
               console.log(err);
               res.status(501).send("server error");
             }
-          };
+          });
         res.send("ลงทะเบียนสำเร็จ").status(200);
       },
     );
@@ -130,6 +132,7 @@ exports.login = async (req, res) => {
               name: results[0].name,
               users_id: results[0].users_id,
               dep_id: results[0].dep_id,
+              is_active: results[0].is_active,
             },
           };
         } else {
@@ -151,13 +154,17 @@ exports.currentUser = async (req, res) => {
   try {
     console.log("currentUser", req.user);
     db.query(
-      "SELECT users_id,username,role_id,name FROM Users WHERE username = ? ",
+      "SELECT users_id,username,role_id,name,is_active FROM Users WHERE username = ? ",
       [req.user.username],
       async (error, result) => {
         if (error) {
           res.send(error);
           return res.status(500).send("error query database");
         }
+        console.log(result[0].is_active);
+        // if (result[0].is_active === 0) {
+        //   res.status(403).send("No entry");
+        // }
         res.send(result);
       },
     );
