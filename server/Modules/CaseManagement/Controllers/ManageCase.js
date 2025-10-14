@@ -148,7 +148,7 @@ exports.listbyIduserstatuscase = async (req, res) => {
   const user_id = req.params.user_id;
   try {
     db.query(
-      "SELECT c.case_device_id , c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
+      "SELECT  c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
       [user_id],
       (err, result) => {
         if (err) {
