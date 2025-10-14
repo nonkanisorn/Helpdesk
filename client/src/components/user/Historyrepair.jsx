@@ -54,6 +54,7 @@ function Historyrepair() {
                   {item.case_title}
                 </TableCell>
                 <TableCell>{item.case_detail}</TableCell>
+                <TableCell>{item.status_name}</TableCell>
                 {showFinish === true ? (
                   <>
                     {item.status === 6 ? (

@@ -18,6 +18,9 @@ function User() {
     return casedata.filter((data) => data.status_id === 4).length;
   };
 
+  const datafilterstatuscase6 = () => {
+    return casedata.filter((data) => data.status_id === 6).length;
+  };
   const datafilterstatuscase3 = () => {
     return casedata.filter((data) => data.status_id === 3).length;
   };
@@ -55,7 +58,8 @@ function User() {
         <Paperui title="รอดำเนินการ" data={datafilterstatuscase1()} />
         <Paperui title="กำลังดำเนินการ" data={datafilterstatuscase2()} />
         <Paperui title="รอการยืนยัน" data={datafilterstatuscase3()} />
-        <Paperui title="เสร็จสิ้น" data={datafilterstatuscase4()} />
+        <Paperui title="รออะไหล่" data={datafilterstatuscase4()} />
+        <Paperui title="เสร็จสิ้น" data={datafilterstatuscase6()} />
         {/* <Typography */}
         {/*   sx={{ */}
         {/*     border: 1, */}

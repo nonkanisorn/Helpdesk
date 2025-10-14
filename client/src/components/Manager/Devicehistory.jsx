@@ -13,10 +13,24 @@ function Devicehistory() {
   const { dev_id } = useParams();
   const [deviceData, setDeviceData] = useState([]);
   console.log("devid", dev_id);
+  const statusmap = {
+    1: "รอดำเนินการ",
+    2: "กำลังดำเนินการ",
+    3: "รอยืนยันการซ่อม",
+    4: "รออะไหล่",
+    5: "เลยกำหนดเวลาซ่อม",
+    6: "เสร็จสิ้น",
+  };
+  const eventmap = {
+    created: "สร้างเคส",
+    assigned: "มอบหมายงาน",
+    technician_complete: "ช่างซ่อมเสร็จ",
+    user_confirmed: "ผู้ใช้ยืนยัน",
+  };
   useEffect(() => {
     const fetchdata = async () => {
       const response = await axios.get(
-        `http://localhost:5011/historydevice/${dev_id}`,
+        `http://localhost:5011/device/history/${dev_id}`,
       );
       setDeviceData(response.data);
     };
@@ -25,33 +39,80 @@ function Devicehistory() {
   console.log(deviceData);
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ maxHeight: 800, overflow: "auto" }}
+      >
         <h2> ประวัติการซ่อมของอุปกรณ์</h2>{" "}
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell align="center">CaseID</TableCell>
-              <TableCell align="center">UserID</TableCell>
-              <TableCell align="center">TechnicianID</TableCell>
-              <TableCell align="center">Status_id</TableCell>
-              <TableCell align="center">Createcasedate</TableCell>
-              <TableCell align="center">AssigncaseDate</TableCell>
-              <TableCell align="center">ClosecaseDate</TableCell>
-              <TableCell align="center">CompletecaseDate</TableCell>
+              <TableCell align="center">เลขเคส</TableCell>
+              <TableCell align="center">รหัสอุปกรณ์</TableCell>
+              <TableCell align="center">สถานะก่อนหน้า</TableCell>
+              <TableCell align="center">สถานะใหม่</TableCell>
+              <TableCell align="center">ผู้ที่กระทำ</TableCell>
+              <TableCell align="center">ประเภทเหตุการณ์</TableCell>
+              <TableCell align="center">ผลการซ่อม</TableCell>
+              <TableCell align="center">เวลาบันทึกเหตุการณ์</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {deviceData.length > 0 ? (
               deviceData.map((item, idx) => (
                 <TableRow key={idx}>
-                  <TableCell align="center">{item.case_id}</TableCell>
-                  <TableCell align="center">{item.user_id}</TableCell>
-                  <TableCell align="center">{item.technician_id}</TableCell>
-                  <TableCell align="center">{item.status_id}</TableCell>
-                  <TableCell align="center">{item.created_date}</TableCell>
-                  <TableCell align="center">{item.assigned_date}</TableCell>
-                  <TableCell align="center">{item.closed_date}</TableCell>
-                  <TableCell align="center">{item.completed_date}</TableCell>
+                  {item.status_to === 3 ? (
+                    <>
+                      <TableCell align="center">{item.case_id}</TableCell>
+                      <TableCell align="center">
+                        {item.case_device_id}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_from]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_to]}
+                      </TableCell>
+                      <TableCell align="center">{item.name}</TableCell>
+                      <TableCell align="center">
+                        {eventmap[item.event_type]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {item.case_resolution}
+                      </TableCell>
+                      <TableCell align="center">
+                        {new Date(item.occurred_at).toLocaleString("th-TH", {
+                          dateStyle: "long",
+                          timeStyle: "medium",
+                        })}
+                      </TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell align="center">{item.case_id}</TableCell>
+                      <TableCell align="center">
+                        {item.case_device_id}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_from]}
+                      </TableCell>
+                      <TableCell align="center">
+                        {statusmap[item.status_to]}
+                      </TableCell>
+                      <TableCell align="center">{item.name}</TableCell>
+                      <TableCell align="center">
+                        {eventmap[item.event_type]}
+                      </TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center">
+                        {new Date(item.occurred_at).toLocaleString("th-TH", {
+                          dateStyle: "long",
+                          timeStyle: "medium",
+                        })}
+                      </TableCell>
+                    </>
+                  )}
                 </TableRow>
               ))
             ) : (

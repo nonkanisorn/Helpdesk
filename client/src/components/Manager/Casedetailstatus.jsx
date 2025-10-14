@@ -59,18 +59,18 @@ function Casedetailstatus() {
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               วันที่ช่างทำเสร็จ:
-              {data.completed_date === null
+              {data.work_completed_date === null
                 ? "ยังไม่เสร็จ"
-                : new Date(data.completed_date).toLocaleString("th-TH", {
+                : new Date(data.work_completed_date).toLocaleString("th-TH", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   })}
             </Typography>
             <Typography variant="h6" sx={{ mb: 2 }}>
               วันที่ได้รับการยืนยันว่าซ่อมแล้ว:
-              {data.completed_date === null
+              {data.closed_date === null
                 ? "ยังไม่ได้รับการยืนยัน"
-                : new Date(data.completed_date).toLocaleString("th-TH", {
+                : new Date(data.work_completed_date).toLocaleString("th-TH", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   })}

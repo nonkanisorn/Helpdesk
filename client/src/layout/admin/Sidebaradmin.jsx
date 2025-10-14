@@ -144,6 +144,16 @@ const Sidebaradmin = () => {
                   จัดการแผนก
                 </MenuItem>
               </Link>
+              <Link to="/admin/Managetypedevice" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการประเภทอุปกรณ์
+                </MenuItem>
+              </Link>
+              <Link to="/admin/Managedepartment" className="menu-bars">
+                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
+                  จัดการประเภทปัญหา
+                </MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>

@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import "@emotion/styled"; // ✅ Force Vite to include it
+// import styled from "styled-components";
 
 import { store } from "./store/store";
 import { Provider } from "react-redux";

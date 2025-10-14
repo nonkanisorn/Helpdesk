@@ -13,6 +13,8 @@ import Headerbartech from "../layout/tech/Headerbartech";
 import Detailcasetech from "../components/technician/Detailcasetech";
 import Histoyrycase from "../components/technician/Historycase";
 import Detailcasetechfinish from "../components/technician/Detailcasetechfinish";
+import Managedevice from "../components/technician/Managedevice.jsx";
+import DeviceDetailPages from "../components/technician/DeviceDetailPages";
 const TechnicianRoute = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -34,6 +36,8 @@ const TechnicianRoute = () => {
               <Route path="index" element={<TechnicianPage />} />
               <Route path="*" element={<Notfound404 />} />
               <Route path="reportcasetech" element={<Reportcasetech />} />
+              <Route path="device" element={<Managedevice />} />
+              <Route path="device/detail/:dev_id" element={<DeviceDetailPages />} />
               <Route
                 path="Detailcasetech/:case_id"
                 element={<Detailcasetech />}

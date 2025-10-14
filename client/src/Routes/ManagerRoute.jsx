@@ -38,7 +38,10 @@ const ManagerRoute = () => {
               <Route path="adduser" element={<Adduser />} />
               <Route path="statuscase" element={<Statuscase />} />
               <Route path="historydevice" element={<Historydevice />} />
-              <Route path="devicehistory/:dev_id" element={<Devicehistory />} />
+              <Route
+                path="device/history/:dev_id"
+                element={<Devicehistory />}
+              />
               <Route
                 path="casedetail/:case_id"
                 element={<Casedetailstatus />}

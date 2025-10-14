@@ -34,7 +34,7 @@ function Addcase() {
           // dep_name: selectedDepartment,
           case_title,
           case_detail: caseDetail,
-          case_device_id: 1,
+          case_device_id: null,
           user_id: userId,
           status_id,
           categories_id: selectcategory,
@@ -81,68 +81,73 @@ function Addcase() {
   return (
     <Paper
       sx={{
-        "& > :not(style)": { m: 1 },
-        // border: 1,
-        padding: 7,
+        p: 5,
+        maxWidth: 600,
+        mx: "auto",
+        borderRadius: 3,
+        boxShadow: 3,
       }}
-      noValidate
-      autoComplete="off"
     >
-      <Typography variant="h2" textAlign="center">
-        {" "}
+      <Typography variant="h4" textAlign="center" gutterBottom>
         แจ้งซ่อม
       </Typography>
-      <Typography variant="h4">แจ้งซ่อมโดยคุณ:{userName}</Typography>
-      <FormControl variant="standard">
-        <div
-          style={{ display: "flex", alignItems: "center", marginBottom: 15 }}
-        >
-          <Typography sx={{ ml: 1 }}>หัวข้อ : </Typography>
-          <TextField
-            id="case_title"
-            type="text"
-            value={case_title}
-            onChange={(e) => setcase_title(e.target.value)}
-            placeholder="ใส่หัวข้อ"
-            sx={{
-              ml: 3,
-            }}
-          />
-        </div>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography component="div">รายละเอียด</Typography>
-          <TextField
-            id="case_detail"
-            type="text"
-            value={caseDetail}
-            onChange={(e) => setCaseDetail(e.target.value)}
-            placeholder="ใส่รายละเอียด"
-            sx={{ marginLeft: 2, mb: 2 }}
-          />
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography component="div">ประเภทปัญหา</Typography>
+      <Typography variant="subtitle1" textAlign="center" gutterBottom>
+        โดยคุณ: {userName}
+      </Typography>
+
+      {/* ฟอร์ม */}
+      <Box
+        component="form"
+        sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+      >
+        {/* หัวข้อ */}
+        <TextField
+          label="หัวข้อ"
+          id="case_title"
+          value={case_title}
+          onChange={(e) => setcase_title(e.target.value)}
+          placeholder="กรอกหัวข้อการแจ้งซ่อม"
+          fullWidth
+        />
+
+        {/* รายละเอียด */}
+        <TextField
+          label="รายละเอียด"
+          id="case_detail"
+          value={caseDetail}
+          onChange={(e) => setCaseDetail(e.target.value)}
+          placeholder="กรอกรายละเอียดปัญหา"
+          multiline
+          rows={4}
+          fullWidth
+        />
+
+        {/* ประเภทปัญหา */}
+        <FormControl fullWidth>
+          <InputLabel id="problem-type-label">ประเภทปัญหา</InputLabel>
           <Select
-            sx={{ ml: 3 }}
-            onChange={(e) => setSelectcategory(e.target.value)}
+            labelId="problem-type-label"
             value={selectcategory}
+            onChange={(e) => setSelectcategory(e.target.value)}
           >
-            {categories.map((item, idx) => (
-              <MenuItem key={item.id} value={item.categories_id}>
+            {categories.map((item) => (
+              <MenuItem key={item.categories_id} value={item.categories_id}>
                 {item.categories_name}
               </MenuItem>
             ))}
           </Select>
-        </Box>
+        </FormControl>
+
+        {/* ปุ่ม */}
         <Button
           color="success"
           variant="contained"
           onClick={createcase}
-          sx={{ mt: 5 }}
+          sx={{ mt: 2, py: 1.5 }}
         >
           เพิ่มการแจ้งซ่อม
         </Button>
-      </FormControl>
+      </Box>
     </Paper>
   );
 }
