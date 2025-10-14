@@ -6,28 +6,34 @@ import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 function Detailcasetech() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const { case_id } = useParams();
   const navigate = useNavigate();
   const [caseDatabyId, setCaseDatabyId] = useState({});
   const [completesummarydata, setCompletesummarydata] = useState("");
-  const [caseDeviceId, setCaseDeviceId] = useState();
   const user_id = useSelector((state) => state.user.users_id);
-  console.log("user_id", user_id);
-  console.log(case_id);
   const status_id = 3;
-  const statuswait_id = 5;
+  const statuswait_id = 4;
 
-  const updatestatuscase = () => {
+  const onSubmit = (data) => console.log(data);
+  // console.log(watch("case_resolution"));
+  const workComplete = (data) => {
     axios
       .patch(`http://localhost:5011/case/${user_id}/${case_id}`, {
         status_id,
-        case_device_id: caseDeviceId,
-        case_resolution: completesummarydata,
+        serial_number: data.serial_number,
+        case_resolution: data.case_resolution,
       })
       .then(() => navigate("/technician/reportcasetech"))
       .catch((error) => {
@@ -38,16 +44,11 @@ function Detailcasetech() {
       });
   };
   const waitingforpart = () => {
-    axios.patch(`http://localhost:5011/Case/${case_id}`, {
-      status_id,
+    axios.patch(`http://localhost:5011/Case/${user_id},${case_id}`, {
+      status_id: statuswait_id,
     });
   };
 
-  const completesummary = (e) => {
-    setCompletesummarydata(e.target.value);
-  };
-  console.log(completesummarydata);
-  console.log(caseDeviceId);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,30 +84,38 @@ function Detailcasetech() {
         <Typography sx={{ mb: 2 }}>
           คนที่มอบหมายงาน : {caseDatabyId.name}
         </Typography>
-        <TextField
-          label="รหัสอุปกรณ์"
-          onChange={(e) => setCaseDeviceId(e.target.value)}
-        ></TextField>
-        <TextField
-          id="outlined=multiline-static"
-          label="สรุปผลการซ่อม"
-          rows={10}
-          multiline
-          sx={{ width: "80%" }}
-          onChange={(e) => completesummary(e)}
-        />
+        <form>
+          <TextField
+            label="รหัสอุปกรณ์"
+            {...register("serial_number")}
+          ></TextField>
+          <TextField
+            {...register("case_resolution")}
+            id="outlined=multiline-static"
+            label="สรุปผลการซ่อม"
+            rows={10}
+            multiline
+            sx={{ width: "80%" }}
+          />
+        </form>
       </Box>
       <Button
         variant="contained"
-        onClick={() => {
-          if (window.confirm("ยืนยันการซ่อม")) {
-            updatestatuscase();
-          }
-        }}
         sx={{ ml: 2, mb: 2 }}
         color="success"
+        type="submit"
+        onClick={handleSubmit(workComplete)}
       >
         ยืนยันการซ่อม
+      </Button>
+      <Button
+        variant="contained"
+        sx={{ ml: 2, mb: 2 }}
+        color="success"
+        type="submit"
+        onClick={() => waitingforpart()}
+      >
+        รออะไหล่
       </Button>
     </Box>
   );

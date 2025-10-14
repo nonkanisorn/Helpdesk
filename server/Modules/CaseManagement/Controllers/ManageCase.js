@@ -165,39 +165,26 @@ exports.listbyIduserstatuscase = async (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const {
-    case_title,
-    case_detail,
-    case_device_id,
-    user_id,
-    status_id,
-    categories_id,
-  } = req.body;
+  const { case_title, case_detail, user_id, status_id, categories_id } =
+    req.body;
   console.log(req.body);
 
   if (!case_detail) {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
-    [
-      case_title,
-      case_detail,
-      case_device_id,
-      user_id,
-      status_id,
-      categories_id,
-    ],
+    "INSERT INTO Cases(case_title,case_detail,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,NOW(),?)",
+    [case_title, case_detail, user_id, status_id, categories_id],
     (err, result) => {
       if (err) {
         console.log(err);
         res.status(500).send("server error");
       } else {
         res.send(result);
-        db.query(
-          "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-          [result.insertId, case_device_id, user_id, null, 1, "created"],
-        );
+        // db.query(
+        //   "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
+        //   [result.insertId, user_id, null, 1, "created"],
+        // );
       }
     },
   );
@@ -237,7 +224,7 @@ exports.casestatusupdate = async (req, res) => {
   const user_id = req.params.user_id;
   const case_id = req.params.case_id;
   const case_resolution = req.body.case_resolution;
-  const case_device_id = req.body.case_device_id;
+  // const case_device_id = req.body.case_device_id;
   const event_type = {
     1: "created",
     2: "assigned",
@@ -249,7 +236,7 @@ exports.casestatusupdate = async (req, res) => {
 
   const selectOldStatusSql = () => {
     db.query(
-      "select status_id as old_status_id, case_device_id from Cases where case_id = ? ",
+      "select status_id as old_status_id from Cases where case_id = ? ",
       [case_id],
       (err, result) => {
         if (err) {
@@ -298,46 +285,43 @@ exports.casestatusupdate = async (req, res) => {
               );
               break;
             case 3:
-              // TODO: เปลี่ยน completed_date เป็น work_completed_date เปลี่ยนใน Database ด้วย
+              const { serial_number } = req.body;
+              console.log(status_id);
               db.query(
-                "UPDATE Cases SET status_id = ?,case_device_id = ?, work_completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-                [status_id, case_device_id, case_resolution, case_id],
-                (err, result) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).send("error update status");
-                  } else {
-                    db.query(
-                      "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-                      [
-                        case_id,
-                        case_device_id,
-                        user_id,
-                        old_status_id,
-                        status_id,
-                        event_type[3],
-                      ],
-                      (err2, result2) => {
-                        if (err2) {
-                          console.log(err2);
-                        } else {
-                          res.send(result2);
-                        }
-                      },
-                    );
+                "select * from DeviceInstances where serial_number = ? ",
+                [serial_number],
+                (error, result) => {
+                  if (error) {
+                    return res.status(500).send(error);
                   }
+                  if (result.length === 0) {
+                    return res.status(500).send("not found serial_number");
+                  }
+
+                  const instance_id = result[0].instance_id;
+                  db.query(
+                    "update Cases set  status_id = ? , instance_id = ?, case_resolution = ?,  work_completed_date = NOW()  where case_id = ? ",
+                    [status_id, instance_id, case_resolution, case_id],
+                    (error, result) => {
+                      if (error) {
+                        console.log(error);
+                        res.status(500).send(error);
+                      } else {
+                        res.status(200).send(result);
+                      }
+                    },
+                  );
                 },
               );
-
               break;
             case 4:
               db.query(
-                "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
+                "UPDATE Cases SET status_id = ? WHERE case_id = ?",
                 [status_id, case_id],
                 (err, result) => {
                   if (err) {
                     console.log(err);
-                    res.status(500).send("server error no status 3");
+                    res.status(500).send("server error no status 4");
                   } else {
                     res.send(result);
                   }
@@ -393,232 +377,11 @@ exports.casestatusupdate = async (req, res) => {
 
               break;
           }
-          // const insertHistorySql =
-          //   "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
-          // const insertParams = [
-          //   case_id,
-          //   null,
-          //   user_id,
-          //   null,
-          //   status_id,
-          //   event_type[1],
-          // ];
-          // db.query(insertHistorySql, insertParams, (err) => {
-          //   if (err) {
-          //     console.log("insert error");
-          //   }
-          // });
         }
       },
     );
   };
   selectOldStatusSql();
-  // switch (status_id) {
-  //   case 1:
-  //     db.query(
-  //       "UPDATE Cases SET status_id = ?, created_date = NOW() WHERE case_id = ? ",
-  //       [status_id, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           res.status(500).send("error update status");
-  //         } else {
-  //           res.send(result);
-  //         }
-  //       },
-  //     );
-  //     break;
-  //   case 2:
-  //     db.query(
-  //       "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-  //       [status_id, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           res.status(500).send("error update status");
-  //         } else {
-  //           res.send(result);
-  //         }
-  //       },
-  //     );
-  //     break;
-  //   case 3:
-  //     // TODO: เปลี่ยน completed_date เป็น work_completed_date เปลี่ยนใน Database ด้วย
-  //     db.query(
-  //       "UPDATE Cases SET status_id = ?,case_device_id = ?, work_completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-  //       [status_id, case_device_id, case_resolution, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           res.status(500).send("error update status");
-  //         } else {
-  //           res.send(result);
-  //         }
-  //       },
-  //     );
-  //     db.query(
-  //       "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-  //       [
-  //         case_id,
-  //         case_device_id,
-  //         user_id,
-  //         old_status_id,
-  //         status_id,
-  //         event_type[3],
-  //       ],
-  //     );
-  //
-  //     break;
-  //   case 4:
-  //     db.query(
-  //       "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
-  //       [status_id, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           res.status(500).send("server error no status 3");
-  //         } else {
-  //           res.send(result);
-  //         }
-  //       },
-  //     );
-  //
-  //     break;
-  //   case 5:
-  //     db.query(
-  //       "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //       [status_id, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           res.status(500).send("server error ");
-  //         } else {
-  //           res.send(result);
-  //         }
-  //       },
-  //     );
-  //
-  //     break;
-  //   case 6:
-  //     db.query(
-  //       "update Cases set status_id = ?, closed_date = now() where case_id = ? ",
-  //       [status_id, case_id],
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           return res.status(500).send(err);
-  //         } else {
-  //           return res.send(result);
-  //         }
-  //       },
-  //     );
-  //
-  //     break;
-  // }
-  // const insertHistorySql =
-  //   "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
-  // const insertParams = [case_id, null, user_id, null, status_id, event_type[1]];
-  // db.query(insertHistorySql, insertParams, (err) => {
-  //   if (err) {
-  //     console.log("insert error");
-  //   }
-  // });
-  // if (status_id === 6) {
-  //   db.query(
-  //     "update Cases set status_id = ?, closed_date = now() where case_id = ? ",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         return res.status(500).send(err);
-  //       } else {
-  //         return res.send(result);
-  //       }
-  //     },
-  //   );
-  // }
-  // if (status_id === 5) {
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("server error ");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // }
-  //
-  // if (status_id === 4) {
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("server error no status 3");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // } else if (status_id === 2) {
-  //   console.log("status", status_id);
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("error update status");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // } else if (status_id === 1) {
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ?, created_date = NOW() WHERE case_id = ? ",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("error update status");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // } else if (status_id === 3) {
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ?,case_device_id = ?, completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-  //     [status_id, case_device_id, case_resolution, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("error update status");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // } else {
-  //   db.query(
-  //     "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //     [status_id, case_id],
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         res.status(500).send("error update status");
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     },
-  //   );
-  // }
 };
 
 exports.checktimecase = async () => {
@@ -659,6 +422,39 @@ exports.listcasebyuserid = async (req, res) => {
       } else {
         res.send(result);
       }
+    },
+  );
+};
+
+exports.completecasetechnician = async (req, res) => {
+  const { status_id, serial_number, user_id, case_resolution } = req.body;
+  const case_id = req.params.case_id;
+  const case_detail = "testt";
+  console.log(status_id);
+  db.query(
+    "select * from DeviceInstances where serial_number = ? ",
+    [serial_number],
+    (error, result) => {
+      if (error) {
+        return res.status(500).send(error);
+      }
+      if (result.length === 0) {
+        return res.status(500).send("not found serial_number");
+      }
+
+      const instance_id = result[0].instance_id;
+      db.query(
+        "update Cases set user_id = ? , status_id = ? , case_detail = ? , instance_id = ?  where case_id = ? ",
+        [user_id, status_id, case_detail, instance_id, case_id],
+        (error, result) => {
+          if (error) {
+            console.log(error);
+            res.status(500).send(error);
+          } else {
+            res.status(200).send(result);
+          }
+        },
+      );
     },
   );
 };

@@ -17,6 +17,7 @@ const {
   listall,
   checktimecase,
   listcasebyuserid,
+  completecasetechnician,
 } = require("../Controllers/ManageCase");
 
 router.get("/Case", list);
@@ -35,5 +36,6 @@ router.put("/Case/:case_id", update);
 router.patch("/Case/:user_id/:case_id", casestatusupdate);
 router.get("/checktimecase", checktimecase);
 router.get("/case/user/:technician_id", listcasebyuserid);
+router.patch("/test/case/:case_id", completecasetechnician);
 
 module.exports = router;
