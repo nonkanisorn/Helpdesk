@@ -79,76 +79,93 @@ function Addcase() {
   }, []);
   console.log(selectcategory);
   return (
-    <Paper
-      sx={{
-        p: 5,
-        maxWidth: 600,
-        mx: "auto",
-        borderRadius: 3,
-        boxShadow: 3,
-      }}
-    >
-      <Typography variant="h4" textAlign="center" gutterBottom>
-        แจ้งซ่อม
-      </Typography>
-      <Typography variant="subtitle1" textAlign="center" gutterBottom>
-        โดยคุณ: {userName}
-      </Typography>
-
-      {/* ฟอร์ม */}
+    <>
       <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          mt: 5,
+        }}
       >
-        {/* หัวข้อ */}
-        <TextField
-          label="หัวข้อ"
-          id="case_title"
-          value={case_title}
-          onChange={(e) => setcase_title(e.target.value)}
-          placeholder="กรอกหัวข้อการแจ้งซ่อม"
-          fullWidth
-        />
-
-        {/* รายละเอียด */}
-        <TextField
-          label="รายละเอียด"
-          id="case_detail"
-          value={caseDetail}
-          onChange={(e) => setCaseDetail(e.target.value)}
-          placeholder="กรอกรายละเอียดปัญหา"
-          multiline
-          rows={4}
-          fullWidth
-        />
-
-        {/* ประเภทปัญหา */}
-        <FormControl fullWidth>
-          <InputLabel id="problem-type-label">ประเภทปัญหา</InputLabel>
-          <Select
-            labelId="problem-type-label"
-            value={selectcategory}
-            onChange={(e) => setSelectcategory(e.target.value)}
+        <Box sx={{ maxWidth: 600, width: "100%" }}>
+          <Typography variant="h4" fontWeight="fontWeightBold">
+            แจ้งซ่อม
+          </Typography>
+          <Typography variant="subtitle1" color="grey" gutterBottom>
+            กรุณากรอกข้อมูลให้ครบถ้วนเพื่อความรวดเร็วในการดำเนินการ
+          </Typography>
+          <Paper
+            sx={{
+              p: 5,
+              mx: "auto",
+              borderRadius: 3,
+              boxShadow: 3,
+            }}
           >
-            {categories.map((item) => (
-              <MenuItem key={item.categories_id} value={item.categories_id}>
-                {item.categories_name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            {/* ฟอร์ม */}
+            <Box
+              component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+            >
+              {/* หัวข้อ */}
+              <Typography>ชื่องาน *</Typography>
+              <TextField
+                label="หัวข้อ"
+                id="case_title"
+                value={case_title}
+                onChange={(e) => setcase_title(e.target.value)}
+                placeholder="กรอกหัวข้อการแจ้งซ่อม"
+                fullWidth
+              />
 
-        {/* ปุ่ม */}
-        <Button
-          color="success"
-          variant="contained"
-          onClick={createcase}
-          sx={{ mt: 2, py: 1.5 }}
-        >
-          เพิ่มการแจ้งซ่อม
-        </Button>
+              {/* รายละเอียด */}
+              <Typography>รายละเอียดปัญหา *</Typography>
+              <TextField
+                label="รายละเอียด"
+                id="case_detail"
+                value={caseDetail}
+                onChange={(e) => setCaseDetail(e.target.value)}
+                placeholder="กรอกรายละเอียดปัญหา"
+                multiline
+                rows={4}
+                fullWidth
+              />
+
+              {/* ประเภทปัญหา */}
+              <Typography>ประเภทปัญหา</Typography>
+              <FormControl fullWidth>
+                <InputLabel id="problem-type-label">ประเภทปัญหา</InputLabel>
+                <Select
+                  sx={{}}
+                  labelId="problem-type-label"
+                  value={selectcategory}
+                  onChange={(e) => setSelectcategory(e.target.value)}
+                >
+                  {categories.map((item) => (
+                    <MenuItem
+                      key={item.categories_id}
+                      value={item.categories_id}
+                    >
+                      {item.categories_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              {/* ปุ่ม */}
+              <Button
+                variant="contained"
+                onClick={createcase}
+                sx={{ mt: 2, py: 1.5, bgcolor: "#2764E7" }}
+              >
+                เพิ่มการแจ้งซ่อม
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
       </Box>
-    </Paper>
+    </>
   );
 }
 

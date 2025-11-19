@@ -134,12 +134,12 @@ const Sidebarmanager = () => {
                   สถานะการซ่อม
                 </MenuItem>
               </Link>
-              <Link to="/manager/historydevice" className="menu-bars">
+              <Link to="/manager/manage/device" className="menu-bars">
                 <MenuItem
                   icon={<HistoryToggleOffIcon />}
                   style={{ color: "white" }}
                 >
-                  ประวัติการซ่อม
+                  จัดการอุปกรณ์
                 </MenuItem>
               </Link>
             </Menu>

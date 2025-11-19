@@ -15,6 +15,7 @@ import Histoyrycase from "../components/technician/Historycase";
 import Detailcasetechfinish from "../components/technician/Detailcasetechfinish";
 import Managedevice from "../components/technician/Managedevice.jsx";
 import DeviceDetailPages from "../components/technician/DeviceDetailPages";
+import Detailcase from "../components/Detailcase";
 const TechnicianRoute = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({ ...state }));
@@ -35,11 +36,15 @@ const TechnicianRoute = () => {
             <Routes>
               <Route path="index" element={<TechnicianPage />} />
               <Route path="*" element={<Notfound404 />} />
+              <Route path="repairs/:case_id" element={<Detailcase />} />
               <Route path="reportcasetech" element={<Reportcasetech />} />
               <Route path="device" element={<Managedevice />} />
-              <Route path="device/detail/:dev_id" element={<DeviceDetailPages />} />
               <Route
-                path="Detailcasetech/:case_id"
+                path="device/detail/:dev_id"
+                element={<DeviceDetailPages />}
+              />
+              <Route
+                path="cases/:case_id/repair"
                 element={<Detailcasetech />}
               />
               <Route

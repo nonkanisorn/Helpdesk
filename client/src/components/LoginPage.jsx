@@ -10,18 +10,25 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../store/userSlice";
+import { useForm } from "react-hook-form";
+import { Stack } from "@mui/system";
 
 function LoginPage() {
-  const [username, setusername] = useState(""); // สร้าง state สำหรับเก็บค่า username
-  const [userpassword, setuserpassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleLogin = async (event) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+  const handleLogin = async (data) => {
+    console.log(data);
     event.preventDefault();
     try {
       const response = await axios.post("http://localhost:5011/login", {
-        username,
-        userpassword,
+        username: data.username,
+        userpassword: data.password,
       });
       // ดำเนินการหลังจากเข้าสู่ระบบสำเร็จ
       const is_active = response.data.payload.user.is_active;
@@ -66,7 +73,7 @@ function LoginPage() {
     } else if (role == 3) {
       navigate("/technician/index");
     } else {
-      navigate("/user/index");
+      navigate("/user");
     }
   };
   // useEffect(() => {
@@ -112,40 +119,33 @@ function LoginPage() {
               textAlign={"center"}
               gutterBottom
             ></Typography>
-            <Typography
-              component="div"
-              sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}
-            >
-              <TextField
-                id="username-input"
-                label="username"
-                variant="outlined"
-                onChange={(e) => setusername(e.target.value)}
-              />
-              <TextField
-                id="password-input"
-                label="Password"
-                type="password"
-                variant="outlined"
-                onChange={(e) => setuserpassword(e.target.value)}
-              />
-            </Typography>
+            <form onSubmit={handleSubmit(handleLogin)}>
+              <Stack spacing={2}>
+                <TextField
+                  {...register("username")}
+                  label="Username"
+                ></TextField>
+                <TextField
+                  {...register("password")}
+                  //                  {/* {...register("password", { */}
+                  //                {/*   minLength: { */}
+                  //              {/*     value: 6, */}
+                  //            {/*     message: "Password should be at least 6 characters", */}
+                  //          {/*   }, */}
+                  //        {/* })} */}
+                  label="Password"
+                ></TextField>
+                {/* {errors.password && ( */}
+                {/*   <Typography>{errors.password.message}</Typography> */}
+                {/* )} */}
+              </Stack>
+              <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+                <Button type="submit" variant="contained" fullWidth>
+                  Login
+                </Button>
+              </Box>
+            </form>
           </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              onClick={handleLogin}
-              color="primary"
-              sx={{
-                width: "80%",
-                height: "50px",
-                marginLeft: 5,
-                mb: 3,
-              }}
-            >
-              Login
-            </Button>
-          </CardActions>
         </Card>
       </Box>
     </div>

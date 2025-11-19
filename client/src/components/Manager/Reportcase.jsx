@@ -23,7 +23,6 @@ function Reportcase() {
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const [caseData, setcaseData] = useState([]);
   const navigate = useNavigate();
-  console.log("testtt");
   const departmentMap = {
     1: "ไอที",
     2: "บัญชี",
@@ -55,21 +54,23 @@ function Reportcase() {
   useEffect(() => {
     axios
       .get("http://localhost:5011/case/")
-      .then(function(response) {
+      .then(function (response) {
         setcaseData(response.data);
         console.log(caseData);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
   console.log("dsadas", caseData);
   return (
     // TODO: แก้ไข เพิ่มปุ่ม เพิ่มเติม ย้าย รายละเอียดงาน ไปไว้อีกหน้า
     //
     <>
-      <Typography variant="h3">รายการแจ้งซ่อม</Typography>
+      <Typography sx={{ marginY: 2 }} variant="h3">
+        รายการแจ้งซ่อม
+      </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

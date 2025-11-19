@@ -1,17 +1,9 @@
-import {
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Paper,
-  Stack,
-  Chip,
-} from "@mui/material";
+import { Box, Typography, Grid, Paper, Stack } from "@mui/material";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import PendingActionsRoundedIcon from "@mui/icons-material/PendingActionsRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
-import { amber, green, red, blue, grey } from "@mui/material/colors";
+import { amber, green, red } from "@mui/material/colors";
 
 import axios from "axios";
 
@@ -21,7 +13,6 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import Paperui from "../ui/Paperui";
 import PaperuiV2 from "../ui/PaperuiV2";
-import { Link } from "react-router-dom";
 
 function Technicianpage() {
   const [casedata, setcasedata] = useState([]);
@@ -47,12 +38,11 @@ function Technicianpage() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5011/casetechstatus2/${technician_id}`)
+      .get(`http://localhost:5011/case/user/${technician_id}`)
       .then((response) => {
         setcasedata(response.data);
       });
   }, []);
-  console.log(casedata);
   return (
     <Box>
       <Typography variant="h4" fontWeight="fontWeightBold">
@@ -101,58 +91,20 @@ function Technicianpage() {
           />
         </Grid>
       </Grid>
-      <Typography
-        variant="h4"
-        fontWeight="fontWeightBold"
-        sx={{ mt: 4, mb: 3 }}
-      >
-        งานที่ได้รับมอบหมาย
+      <Typography variant="h4" fontWeight="fontWeightBold" sx={{ mt: 4 }}>
+        งานที่ได้รับมอยหมาย
       </Typography>
-      {casedata.map((items, index) => (
-        <Grid container>
-          <Grid item md={12}>
-            <Paper sx={{ minHeight: 220, borderRadius: 3, p: 5 }}>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography
-                  sx={{ mb: 1 }}
-                  fontWeight="fontWeightBold"
-                  variant="h6"
-                >
-                  {items.case_title}
-                </Typography>
-              </Stack>
-              <Stack spacing={1}>
-                <Typography color="grey" variant="body2">
-                  รายละเอียด:{items.case_detail}
-                </Typography>
-                <Typography color="grey" variant="body2">
-                  วันที่ได้รับมอบหมาย:{" "}
-                  {new Date(items.created_date).toLocaleString("th-TH", {
-                    dateStyle: "long",
-                    timeStyle: "medium",
-                  })}
-                </Typography>
-              </Stack>
-              <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Link to={{ pathname: `/technician/repairs/${items.case_id}` }}>
-                  <Button
-                    variant="contained"
-                    sx={{ borderRadius: 3, bgcolor: blue.A700 }}
-                  >
-                    ดูรายละเอียด
-                  </Button>
-                </Link>
-                <Button
-                  variant="contained"
-                  sx={{ borderRadius: 3, bgcolor: grey[50], color: "black" }}
-                >
-                  ดูรายละเอียด
-                </Button>
-              </Stack>
-            </Paper>
-          </Grid>
+      <Grid container>
+        <Grid item md={12}>
+          <Paper sx={{ minHeight: 220, borderRadius: 3, p: 5 }}>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography>title</Typography>
+              <Typography>test</Typography>
+            </Stack>
+            <Typography>รายละเอียด</Typography>
+          </Paper>
         </Grid>
-      ))}
+      </Grid>
     </Box>
   );
 }

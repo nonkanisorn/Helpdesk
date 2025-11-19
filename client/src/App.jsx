@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { CssBaseline, Box } from "@mui/material";
+import "@mui/material/styles/styled";
 
 import "./App.css";
 //------iimport layout------//
@@ -153,7 +154,7 @@ function App() {
             ) : role_id === 4 ? (
               <React.Fragment>
                 <div className="app">
-                  <Sidebaruser />
+                  {/* <Sidebaruser /> */}
                   <main className="content">
                     <Headerbaruser />
                     <div className="content_body">

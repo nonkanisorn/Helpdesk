@@ -32,14 +32,14 @@ function Reportcasetech() {
   useEffect(() => {
     axios
       .get(`${apiUrl}/Casetech/${technician_id}`)
-      .then(function(response) {
+      .then(function (response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, [refresh]);
 
   return (

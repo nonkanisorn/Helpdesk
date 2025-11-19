@@ -1,5 +1,13 @@
 import react, { useState } from "react";
-import { Box, IconButton, Menu, MenuItem, Paper } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -25,15 +33,19 @@ const Headerbaruser = () => {
     window.location.reload();
   };
   return (
-    <Box component={Paper} display="flex" justifyContent="right" p={2}>
-      {/* search 
-      <Box display="flex" borderRadius="3px" backgroundColor="#F5EFE7">
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box> */}
-
+    <Box component={Paper} display="flex" justifyContent="space-between" p={2}>
+      <Box display="flex" alignItems="center">
+        <Typography variant="h6" fontWeight="fontWeightBold">
+          HELPDESK APP
+        </Typography>
+        <Stack direction="row" spacing={2} sx={{ ml: 2 }}>
+          <Link to={{ pathname: "/user" }}>หน้าหลัก</Link>
+          <Link to={{ pathname: "/user/repair-request" }}>แจ้งซ่อม</Link>
+          <Link to={{ pathname: "/user/repair-history" }}>
+            ติดตามสถานะ/ประวัติของฉัน
+          </Link>
+        </Stack>
+      </Box>
       {/* icons */}
       <Box display="flex">
         <IconButton>
