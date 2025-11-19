@@ -82,6 +82,21 @@ exports.listbycase = async (req, res) => {
     },
   );
 };
+exports.getcasebycaseid = async (req, res) => {
+  const case_id = req.params.case_id;
+  db.query(
+    "select u.name ,u.user_phone, c.case_detail,c.case_title ,c.created_date,c.assigned_date,c.work_completed_date,closed_date ,d.dep_name, c2.categories_name   from Cases c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join Categoriesdevice c2  on c.categories_id = c2.categories_id   where c.case_id = ?",
+    [case_id],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      } else {
+        res.status(200).send(result);
+      }
+    },
+  );
+};
 exports.listbyID = async (req, res) => {
   const case_id = req.params.case_id;
   db.query(
@@ -113,6 +128,21 @@ exports.listbyidtech = async (req, res) => {
     },
   );
 };
+exports.listbyidtechstatus2 = async (req, res) => {
+  const technician_id = req.params.technician_id;
+  db.query(
+    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+    [technician_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("query database error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};
 
 exports.listbyidtechstatus3 = async (req, res) => {
   const technician_id = req.params.technician_id;
@@ -132,7 +162,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (6)",
+    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail,s.status_id FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6) order by c.case_id desc",
     [user_id],
     (err, result) => {
       if (err) {
@@ -148,7 +178,7 @@ exports.listbyIduserstatuscase = async (req, res) => {
   const user_id = req.params.user_id;
   try {
     db.query(
-      "SELECT  c.status_id , c.case_detail,c.case_id,c.case_title,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
+      "SELECT  c.status_id , c.case_detail,c.case_id,c.case_title,c.created_date,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
       [user_id],
       (err, result) => {
         if (err) {
@@ -179,15 +209,8 @@ exports.create = (req, res) => {
     return res.status(400).send("case_detail is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,case_device_id,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,?,NOW(),?)",
-    [
-      case_title,
-      case_detail,
-      case_device_id,
-      user_id,
-      status_id,
-      categories_id,
-    ],
+    "INSERT INTO Cases(case_title,case_detail,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,NOW(),?)",
+    [case_title, case_detail, user_id, status_id, categories_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -249,7 +272,7 @@ exports.casestatusupdate = async (req, res) => {
 
   const selectOldStatusSql = () => {
     db.query(
-      "select status_id as old_status_id, case_device_id from Cases where case_id = ? ",
+      "select status_id as old_status_id from Cases where case_id = ? ",
       [case_id],
       (err, result) => {
         if (err) {
@@ -287,36 +310,34 @@ exports.casestatusupdate = async (req, res) => {
               break;
             case 3:
               // TODO: เปลี่ยน completed_date เป็น work_completed_date เปลี่ยนใน Database ด้วย
+              const { serial_number } = req.body;
+              console.log(status_id);
               db.query(
-                "UPDATE Cases SET status_id = ?,case_device_id = ?, work_completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-                [status_id, case_device_id, case_resolution, case_id],
-                (err, result) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).send("error update status");
-                  } else {
-                    db.query(
-                      "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-                      [
-                        case_id,
-                        case_device_id,
-                        user_id,
-                        old_status_id,
-                        status_id,
-                        event_type[3],
-                      ],
-                      (err2, result2) => {
-                        if (err2) {
-                          console.log(err2);
-                        } else {
-                          res.send(result2);
-                        }
-                      },
-                    );
+                "select * from DeviceInstances where serial_number = ? ",
+                [serial_number],
+                (error, result) => {
+                  if (error) {
+                    return res.status(500).send(error);
                   }
+                  if (result.length === 0) {
+                    return res.status(500).send("not found serial_number");
+                  }
+
+                  const instance_id = result[0].instance_id;
+                  db.query(
+                    "update Cases set  status_id = ? , instance_id = ?, case_resolution = ?,  work_completed_date = NOW()  where case_id = ? ",
+                    [status_id, instance_id, case_resolution, case_id],
+                    (error, result) => {
+                      if (error) {
+                        console.log(error);
+                        res.status(500).send(error);
+                      } else {
+                        res.status(200).send(result);
+                      }
+                    },
+                  );
                 },
               );
-
               break;
             case 4:
               db.query(
@@ -646,6 +667,38 @@ exports.listcasebyuserid = async (req, res) => {
         res.status(500).send("error query casebyid");
       } else {
         res.send(result);
+      }
+    },
+  );
+};
+exports.getLastedCase = async (req, res) => {
+  const limit = req.body.limit || 2;
+  const user_id = req.params.user_id;
+
+  db.query(
+    `select * from Cases c  where c.user_id = ? ORDER BY c.case_id desc limit ?`,
+    [user_id, limit],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      } else {
+        res.status(200).send(result);
+      }
+    },
+  );
+};
+exports.getCasesByInstanceID = async (req, res) => {
+  const instance_id = req.params.instance_id;
+  db.query(
+    "select * from Cases where instance_id = ? ",
+    [instance_id],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      } else {
+        res.status(200).send(result);
       }
     },
   );
