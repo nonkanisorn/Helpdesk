@@ -6,12 +6,26 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-
+exports.getInstanceDeviceAndCount = async (req, res) => {
+  const device_id = req.params.device_id;
+  db.query(
+    "select d.dev_name,di.instance_id ,di.serial_number,(select count(*)  from DeviceInstances di2 where di2.device_id = ? ) as total_instance ,d2.dep_name from DeviceInstances di join Devices d on di.device_id  = d.dev_id left join Department d2 ON  di.dep_id = d2.dep_id  where di.device_id = ? ",
+    [device_id, device_id],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};
 exports.listinstancedevicefromdeviceid = async (req, res) => {
   const device_id = req.params.device_id;
   db.query(
-    // "select d.dev_name,di.instance_id ,di.serial_number,(select count(*)  from DeviceInstances di2 where di2.device_id = ? ) as total_instance  from DeviceInstances di join Devices d on di.device_id  = d.dev_id where di.device_id = ? ",
-    "select d.dev_name,di.instance_id ,di.serial_number,(select count(*)  from DeviceInstances di2 where di2.device_id = ? ) as total_instance ,d2.dep_name from DeviceInstances di join Devices d on di.device_id  = d.dev_id left join Department d2 ON  di.dep_id = d2.dep_id  where di.device_id = ? ",
+    "select d.dev_name,di.instance_id ,di.serial_number,(select count(*)  from DeviceInstances di2 where di2.device_id = ? ) as total_instance,d2.dep_name  from DeviceInstances di join Devices d on di.device_id left join Department d2 ON  di.dep_id = d2.dep_id  = d.dev_id where di.device_id = ? ",
+    // "select d.dev_name,di.instance_id ,di.serial_number,(select count(*)  from DeviceInstances di2 where di2.device_id = ? ) as total_instance ,d2.dep_name from DeviceInstances di join Devices d on di.device_id  = d.dev_id left join Department d2 ON  di.dep_id = d2.dep_id  where di.device_id = ? ",
     [device_id, device_id],
     (error, result) => {
       if (error) {
