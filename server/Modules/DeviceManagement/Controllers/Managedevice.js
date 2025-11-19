@@ -8,14 +8,18 @@ const db = mysql.createConnection({
 });
 
 exports.list = async (req, res) => {
-  db.query("SELECT dev_id,dev_name FROM Devices", (err, results) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("server errror");
-    } else {
-      res.send(results);
-    }
-  });
+  db.query(
+    // "SELECT dev_id,dev_name,d2.devicetype_name  from Devices d join Devicetype d2 ON d.dev_type =d2.devicetype_id "
+    "select d.dev_id,d.dev_name,d2.devicetype_name ,count(di.device_id) as numberofinstancedevice from Devices d join Devicetype d2 on d.dev_type = d2.devicetype_id left join DeviceInstances di on d.dev_id = di.device_id group by dev_name order by dev_id",
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server errror");
+      } else {
+        res.send(results);
+      }
+    },
+  );
 };
 
 exports.create = async (req, res) => {
