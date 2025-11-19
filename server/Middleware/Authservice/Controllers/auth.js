@@ -29,6 +29,7 @@ exports.auth = async (req, res, next) => {
 
 exports.register = async (req, res) => {
   try {
+    const is_active = 1;
     const {
       username,
       userpassword,
@@ -37,7 +38,6 @@ exports.register = async (req, res) => {
       dep_id,
       user_email,
       user_phone,
-      is_active,
     } = req.body;
     const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
