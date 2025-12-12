@@ -20,7 +20,7 @@ function Reportcasetech() {
   const [refresh, setRefresh] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const topagedetail = (case_id) => {
-    navigate(`/technician/detailcasetech/${case_id}`);
+    navigate(`/technician/repairs/${case_id}`);
   };
   const waitingforpart = (case_id) => {
     axios

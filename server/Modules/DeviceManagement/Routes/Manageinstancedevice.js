@@ -5,9 +5,14 @@ const {
   editinstancedevice,
   removeinstancedevice,
   listinstancedevicefromdeviceid,
+  getHistoryRepairInstanceDeviceById,
 } = require("../Controllers/Manageinstancedevice.js");
 router.post("/device/instance", addinstancedevice);
 router.patch("/device/instance/:instance_id", editinstancedevice);
 router.delete("/device/instance/:instance_id", removeinstancedevice);
 router.get("/device/detail/:device_id", listinstancedevicefromdeviceid);
+router.get(
+  "/device/instance/:instance_id/history-repair",
+  getHistoryRepairInstanceDeviceById,
+);
 module.exports = router;

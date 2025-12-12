@@ -329,7 +329,7 @@ const DeviceDetailPages = () => {
 
       {/* HEADER */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6">รายละเอียดอุปกรณ์</Typography>
+        <Typography variant="h3">รายละเอียดอุปกรณ์</Typography>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
         <Typography>อุปกรณ์: {deviceDetail[0].dev_name}</Typography>

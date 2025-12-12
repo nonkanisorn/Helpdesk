@@ -131,7 +131,9 @@ exports.listbyidtech = async (req, res) => {
 exports.listbyidtechstatus2 = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+    // "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+
+    "SELECT u1.name AS usersname,s.status_name,s.status_id,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
     [technician_id],
     (err, result) => {
       if (err) {

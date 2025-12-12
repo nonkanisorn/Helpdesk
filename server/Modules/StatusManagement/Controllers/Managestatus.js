@@ -82,3 +82,6 @@ exports.statusupdate = async (req, res) => {
     },
   );
 };
+exports.getStatusById = async (req, res) => {
+  const user_id = req.params.user_id;
+};

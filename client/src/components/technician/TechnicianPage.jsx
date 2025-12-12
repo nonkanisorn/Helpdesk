@@ -54,7 +54,7 @@ function Technicianpage() {
   }, []);
   console.log(casedata);
   return (
-    <Box>
+    <Box sx={{ pr: 2, height: "100vh", overflowY: "scroll" }}>
       <Typography variant="h4" fontWeight="fontWeightBold">
         Dashboard ช่าง
       </Typography>
@@ -108,8 +108,8 @@ function Technicianpage() {
       >
         งานที่ได้รับมอบหมาย
       </Typography>
-      {casedata.map((items, index) => (
-        <Grid container>
+      <Grid container rowSpacing={2} sx={{ pb: 15 }}>
+        {casedata.map((items, index) => (
           <Grid item md={12}>
             <Paper sx={{ minHeight: 220, borderRadius: 3, p: 5 }}>
               <Stack direction="row" justifyContent="space-between">
@@ -151,8 +151,8 @@ function Technicianpage() {
               </Stack>
             </Paper>
           </Grid>
-        </Grid>
-      ))}
+        ))}
+      </Grid>
     </Box>
   );
 }
