@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box } from "@mui/material";
+import { Switch, Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -35,6 +35,7 @@ function Manageuser() {
     // ช่อง select (number)
     role_id: null, // 👈 number | null
     dep_id: null, // 👈 number | null
+    is_active: 1,
   };
   const {
     register,
@@ -52,12 +53,35 @@ function Manageuser() {
   const [openAddUserDialog, setOpenAddUserDialog] = useState(false);
   const handleOpenAddUserDialog = () => setOpenAddUserDialog(true);
   const handleCloseAddUserDialog = () => setOpenAddUserDialog(false);
-  const confirmDelete = async (dep_id) => {
-    const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
-    if (!shouldDelete) {
-      return;
+  console.log(watch("is_active"));
+  const handleStatusActiveUsers = async (users_id, checked) => {
+    const newStatus = checked ? 1 : 0; // ✅ boolean -> 0/1
+
+    // ✅ อัปเดต UI ทันที
+    setUserData((prev) =>
+      prev.map((u) =>
+        u.users_id === users_id ? { ...u, is_active: newStatus } : u,
+      ),
+    );
+
+    try {
+      await axios.patch(`${apiUrl}/users/isactive/${users_id}`, {
+        is_active: newStatus, // ✅ ส่ง 0/1
+      });
+    } catch (error) {
+      console.log(error);
+
+      // rollback ถ้า error
+      setUserData((prev) =>
+        prev.map((u) =>
+          u.users_id === users_id
+            ? { ...u, is_active: newStatus === 1 ? 0 : 1 }
+            : u,
+        ),
+      );
     }
   };
+
   const handleDelete = (user_id) => {
     axios.delete(`${apiUrl}/users/${user_id}`).then(() => {
       console.log("ลบสําเร็จ");
@@ -101,8 +125,9 @@ function Manageuser() {
   if (!userData || userData.length === 0) {
     return null; // หรือแสดงข้อความแจ้งเตือนอื่นๆ
   }
-  console.log(userData);
+  console.log("dasdsa1`", userData);
   const onSubmit = async (data) => {
+    console.log("is_active:", data.is_active, typeof data.is_active);
     await axios
       .post(`${apiUrl}/register`, {
         username: data.username,
@@ -112,6 +137,7 @@ function Manageuser() {
         dep_id: data.dep_id,
         user_email: data.user_email,
         user_phone: data.user_phone,
+        is_active: data.is_active,
       })
       .then((res) => {
         reset(defaultValues);
@@ -175,6 +201,23 @@ function Manageuser() {
                   </Select>
                 )}
               ></Controller>
+              <Typography>สถานะผู้ใช้งาน</Typography>
+              <Controller
+                control={control}
+                name="is_active"
+                defaultValue={1}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    value={field.value ?? 1}
+                    onChange={(e) => field.onChange(Number(e.target.value))} // ✅ cast เป็น number
+                  >
+                    <MenuItem value={0}>ไม่พร้อมใช้งาน</MenuItem>
+                    <MenuItem value={1}>พร้อมใช้งาน</MenuItem>
+                  </Select>
+                )}
+              />
+
               <Button variant="contained" type="submit">
                 เพิ่ม
               </Button>
@@ -195,13 +238,17 @@ function Manageuser() {
           </Button>
           {/* </Link> */}
         </h1>
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          sx={{ maxHeight: 750, overflowY: "auto" }}
+        >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>ชื่อ</TableCell>
                 <TableCell>บทบาท</TableCell>
+                <TableCell>สถานะ</TableCell>
                 <TableCell>แก้ไข / ลบ</TableCell>
               </TableRow>
             </TableHead>
@@ -215,6 +262,14 @@ function Manageuser() {
 
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.role_name}</TableCell>
+                  <TableCell>
+                    <Switch
+                      checked={item.is_active === 1}
+                      onChange={(e) =>
+                        handleStatusActiveUsers(item.users_id, e.target.checked)
+                      }
+                    />
+                  </TableCell>
                   <TableCell>
                     <Link to={`/admin/edituser/${item.users_id}`}>
                       <Button

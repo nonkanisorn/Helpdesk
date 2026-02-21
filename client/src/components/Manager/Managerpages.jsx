@@ -14,14 +14,22 @@ import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { Link } from "react-router-dom";
 function Managerpages() {
   const [casedata, setcasedata] = useState([]);
+  const [technicianData, setTechnicianData] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
   console.log(casedata);
   const casedatalenght = () => {
     return casedata.length;
+  };
+  const datafilterstatuscase5 = () => {
+    return casedata.filter((data) => data.status_id === 5).length;
   };
   const datafilterstatuscase4 = () => {
     return casedata.filter((data) => data.status_id === 4).length;
   };
 
+  const datafilterstatuscase6 = () => {
+    return casedata.filter((data) => data.status_id === 6).length;
+  };
   const datafilterstatuscase3 = () => {
     return casedata.filter((data) => data.status_id === 3).length;
   };
@@ -33,15 +41,16 @@ function Managerpages() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5011/caseall`).then((response) => {
+    axios.get(`${apiUrl}/caseall`).then((response) => {
       setcasedata(response.data);
     });
   }, []);
-  console.log("casedata4", datafilterstatuscase4());
-  console.log("casedata3", datafilterstatuscase3());
-  console.log("casedata2", datafilterstatuscase2());
-  console.log("casedata1", datafilterstatuscase1());
-  console.log("allcase", casedatalenght());
+  useEffect(() => {
+    axios.get(`${apiUrl}/users/technician`).then((response) => {
+      setTechnicianData(response.data);
+    });
+  }, []);
+  console.log("asd", technicianData);
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between">
@@ -67,6 +76,7 @@ function Managerpages() {
                 sx={{ fontSize: 50, color: "#2463EB" }}
               />
             }
+            number={casedatalenght()}
           />
         </Grid>
         <Grid item md={3}>
@@ -77,6 +87,7 @@ function Managerpages() {
                 sx={{ fontSize: 50, color: green[500] }}
               />
             }
+            number={datafilterstatuscase6()}
           />
         </Grid>
         <Grid item md={3}>
@@ -85,6 +96,7 @@ function Managerpages() {
             icon={
               <AccessTimeRoundedIcon sx={{ fontSize: 50, color: amber[400] }} />
             }
+            number={datafilterstatuscase2()}
           />
         </Grid>
         <Grid item md={3}>
@@ -93,10 +105,20 @@ function Managerpages() {
             icon={
               <ErrorOutlineRoundedIcon sx={{ fontSize: 50, color: red[400] }} />
             }
+            number={datafilterstatuscase5()}
           />
         </Grid>
       </Grid>
-      <Paper sx={{ borderRadius: 3, p: 5, mt: 5 }}>
+      <Paper
+        sx={{
+          borderRadius: 3,
+          p: 5,
+          mt: 5,
+          pb: 25,
+          maxHeight: 750,
+          overflowY: "auto",
+        }}
+      >
         <Typography variant="h5" fontWeight="fontWeightBold">
           สรุปผลงานช่างแต่ละคน
         </Typography>
@@ -104,23 +126,25 @@ function Managerpages() {
           จำนวนงงานที่ได้รับมอบหมายและงานที่เสร็จสิ้น
         </Typography>
         <Grid container>
-          <Grid item xs={12} md={12}>
-            <Paper sx={{ minHeight: 150, borderRadius: 3, mt: 3, p: 4 }}>
-              <Typography>ชื่อนายคณิศร</Typography>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography color="grey">ได้รับมอบหมาย</Typography>
-                <Typography color="grey">เสร็จสิ้น</Typography>
-                <Typography color="grey"> เกินกำหนด</Typography>
-              </Stack>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography color="black">0</Typography>
-                <Typography color="green">0</Typography>
-                <Typography textAlign="center" color="orange">
-                  0
-                </Typography>
-              </Stack>
-            </Paper>
-          </Grid>
+          {technicianData.map((items, index) => (
+            <Grid item xs={12} md={12}>
+              <Paper sx={{ minHeight: 150, borderRadius: 3, mt: 3, p: 4 }}>
+                <Typography>{items.name}</Typography>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography color="grey">ได้รับมอบหมาย</Typography>
+                  <Typography color="grey">เสร็จสิ้น</Typography>
+                  <Typography color="grey"> เกินกำหนด</Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography color="black"></Typography>
+                  <Typography color="green">0</Typography>
+                  <Typography textAlign="center" color="orange">
+                    0
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Grid>
+          ))}
         </Grid>
       </Paper>
     </Box>

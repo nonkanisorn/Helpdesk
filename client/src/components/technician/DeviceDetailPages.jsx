@@ -73,7 +73,7 @@ const DeviceDetailPages = () => {
   // fetch departments (ครั้งเดียว)
   useEffect(() => {
     axios
-      .get(`${apiUrl}/departments`)
+      .get(`${apiUrl}/departments/`)
       .then((res) => setDepartments(res.data))
       .catch((err) => setError(err));
   }, [apiUrl]);

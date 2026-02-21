@@ -9,6 +9,33 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
+exports.listPerformanceTechnician = async (req, res) => {
+  db.query("SELECT * FROM Users WHERE role_id = 3", (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("server error");
+    } else {
+      console.log("reusltjana", results);
+      res.send(results);
+    }
+  });
+};
+exports.isActiveUsers = async (req, res) => {
+  const { users_id } = req.params;
+  const { is_active } = req.body;
+  db.query(
+    "Update Users SET is_active = ? WHERE users_id = ? ",
+    [is_active, users_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        res.send(results);
+      }
+    },
+  );
+};
 exports.getAllUsers = async (req, res) => {
   db.query(
     "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id",
@@ -40,6 +67,7 @@ exports.listbyid = async (req, res) => {
 
 exports.remove = async (req, res) => {
   const user_id = req.params.user_id;
+  //
   // console.log(users_id);
   db.query(
     "DELETE FROM Users WHERE users_id = ? ",
