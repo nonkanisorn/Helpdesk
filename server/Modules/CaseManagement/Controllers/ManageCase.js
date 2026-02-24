@@ -85,7 +85,7 @@ exports.listbycase = async (req, res) => {
 exports.getcasebycaseid = async (req, res) => {
   const case_id = req.params.case_id;
   db.query(
-    "select u.name ,u.user_phone, c.case_detail,c.case_title ,c.created_date,c.assigned_date,c.work_completed_date,closed_date ,d.dep_name, c2.categories_name   from Cases c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join Categoriesdevice c2  on c.categories_id = c2.categories_id   where c.case_id = ?",
+    "select u.name ,u.user_phone, c.case_detail,c.case_title ,c.created_date,c.assigned_date,c.work_completed_date,closed_date ,d.dep_name, c2.categories_name,c.status_id   from Cases c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join Categoriesdevice c2  on c.categories_id = c2.categories_id   where c.case_id = ?",
     [case_id],
     (error, result) => {
       if (error) {
@@ -695,6 +695,22 @@ exports.getCasesByInstanceID = async (req, res) => {
   db.query(
     "select * from Cases where instance_id = ? ",
     [instance_id],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      } else {
+        res.status(200).send(result);
+      }
+    },
+  );
+};
+
+exports.listHistoryCaseByTechnicianID = async (req, res) => {
+  const technician_id = req.params.technician_id;
+  db.query(
+    "select case_id, user_id, technician_id, manager_id, status_id, categories_id, instance_id, case_title, case_detail, case_resolution, created_date, assigned_date, work_completed_date, closed_date from Cases c join Users u on c.technician_id = u.users_id where c.technician_id = ?",
+    [technician_id],
     (error, result) => {
       if (error) {
         console.log(error);

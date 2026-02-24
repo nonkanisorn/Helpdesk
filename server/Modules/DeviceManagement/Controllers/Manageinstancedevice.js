@@ -130,3 +130,20 @@ exports.getHistoryRepairInstanceDeviceById = async (req, res) => {
     res.send(error);
   }
 };
+exports.countInstanceDevices = async (req, res) => {
+  try {
+    db.query(
+      "SELECT d.dev_id, dev_name, COUNT(di.instance_id) AS instance_count FROM  Devices d LEFT JOIN  DeviceInstances di ON d.dev_id = di.device_id GROUP BY  d.dev_id, d.dev_name ORDER BY  instance_count DESC",
+      (error, result) => {
+        if (error) {
+          console.log(error);
+          res.status(500).send(error);
+        } else {
+          res.status(200).send(result);
+        }
+      },
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};

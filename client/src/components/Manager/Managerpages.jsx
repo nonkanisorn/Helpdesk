@@ -129,15 +129,15 @@ function Managerpages() {
           {technicianData.map((items, index) => (
             <Grid item xs={12} md={12}>
               <Paper sx={{ minHeight: 150, borderRadius: 3, mt: 3, p: 4 }}>
-                <Typography>{items.name}</Typography>
+                <Typography>{items.technician_name}</Typography>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography color="grey">ได้รับมอบหมาย</Typography>
                   <Typography color="grey">เสร็จสิ้น</Typography>
                   <Typography color="grey"> เกินกำหนด</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="black"></Typography>
-                  <Typography color="green">0</Typography>
+                  <Typography color="black">{items.assigned_count}</Typography>
+                  <Typography color="green">{items.completed_count}</Typography>
                   <Typography textAlign="center" color="orange">
                     0
                   </Typography>

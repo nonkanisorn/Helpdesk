@@ -129,11 +129,11 @@ const Sidebaradmin = () => {
                   จัดการบทบาท
                 </MenuItem>
               </Link>
-              <Link to="/admin/Managedevice" className="menu-bars">
-                <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
-                  จัดการอุปกรณ์
-                </MenuItem>
-              </Link>
+              {/* <Link to="/admin/Managedevice" className="menu-bars"> */}
+              {/*   <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}> */}
+              {/*     จัดการอุปกรณ์ */}
+              {/*   </MenuItem> */}
+              {/* </Link> */}
               <Link to="/admin/Managestatus" className="menu-bars">
                 <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
                   จัดการสถานะ

@@ -10,10 +10,18 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 
 import { Link } from "react-router-dom";
+import AddDepartmentDialog from "../dialog/AddDialog/AddDepartmentDialog";
 
 function Managedepartment() {
   const [departmentData, setDepartmentdata] = useState([]);
+  const [openAddDepartmentDialog, setOpenAddDepartmentDialog] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
+  const handleOpenAddDepartmentDialog = () => {
+    setOpenAddDepartmentDialog(true);
+  };
+  const handleCloseAddDepartmentDialog = () => {
+    setOpenAddDepartmentDialog(false);
+  };
   const Deletedepartment = async (dep_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -52,15 +60,34 @@ function Managedepartment() {
       .finally(function () {});
   }, []);
 
+  const fetchDepartment = () => {
+    axios
+      .get(`${apiUrl}/departments`)
+      .then(function (response) {
+        setDepartmentdata(response.data);
+        console.log(departmentData);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+  };
   return (
     <div>
       <h1>
         จัดการแผนก {"\u00A0"}
-        <Link to="/admin/Adddepartment">
-          <Button variant="contained" size="small">
-            +ADD
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={handleOpenAddDepartmentDialog}
+        >
+          +ADD
+        </Button>
+        <AddDepartmentDialog
+          open={openAddDepartmentDialog}
+          onClose={handleCloseAddDepartmentDialog}
+          onSuccess={fetchDepartment}
+        />
       </h1>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

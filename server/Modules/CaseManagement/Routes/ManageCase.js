@@ -21,10 +21,15 @@ const {
   listbyidtechstatus2,
   getLastedCase,
   getCasesByInstanceID,
+  listHistoryCaseByTechnicianID,
 } = require("../Controllers/ManageCase");
 
 router.get("/Case", list);
 router.get("/caseall", listall);
+router.get(
+  "/cases/history-technician/:technician_id",
+  listHistoryCaseByTechnicianID,
+);
 router.get("/casestatus", listcase);
 router.get("/Case/:case_id", listbyID);
 router.get("/caseid/:case_id", listbycaseid);

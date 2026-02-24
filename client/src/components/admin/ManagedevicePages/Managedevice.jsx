@@ -41,22 +41,19 @@ function Managedevice() {
     } catch (error) {
       console.log(error);
     }
-
-
   };
   useEffect(() => {
     axios
       .get(`${apiUrl}/Device`)
-      .then(function(response) {
+      .then(function (response) {
         setDevicedata(response.data);
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
-
 
   return (
     <div>

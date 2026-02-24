@@ -19,18 +19,34 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import AddDeviceTypeDialog from "../dialog/AddDialog/AddDeviceTypeDialog";
 const Addtypedevice = () => {
   const [typeDevice, setTypeDevice] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
+  const [openAddDeviceType, setOpenAddDeviceType] = useState(false);
   const [inputNewType, setInputNewType] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
-  const handleOpenDialog = (item) => {
-    setSelectItem(item);
-    setOpenDialog(true);
+  const deleteTypeDevice = (devicetype_id) => {
+    try {
+      const shouldDelete = window.confirm(
+        "คุณต้องการลบปรเภทอุปกรณ์นี้หรือไม่?",
+      );
+      if (!shouldDelete) {
+        return;
+      }
+      axios.delete(`${apiUrl}/device/type/${devicetype_id}`).then(() => {
+        fetchtypedevice();
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleOpenAddDeviceType = () => {
+    setOpenAddDeviceType(true);
+  };
+  const handleCloseAddDeviceType = () => {
+    setOpenAddDeviceType(false);
   };
   const handleSubmit = (devicetype_id) => {
     axios
@@ -46,17 +62,17 @@ const Addtypedevice = () => {
     handleCloseDialog();
   };
   console.log(inputNewType);
+  const fetchtypedevice = () => {
+    axios
+      .get(`${apiUrl}/device/type`)
+      .then((response) => {
+        setTypeDevice(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
-    const fetchtypedevice = () => {
-      axios
-        .get(`${apiUrl}/device/type`)
-        .then((response) => {
-          setTypeDevice(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
     fetchtypedevice();
   }, []);
   console.log(typeDevice);
@@ -69,10 +85,16 @@ const Addtypedevice = () => {
             variant="contained"
             color="primary"
             sx={{ width: 50, height: 30, mt: 2, ml: 3 }}
+            onClick={handleOpenAddDeviceType}
           >
             Add+
           </Button>
         </Box>
+        <AddDeviceTypeDialog
+          open={openAddDeviceType}
+          onClose={handleCloseAddDeviceType}
+          onSuccess={fetchtypedevice}
+        />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -141,6 +163,7 @@ const Addtypedevice = () => {
                         backgroundColor: "red",
                         marginLeft: 3,
                       }}
+                      onClick={() => deleteTypeDevice(items.devicetype_id)}
                     >
                       ลบ
                     </Button>

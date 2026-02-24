@@ -10,11 +10,19 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 
 import { Link } from "react-router-dom";
+import AddRoleDialog from "../dialog/AddDialog/AddRoleDialog";
 
 function Managerole() {
   const [roleData, setroledata] = useState([]);
 
+  const [openAddRoleDialog, setOpenRoleDialog] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
+  const handleAddRoleDialog = () => {
+    setOpenRoleDialog(true);
+  };
+  const handleCloseAddRoleDialog = () => {
+    setOpenRoleDialog(false);
+  };
   const Deleterole = async (role_id) => {
     const shouldDelete = window.confirm("คุณต้องการลบอุปกรณ์นี้หรือไม่?");
     if (!shouldDelete) {
@@ -52,16 +60,31 @@ function Managerole() {
       })
       .finally(function () {});
   }, []);
+  const fetchRoles = () => {
+    axios
+      .get(`${apiUrl}/roles`)
+      .then(function (response) {
+        setroledata(response.data);
+        console.log(roleData);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {});
+  };
 
   return (
     <div>
       <h1>
         จัดการตำแหน่ง {"\u00A0"}
-        <Link to="/admin/Addrole">
-          <Button variant="contained" size="small">
-            +ADD
-          </Button>
-        </Link>
+        <Button variant="contained" size="small" onClick={handleAddRoleDialog}>
+          +ADD
+        </Button>
+        <AddRoleDialog
+          open={openAddRoleDialog}
+          onClose={handleCloseAddRoleDialog}
+          onSuccess={fetchRoles}
+        />
       </h1>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -13,23 +13,30 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 function Historycase() {
+  const statusMap = {
+    3: "รอยืนยันการซ่อม",
+    4: "รออะไหล่",
+    5: "เลยกำาหนดการซ่อม",
+    6: "เสร็จสิ้น",
+  };
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
   const [caseData, setcaseData] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const topagedetail = (case_id) => {
-    navigate(`/technician/detailcasetechfinish/${case_id}`);
+    navigate(`/technician/repairs/${case_id}`);
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:5011/Casetechhistory/${technician_id}`)
-      .then(function(response) {
+      .get(`${apiUrl}/cases/history-technician/${technician_id}`)
+      .then(function (response) {
         setcaseData(response.data);
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       })
-      .finally(function() { });
+      .finally(function () {});
   }, []);
 
   return (
@@ -42,7 +49,6 @@ function Historycase() {
               <TableCell>ลำดับ</TableCell>
               <TableCell>หัวข้อ</TableCell>
               <TableCell>รายละเอียด</TableCell>
-              <TableCell>คนที่มอบหมายงาน</TableCell>
               <TableCell>สถานะ</TableCell>
               <TableCell>ประวัติ</TableCell>
             </TableRow>
@@ -58,8 +64,7 @@ function Historycase() {
                 </TableCell>
                 <TableCell>{item.case_title}</TableCell>
                 <TableCell>{item.case_detail}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.status_name}</TableCell>
+                <TableCell>{statusMap[item.status_id]}</TableCell>
                 <TableCell>
                   <Button
                     size="small"

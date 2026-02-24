@@ -25,11 +25,16 @@ import { Link } from "react-router-dom";
 
 function Technicianpage() {
   const [casedata, setcasedata] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
   const technician_id = useSelector((state) => state.user.users_id);
-  console.log(technician_id);
-  console.log(casedata);
   const casedatalenght = () => {
     return casedata.length;
+  };
+  const datafilterstatuscase5 = () => {
+    return casedata.filter((data) => data.status_id === 5).length;
+  };
+  const datafilterstatuscase6 = () => {
+    return casedata.filter((data) => data.status_id === 6).length;
   };
   const datafilterstatuscase4 = () => {
     return casedata.filter((data) => data.status_id === 4).length;
@@ -41,16 +46,11 @@ function Technicianpage() {
   const datafilterstatuscase2 = () => {
     return casedata.filter((data) => data.status_id === 2).length;
   };
-  const datafilterstatuscase1 = () => {
-    return casedata.filter((data) => data.status_id === 1).length;
-  };
-
+  console.log("st2", datafilterstatuscase2());
   useEffect(() => {
-    axios
-      .get(`http://localhost:5011/casetechstatus2/${technician_id}`)
-      .then((response) => {
-        setcasedata(response.data);
-      });
+    axios.get(`${apiUrl}/case/user/${technician_id}`).then((response) => {
+      setcasedata(response.data);
+    });
   }, []);
   console.log(casedata);
   return (
@@ -70,11 +70,13 @@ function Technicianpage() {
                 sx={{ fontSize: 50, color: "#2463EB" }}
               />
             }
+            number={datafilterstatuscase2()}
           />
         </Grid>
         <Grid item md={3}>
           <PaperuiV2
             title="รอการยืนยันจากผู้ใช้"
+            number={datafilterstatuscase3()}
             icon={
               <PendingActionsRoundedIcon
                 sx={{ fontSize: 50, color: amber[400] }}
@@ -85,6 +87,7 @@ function Technicianpage() {
         <Grid item md={3}>
           <PaperuiV2
             title="เสร็จสิ้น"
+            number={datafilterstatuscase6()}
             icon={
               <CheckCircleOutlineRoundedIcon
                 sx={{ fontSize: 50, color: green[500] }}
@@ -95,6 +98,7 @@ function Technicianpage() {
         <Grid item md={3}>
           <PaperuiV2
             title="เกินกำหนด"
+            number={datafilterstatuscase5()}
             icon={
               <ErrorOutlineRoundedIcon sx={{ fontSize: 50, color: red[400] }} />
             }

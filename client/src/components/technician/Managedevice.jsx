@@ -26,7 +26,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const Managedevice = () => {
+const ManageDevice = () => {
   const [device, setDevice] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectItem, setSelectItem] = useState();
@@ -39,36 +39,38 @@ const Managedevice = () => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
   const tesnum = 1;
-  const [selectTypeDevice, setSelectTypeDevice] = useState('');
-  console.log(typeof (selectTypeDevice))
+  const [selectTypeDevice, setSelectTypeDevice] = useState("");
+  console.log(typeof selectTypeDevice);
   const handleSelectTypeDevice = (event) => {
-    setSelectTypeDevice(event.target.value)
-  }
+    setSelectTypeDevice(event.target.value);
+  };
   const handleOpenAddDevice = () => {
-    setSelectTypeDevice('')
+    setSelectTypeDevice("");
     setOpenAddDialog(true);
   };
   const handleCloseAddDevice = () => {
     setOpenAddDialog(false);
   };
   const handleSubmitAddDevice = () => {
-    axios.post(`${apiUrl}/device`, {
-      dev_name: inputNewDeviceName,
-      dev_type: selectTypeDevice
-    }).catch((error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
-    handleCloseAddDevice()
-    setRefresh(prev => !prev)
+    axios
+      .post(`${apiUrl}/device`, {
+        dev_name: inputNewDeviceName,
+        dev_type: selectTypeDevice,
+      })
+      .catch((error) => {
+        if (error) {
+          console.log(error);
+        }
+      });
+    handleCloseAddDevice();
+    setRefresh((prev) => !prev);
   };
   const handleDeleteDevice = (dev_id) => {
     axios
       .delete(`${apiUrl}/device/${dev_id}`)
       .then((response) => {
         console.log(response);
-        setRefresh(prev => !prev)
+        setRefresh((prev) => !prev);
       })
       .catch((error) => {
         console.log(error);
@@ -89,7 +91,7 @@ const Managedevice = () => {
       })
       .then((response) => {
         console.log(response);
-        setRefresh(prev => !prev)
+        setRefresh((prev) => !prev);
       })
       .catch((error) => {
         console.log(error);
@@ -99,12 +101,12 @@ const Managedevice = () => {
   useEffect(() => {
     const fetchTypeDevice = () => {
       axios.get(`${apiUrl}/device/type`).then((response) => {
-        console.log(response.data)
-        setTypeDevice(response.data)
-      })
-    }
-    fetchTypeDevice()
-  }, [])
+        console.log(response.data);
+        setTypeDevice(response.data);
+      });
+    };
+    fetchTypeDevice();
+  }, []);
   useEffect(() => {
     const fetchdevice = () => {
       axios
@@ -118,7 +120,7 @@ const Managedevice = () => {
     };
     fetchdevice();
   }, [refresh]);
-  console.log(device)
+  console.log(device);
   return (
     <>
       <Box>
@@ -158,7 +160,13 @@ const Managedevice = () => {
                     value={selectTypeDevice}
                     label="ประเภทอุปกรณ์"
                     onChange={handleSelectTypeDevice}
-                  >{typeDevice.map((items) => (<MenuItem value={items.devicetype_id}>{items.devicetype_name}</MenuItem>))}</TextField>
+                  >
+                    {typeDevice.map((items) => (
+                      <MenuItem value={items.devicetype_id}>
+                        {items.devicetype_name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
 
                 {/* ฝั่งขวา */}
@@ -186,12 +194,13 @@ const Managedevice = () => {
             </form>
           </DialogContent>
         </Dialog>
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+          <Table sx={{ m: 2 }}>
             <TableHead>
               <TableRow>
                 <TableCell>ลำดับ</TableCell>
                 <TableCell>ชื่ออุปกรณ์</TableCell>
+                <TableCell>ประเภทอุปกรณ์</TableCell>
                 <TableCell align="center">จำนวน</TableCell>
                 <TableCell align="center">จัดการ</TableCell>
               </TableRow>
@@ -201,11 +210,16 @@ const Managedevice = () => {
                 <TableRow>
                   <TableCell>{idx + 1}</TableCell>
                   <TableCell>{items.dev_name}</TableCell>
+
+                  <TableCell>
+                    <Chip label={items.devicetype_name}></Chip>
+                  </TableCell>
+
                   <TableCell sx={{ display: "flex", justifyContent: "center" }}>
                     <Chip
-                      variant="filled"
+                      variant="outlined"
                       color="info"
-                      label={tesnum}
+                      label={items.numberofinstancedevice}
                       sx={{ width: 50 }}
                     ></Chip>
                   </TableCell>
@@ -275,7 +289,13 @@ const Managedevice = () => {
                       to={`detail/${items.dev_id}`}
                       state={{ device_name: items.dev_name }}
                     >
-                      <Button variant="contained" color="success" sx={{ ml: 2 }}>จัดการ</Button>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ ml: 2 }}
+                      >
+                        ดูอุปกรณ์แต่ละตัว
+                      </Button>
                     </Link>
                   </TableCell>
                 </TableRow>
@@ -288,4 +308,4 @@ const Managedevice = () => {
   );
 };
 
-export default Managedevice;
+export default ManageDevice;

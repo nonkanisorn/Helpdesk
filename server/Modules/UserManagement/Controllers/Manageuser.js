@@ -10,15 +10,19 @@ const db = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 exports.listPerformanceTechnician = async (req, res) => {
-  db.query("SELECT * FROM Users WHERE role_id = 3", (err, results) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("server error");
-    } else {
-      console.log("reusltjana", results);
-      res.send(results);
-    }
-  });
+  db.query(
+    "SELECT u.users_id AS technician_id, u.name AS technician_name,   COUNT(c.case_id) AS assigned_count, SUM(CASE WHEN c.status_id = 6 THEN 1 ELSE 0 END) AS completed_count FROM Users u LEFT JOIN Cases c  ON c.technician_id = u.users_id WHERE u.role_id = 3 GROUP BY u.users_id, u.name ORDER BY u.name;",
+
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        console.log("reusltjana", results);
+        res.send(results);
+      }
+    },
+  );
 };
 exports.isActiveUsers = async (req, res) => {
   const { users_id } = req.params;

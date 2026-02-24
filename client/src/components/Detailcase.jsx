@@ -29,13 +29,26 @@ function Detailcase() {
   const user_id = useSelector((state) => state.user.users_id);
   const apiUrl = process.env.REACT_APP_API_URL;
   console.log("role", role_id);
+  const formatDateTime = (iso) => {
+    if (!iso) return "-";
+
+    return new Date(iso).toLocaleString("th-TH", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
   const handleUpdateStatusCaseByUser = (status_id) => {
     try {
-      axios
-        .patch(`${apiUrl}/case/${user_id}/${case_id}`, {
-          status_id,
-        })
-        .then((response) => console.log(response));
+      if (window.confirm("ยืนยันการซ่อม")) {
+        axios
+          .patch(`${apiUrl}/case/${user_id}/${case_id}`, {
+            status_id,
+          })
+          .then(() => navigate(-1));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -178,10 +191,10 @@ function Detailcase() {
                       </TimelineSeparator>
                       <TimelineContent sx={{ py: 1 }}>
                         <Typography>สร้างรายการแจ้งซ่อม</Typography>
-                        <Typography>โดย: </Typography>
-                        <Typography>date</Typography>
                         {items.created_date && (
-                          <Typography>วันที่: {items.created_date}}</Typography>
+                          <Typography>
+                            วันที่: {formatDateTime(items.created_date)}
+                          </Typography>
                         )}
                       </TimelineContent>
                     </TimelineItem>
@@ -197,10 +210,9 @@ function Detailcase() {
                       </TimelineSeparator>
                       <TimelineContent sx={{ py: 1 }}>
                         <Typography>มอบหมายงานให้ช่าง</Typography>
-                        <Typography>โดย: </Typography>
                         {items.assigned_date && (
                           <Typography>
-                            วันที่: {items.assigned_date}}
+                            วันที่: {formatDateTime(items.assigned_date)}
                           </Typography>
                         )}
                       </TimelineContent>
@@ -214,10 +226,9 @@ function Detailcase() {
                       </TimelineSeparator>
                       <TimelineContent sx={{ py: 1 }}>
                         <Typography>ช่างซ่อมเสร็จสิ้น</Typography>
-                        <Typography>โดย: </Typography>
                         {items.work_completed_date && (
                           <Typography>
-                            วันที่: {items.work_completed_date}}
+                            วันที่: {formatDateTime(items.work_completed_date)}
                           </Typography>
                         )}
                       </TimelineContent>
@@ -232,11 +243,10 @@ function Detailcase() {
                       </TimelineSeparator>
                       <TimelineContent sx={{ py: 1 }}>
                         <Typography>ยืนยันโดยผู้ใช้ / เสร็จสิ้น</Typography>
-                        <Typography>โดย: </Typography>
                         <Typography>
                           {(items.closed_date && (
                             <Typography>
-                              วันที่ : {items.closed_date}
+                              วันที่ : {formatDateTime(items.closed_date)}
                             </Typography>
                           )) || <Typography></Typography>}
                         </Typography>
@@ -246,28 +256,58 @@ function Detailcase() {
                 </Paper>
               </Grid>
               {/* ล่างขวา*/}
+              {/* <Grid item md={4}> */}
+              {/*   <Paper sx={{ mt: 3, p: 4, borderRadius: 3 }}> */}
+              {/*     <Typography variant="subtitle1" fontWeight="fontWeightBold"> */}
+              {/*       การดำเนินการ */}
+              {/*     </Typography> */}
+              {/*     {(role_id === 3 && ( */}
+              {/*       <Link */}
+              {/*         to={{ pathname: `/technician/cases/${case_id}/repair` }} */}
+              {/*       > */}
+              {/*         <Button variant="contained">บันทึกการซ่อม</Button> */}
+              {/*       </Link> */}
+              {/*     )) || */}
+              {/*       (role_id === 4 && */}
+              {/*         items.status_id === */}
+              {/*           3 &&( */}
+              {/*             <Button */}
+              {/*               variant="contained" */}
+              {/*               color="success" */}
+              {/*               onClick={() => handleUpdateStatusCaseByUser(6)} */}
+              {/*             > */}
+              {/*               ยืนยันการซ่อม */}
+              {/*             </Button>, */}
+              {/*           )) || */}
+              {/*       (role_id === 2 && <Button>manager</Button>)} */}
+              {/*   </Paper> */}
+              {/* </Grid> */}
               <Grid item md={4}>
                 <Paper sx={{ mt: 3, p: 4, borderRadius: 3 }}>
                   <Typography variant="subtitle1" fontWeight="fontWeightBold">
                     การดำเนินการ
                   </Typography>
-                  {(role_id === 3 && (
-                    <Link
-                      to={{ pathname: `/technician/cases/${case_id}/repair` }}
-                    >
+
+                  {/* Technician */}
+                  {role_id === 3 && items.status_id === 2 && (
+                    <Link to={`/technician/cases/${case_id}/repair`}>
                       <Button variant="contained">บันทึกการซ่อม</Button>
                     </Link>
-                  )) ||
-                    (role_id === 4 && (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => handleUpdateStatusCaseByUser(6)}
-                      >
-                        ยืนยันการซ่อม
-                      </Button>
-                    )) ||
-                    (role_id === 2 && <Button>manager</Button>)}
+                  )}
+
+                  {/* User confirm */}
+                  {role_id === 4 && items.status_id === 3 && (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleUpdateStatusCaseByUser(6)}
+                    >
+                      ยืนยันการซ่อม
+                    </Button>
+                  )}
+
+                  {/* Manager */}
+                  {role_id === 2 && <Button>manager</Button>}
                 </Paper>
               </Grid>
             </Grid>

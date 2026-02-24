@@ -108,7 +108,7 @@ function LoginPage() {
               textAlign="center"
               sx={{ mt: 3, fontStyle: "italic" }}
             >
-              Sing in
+              {/* Sing in */}
             </Typography>
             <Typography
               sx={{}}
