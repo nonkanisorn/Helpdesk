@@ -46,14 +46,14 @@ const AddDeviceTypeDialog = ({ open, onClose, onSuccess }) => {
         fullWidth
         // sx={{ p: 1 }}
       >
-        <DialogTitle>เพิ่มสถานะ</DialogTitle>
+        <DialogTitle>เพิ่มประเภทอุปกรณ์</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ pt: 1.5, mb: 2 }}>
-            ใช้สำหรับกำหนดสิทธิ์และหน้าที่ของผู้ใช้งานในระบบ
+            ใช้สำหรับกำหนดประเภทของอุปกรณ์ในระบบ
           </DialogContentText>
           <form onSubmit={createDeviceType} id="create-device-type-form">
             <TextField
-              label="บทบาท"
+              label="ประเภทอุปกรณ์"
               fullWidth
               onChange={(e) => setDeviceTypename(e.target.value)}
             ></TextField>

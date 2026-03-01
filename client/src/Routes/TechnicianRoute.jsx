@@ -36,22 +36,22 @@ const TechnicianRoute = () => {
             <Routes>
               <Route path="index" element={<TechnicianPage />} />
               <Route path="*" element={<Notfound404 />} />
-              <Route path="repairs/:case_id" element={<Detailcase />} />
-              <Route path="reportcasetech" element={<Reportcasetech />} />
+              <Route path="repairs/:ticket_id" element={<Detailcase />} />
+              <Route path="reporttickettech" element={<Reportcasetech />} />
               <Route path="device" element={<Managedevice />} />
               <Route
                 path="device/detail/:dev_id"
                 element={<DeviceDetailPages />}
               />
               <Route
-                path="cases/:case_id/repair"
+                path="ticket/:ticket_id/repair"
                 element={<Detailcasetech />}
               />
               <Route
-                path="detailcasetechfinish/:case_id"
+                path="detailtickettechfinish/:ticket_id"
                 element={<Detailcasetechfinish />}
               />
-              <Route path="historycase" element={<Histoyrycase />} />
+              <Route path="historyticket" element={<Histoyrycase />} />
             </Routes>
           </Box>
         </Box>

@@ -126,14 +126,16 @@ function LoginPage() {
                   label="Username"
                 ></TextField>
                 <TextField
-                  {...register("password")}
-                  //                  {/* {...register("password", { */}
-                  //                {/*   minLength: { */}
-                  //              {/*     value: 6, */}
-                  //            {/*     message: "Password should be at least 6 characters", */}
-                  //          {/*   }, */}
-                  //        {/* })} */}
                   label="Password"
+                  type="password"
+                  {...register("password")}
+                  // {...register("password", {
+                  //   minLength: {
+                  //     value: 6,
+                  //     message: "Password should be at least 6 characters",
+                  //   },
+                  // })}
+                  // label="Password"
                 ></TextField>
                 {/* {errors.password && ( */}
                 {/*   <Typography>{errors.password.message}</Typography> */}

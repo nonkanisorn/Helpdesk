@@ -18,6 +18,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import { blue, yellow, deepOrange } from "@mui/material/colors";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -254,7 +255,7 @@ function Adminpages() {
       <Grid container spacing={4}>
         <Grid item xs={1} md={3}>
           <AdminQuickActionCard
-            icon=<PersonAddIcon />
+            icon=<PersonAddIcon sx={{ color: "green", fontSize: 50 }} />
             title="ผู้ใช้งาน"
             subtitle="เพิ่มผู้ใช้งาน"
             func={() => setOpenAddUserDialog(true)}
@@ -262,7 +263,7 @@ function Adminpages() {
         </Grid>
         <Grid item xs={1} md={3}>
           <AdminQuickActionCard
-            icon={<AddModeratorIcon />}
+            icon={<AddModeratorIcon sx={{ color: blue[400], fontSize: 50 }} />}
             title="บทบาท"
             subtitle="เพิ่มบทบาท"
             func={() => handleAddRoleDialog()}
@@ -274,7 +275,7 @@ function Adminpages() {
         </Grid>
         <Grid item xs={1} md={3}>
           <AdminQuickActionCard
-            icon={<FlagIcon />}
+            icon={<FlagIcon sx={{ color: yellow[400], fontSize: 50 }} />}
             title="สถานะ"
             subtitle="เพิ่มสถานะ"
             func={() => handleAddStatusDialog()}
@@ -286,7 +287,9 @@ function Adminpages() {
         </Grid>
         <Grid item xs={1} md={3}>
           <AdminQuickActionCard
-            icon={<ApartmentIcon />}
+            icon={
+              <ApartmentIcon sx={{ color: deepOrange[400], fontSize: 50 }} />
+            }
             title="แผนก"
             subtitle="เพิ่มแผนก"
             func={() => handleAddDepartmentDialog()}

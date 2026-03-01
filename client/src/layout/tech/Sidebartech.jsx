@@ -86,7 +86,9 @@ const Sidebartech = () => {
                     alignItems="center"
                     ml="15px"
                   >
-                    <Typography sx={{ color: "white" }}>REPAIR APP</Typography>
+                    <Typography sx={{ color: "white" }}>
+                      HELPDESK APP
+                    </Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon sx={{ color: "white" }} />
                     </IconButton>
@@ -119,7 +121,7 @@ const Sidebartech = () => {
                   หน้าหลัก
                 </MenuItem>
               </Link>
-              <Link to="/technician/reportcasetech" className="menu-bars">
+              <Link to="/technician/reporttickettech" className="menu-bars">
                 <MenuItem
                   style={{ color: "#fff" }}
                   icon={<ConstructionOutlinedIcon />}
@@ -127,7 +129,7 @@ const Sidebartech = () => {
                   รายการแจ้งซ่อม
                 </MenuItem>
               </Link>
-              <Link to="/technician/Historycase" className="menu-bars">
+              <Link to="/technician/Historyticket" className="menu-bars">
                 <MenuItem
                   style={{ color: "#fff" }}
                   icon={<HistoryToggleOffIcon />}

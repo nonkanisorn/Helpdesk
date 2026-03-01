@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 exports.listPerformanceTechnician = async (req, res) => {
   db.query(
-    "SELECT u.users_id AS technician_id, u.name AS technician_name,   COUNT(c.case_id) AS assigned_count, SUM(CASE WHEN c.status_id = 6 THEN 1 ELSE 0 END) AS completed_count FROM Users u LEFT JOIN Cases c  ON c.technician_id = u.users_id WHERE u.role_id = 3 GROUP BY u.users_id, u.name ORDER BY u.name;",
+    "SELECT u.users_id AS technician_id, u.name AS technician_name,   COUNT(c.ticket_id) AS assigned_count, SUM(CASE WHEN c.status_id = 6 THEN 1 ELSE 0 END) AS completed_count FROM Users u LEFT JOIN tickets c  ON c.technician_id = u.users_id WHERE u.role_id = 3 GROUP BY u.users_id, u.name ORDER BY u.name;",
 
     (err, results) => {
       if (err) {
@@ -88,7 +88,7 @@ exports.remove = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const users_id = req.params.users_id;
+  const users_id = req.params.user_id;
   const user_img = req.file ? req.file.buffer : null;
   const {
     name,
@@ -98,6 +98,7 @@ exports.update = async (req, res) => {
     dep_id,
     user_email,
     user_phone,
+    is_active,
   } = req.body;
   let query = "UPDATE Users SET ";
   const params = [];
@@ -134,6 +135,10 @@ exports.update = async (req, res) => {
     query += "user_phone = ? ,";
     params.push(user_phone);
   }
+  if (is_active) {
+    query += "is_active = ? ,";
+    params.push(is_active);
+  }
 
   query = query.slice(0, -1);
 
@@ -150,16 +155,4 @@ exports.update = async (req, res) => {
       res.send(result);
     }
   });
-  // db.query(
-  //   "UPDATE Users SET name = ? , user_email = ?  WHERE users_id =? ",
-  //   [name, user_email, users_id],
-  //   (err, result) => {
-  //     if (err) {
-  //       console.log(err);
-  //       res.status(500).send("server error");
-  //     } else {
-  //       res.send(result);
-  //     }
-  //   },
-  // );
 };

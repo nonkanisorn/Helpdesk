@@ -31,6 +31,20 @@ const InstanceDeviceHistoryPage = () => {
       console.log(error);
     }
   }, []);
+  const formatDateTime = (dateString) => {
+    if (!dateString) return "-";
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("th-TH", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
   return (
     <>
       {instanceData.length === 0 ? (
@@ -84,9 +98,9 @@ const InstanceDeviceHistoryPage = () => {
                 <TableBody>
                   {instanceData.map((data, index) => (
                     <TableRow>
-                      <TableCell>{data.case_id}</TableCell>
-                      <TableCell>{data.created_date}</TableCell>
-                      <TableCell>{data.case_title}</TableCell>
+                      <TableCell>{data.ticket_id}</TableCell>
+                      <TableCell>{formatDateTime(data.created_at)}</TableCell>
+                      <TableCell>{data.title}</TableCell>
                       <TableCell>{data.name}</TableCell>
                       <TableCell>{data.status_name}</TableCell>
                     </TableRow>

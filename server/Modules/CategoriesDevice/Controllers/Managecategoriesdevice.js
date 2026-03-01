@@ -8,7 +8,7 @@ const db = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 exports.getCategoriesDevice = async (_, res) => {
-  db.query("SELECT * FROM Categoriesdevice", (err, result) => {
+  db.query("SELECT * FROM issues_categories", (err, result) => {
     if (err) {
       res.status(500).send("error query categoriesdevice");
     } else {

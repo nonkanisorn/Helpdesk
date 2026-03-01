@@ -15,25 +15,34 @@ import { Typography } from "@mui/material";
 function Reportcasetech() {
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
-  const [caseData, setcaseData] = useState([]);
+  const [ticketData, setticketData] = useState([]);
   const status_id = 4;
   const [refresh, setRefresh] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
-  const topagedetail = (case_id) => {
-    navigate(`/technician/repairs/${case_id}`);
+  const technicianStatusMap = {
+    1: "งานใหม่",
+    2: "ได้รับมอบหมาย",
+    3: "กำลังดำเนินการ",
+    4: "บันทึกผลแล้ว",
+    5: "รอผู้ใช้ยืนยัน",
+    6: "ปิดงานแล้ว",
+    7: "รออะไหล่",
   };
-  const waitingforpart = (case_id) => {
+  const topagedetail = (ticket_id) => {
+    navigate(`/technician/repairs/${ticket_id}`);
+  };
+  const waitingforpart = (ticket_id) => {
     axios
-      .patch(`${apiUrl}/Case/${technician_id}/${case_id}`, {
+      .patch(`${apiUrl}/ticket/${technician_id}/${ticket_id}`, {
         status_id,
       })
       .then(setRefresh(true));
   };
   useEffect(() => {
     axios
-      .get(`${apiUrl}/Casetech/${technician_id}`)
+      .get(`${apiUrl}/tickettech/${technician_id}`)
       .then(function (response) {
-        setcaseData(response.data);
+        setticketData(response.data);
         console.log(response);
       })
       .catch(function (error) {
@@ -43,7 +52,6 @@ function Reportcasetech() {
   }, [refresh]);
 
   return (
-    // TODO: เพิ่มปุ่ม เพิ่มเติม ย้ายรายละเอียด ไปอีกหน้า
     <Box>
       <Typography variant="h3">รายการแจ้งซ่อม</Typography>
       <TableContainer component={Paper}>
@@ -59,7 +67,7 @@ function Reportcasetech() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {caseData.map((item, index) => (
+            {ticketData.map((item, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -67,10 +75,10 @@ function Reportcasetech() {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell>{item.case_title}</TableCell>
+                <TableCell>{item.title}</TableCell>
                 <TableCell>{item.usersname}</TableCell>
-                <TableCell>{item.case_detail}</TableCell>
-                <TableCell>{item.status_name}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell>{technicianStatusMap[item.status_id]}</TableCell>
 
                 <TableCell>
                   <Button
@@ -78,19 +86,10 @@ function Reportcasetech() {
                     // sx={{ fontSize: 7, padding: 0.5 }}
                     variant="contained"
                     color="success"
-                    onClick={() => topagedetail(item.case_id)}
+                    onClick={() => topagedetail(item.ticket_id)}
                     sx={{ mr: 2 }}
                   >
-                    ปิดงาน
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    sx={{ mr: 2 }}
-                    onClick={() => waitingforpart(item.case_id)}
-                  >
-                    รออะไหล่
+                    จัดการงาน
                   </Button>
                   {/* <Button variant="contained" color="error" size="small"> */}
                   {/*   ซ่อมไม่ได้ */}

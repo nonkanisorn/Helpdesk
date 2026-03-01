@@ -10,7 +10,7 @@ const db = mysql.createConnection({
 
 exports.list = async (req, res) => {
   db.query(
-    "SELECT * FROM Cases c INNER JOIN Users u on c.user_id = u.users_id WHERE status_id = 1",
+    "SELECT * FROM tickets c INNER JOIN Users u on c.user_id = u.users_id WHERE status_id = 1",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -22,9 +22,34 @@ exports.list = async (req, res) => {
   );
 };
 
+exports.listTicketStatusOpen = async (req, res) => {
+  db.query("select * from tickets where status_id = 1 ", (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("server error");
+    } else {
+      res.send(result);
+    }
+  });
+};
+exports.listForManager = async (req, res) => {
+  db.query(
+    // "SELECT * FROM tickets c INNER JOIN Users u on c.user_id = u.users_id ",
+    "SELECT t.*, CASE WHEN t.work_completed_at IS NULL AND t.assigned_at IS NOT NULL AND NOW() > DATE_ADD(t.assigned_at, INTERVAL 3 DAY) THEN 1 ELSE 0 END AS is_overdue FROM tickets t;",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
+};
 exports.listall = async (req, res) => {
   db.query(
-    "SELECT * FROM Cases c INNER JOIN Users u on c.user_id = u.users_id ",
+    // "SELECT * FROM tickets c INNER JOIN Users u on c.user_id = u.users_id ",
+    "SELECT t.*, CASE WHEN t.work_completed_at IS NULL AND t.assigned_at IS NOT NULL AND NOW() > DATE_ADD(t.assigned_at, INTERVAL 3 DAY) THEN 1 ELSE 0 END AS is_overdue FROM tickets t;",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -36,9 +61,9 @@ exports.listall = async (req, res) => {
   );
 };
 
-exports.listcase = async (req, res) => {
+exports.listticket = async (req, res) => {
   db.query(
-    "SELECT * FROM Cases c INNER JOIN Status s on c.status_id = s.status_id  INNER JOIN Users u ON c.user_id = u.users_id WHERE c.status_id IN (2,3,4,5)",
+    "SELECT * FROM tickets c INNER JOIN status s on c.status_id = s.status_id  INNER JOIN Users u ON c.user_id = u.users_id WHERE c.status_id IN (2,3,4,5,6,7)",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -51,11 +76,11 @@ exports.listcase = async (req, res) => {
   );
 };
 
-exports.listbycaseid = async (req, res) => {
-  const case_id = req.params.case_id;
+exports.listbyticketid = async (req, res) => {
+  const ticket_id = req.params.ticket_id;
   db.query(
-    "SELECT * FROM Cases c LEFT JOIN Users u on c.technician_id = u.users_id WHERE case_id = ? ",
-    [case_id],
+    "SELECT * FROM tickets c LEFT JOIN Users u on c.technician_id = u.users_id WHERE ticket_id = ? ",
+    [ticket_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -67,11 +92,11 @@ exports.listbycaseid = async (req, res) => {
   );
 };
 
-exports.listbycase = async (req, res) => {
-  const case_id = req.params.case_id;
+exports.listbyticket = async (req, res) => {
+  const ticket_id = req.params.ticket_id;
   db.query(
-    "SELECT * FROM Cases  WHERE case_id = ? ",
-    [case_id],
+    "SELECT * FROM tickets  WHERE ticket_id = ? ",
+    [ticket_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -82,11 +107,12 @@ exports.listbycase = async (req, res) => {
     },
   );
 };
-exports.getcasebycaseid = async (req, res) => {
-  const case_id = req.params.case_id;
+exports.getticketbyticketid = async (req, res) => {
+  const ticket_id = req.params.ticket_id;
   db.query(
-    "select u.name ,u.user_phone, c.case_detail,c.case_title ,c.created_date,c.assigned_date,c.work_completed_date,closed_date ,d.dep_name, c2.categories_name,c.status_id   from Cases c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join Categoriesdevice c2  on c.categories_id = c2.categories_id   where c.case_id = ?",
-    [case_id],
+    "select u.name ,u.user_phone,c.started_at, c.description,c.title ,c.created_at,c.assigned_at,c.work_completed_at,closed_at ,d.dep_name, c2.issues_categories_name,c.status_id   from tickets c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join issues_categories c2  on c.issues_categories_id = c2.issues_categories_id   where c.ticket_id = ?",
+
+    [ticket_id],
     (error, result) => {
       if (error) {
         console.log(error);
@@ -98,10 +124,10 @@ exports.getcasebycaseid = async (req, res) => {
   );
 };
 exports.listbyID = async (req, res) => {
-  const case_id = req.params.case_id;
+  const ticket_id = req.params.ticket_id;
   db.query(
-    "SELECT u1.name AS user_name,c.case_title, c.case_id,c.user_id,c.case_detail,c.technician_id,u.name FROM Cases c inner join Users u on manager_id = users_id INNER JOIN Users u1 ON c.user_id = u1.users_id WHERE case_id = ?  ",
-    [case_id],
+    "SELECT u1.name AS user_name,c.title, c.ticket_id,c.user_id,c.description,c.technician_id,u.name FROM tickets c inner join Users u on manager_id = users_id INNER JOIN Users u1 ON c.user_id = u1.users_id WHERE ticket_id = ?  ",
+    [ticket_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -116,7 +142,7 @@ exports.listbyID = async (req, res) => {
 exports.listbyidtech = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
+    "SELECT u1.name AS usersname,s.status_id,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -131,9 +157,9 @@ exports.listbyidtech = async (req, res) => {
 exports.listbyidtechstatus2 = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    // "SELECT u1.name AS usersname,s.status_name,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+    // "SELECT u1.name AS usersname,s.status_name,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username,c.created_at  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
 
-    "SELECT u1.name AS usersname,s.status_name,s.status_id,u.name ,c.case_title,c.case_id,c.case_detail,c.manager_id as username,c.created_date  FROM Cases c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+    "SELECT u1.name AS usersname,s.status_name,s.status_id,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username,c.created_at  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -149,7 +175,7 @@ exports.listbyidtechstatus2 = async (req, res) => {
 exports.listbyidtechstatus3 = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT c.case_title,u2.name,s.status_name,c.created_date,c.case_id,c.case_detail,c.manager_id FROM Cases c  INNER JOIN Users u1 ON c.technician_id = u1.users_id INNER JOIN Status s ON c.status_id = s.status_id INNER JOIN Users u2 on c.manager_id = u2.users_id  WHERE c.technician_id = ? AND c.status_id IN (3,4);",
+    "SELECT c.title,u2.name,s.status_name,c.created_at,c.ticket_id,c.description,c.manager_id FROM tickets c  INNER JOIN Users u1 ON c.technician_id = u1.users_id INNER JOIN status s ON c.status_id = s.status_id INNER JOIN Users u2 on c.manager_id = u2.users_id  WHERE c.technician_id = ? AND c.status_id IN (3,4);",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -164,7 +190,7 @@ exports.listbyidtechstatus3 = async (req, res) => {
 exports.listbyIduser = async (req, res) => {
   const user_id = req.params.user_id;
   db.query(
-    "SELECT c.case_id,c.case_title,s.status_name,c.case_detail,s.status_id FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6) order by c.case_id desc",
+    "SELECT c.created_at , c.ticket_id,c.title,s.status_name,c.description,s.status_id FROM tickets c  JOIN status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6) order by c.ticket_id desc",
     [user_id],
     (err, result) => {
       if (err) {
@@ -176,11 +202,11 @@ exports.listbyIduser = async (req, res) => {
     },
   );
 };
-exports.listbyIduserstatuscase = async (req, res) => {
+exports.listbyIduserstatusticket = async (req, res) => {
   const user_id = req.params.user_id;
   try {
     db.query(
-      "SELECT  c.status_id , c.case_detail,c.case_id,c.case_title,c.created_date,s.status_name FROM Cases c  JOIN Status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
+      "SELECT  c.status_id , c.description,c.ticket_id,c.title,c.created_at,s.status_name FROM tickets c  JOIN status s on c.status_id = s.status_id WHERE user_id = ? AND s.status_id IN (1,2,3,4,5,6)",
       [user_id],
       (err, result) => {
         if (err) {
@@ -197,55 +223,36 @@ exports.listbyIduserstatuscase = async (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const {
-    case_title,
-    case_detail,
-    case_device_id,
-    user_id,
-    status_id,
-    categories_id,
-  } = req.body;
+  const { title, description, user_id, status_id, issues_categories_id } =
+    req.body;
   console.log(req.body);
 
-  if (!case_detail) {
-    return res.status(400).send("case_detail is require");
+  if (!description) {
+    return res.status(400).send("description is require");
   }
   db.query(
-    "INSERT INTO Cases(case_title,case_detail,user_id,status_id ,created_date,categories_id  ) VALUES (?,?,?,?,NOW(),?)",
-    [case_title, case_detail, user_id, status_id, categories_id],
+    "INSERT INTO tickets(title,description,user_id,status_id ,created_at,issues_categories_id  ) VALUES (?,?,?,?,NOW(),?)",
+    [title, description, user_id, status_id, issues_categories_id],
     (err, result) => {
       if (err) {
         console.log(err);
         res.status(500).send("server error");
       } else {
         res.send(result);
-        db.query(
-          "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-          [result.insertId, case_device_id, user_id, null, 1, "created"],
-        );
+        // db.query(
+        //   "insert into Historyrepair (ticket_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
+        //   [result.insertId, ticket_device_id, user_id, null, 1, "created"],
+        // );
       }
     },
   );
 };
 
 exports.remove = async (req, res) => {
-  const caseID = req.params.case_id;
-  db.query("DELETE FROM Cases WHERE case_id = ?", [caseID], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("server error");
-    } else {
-      res.send(result);
-    }
-  });
-};
-
-exports.update = async (req, res) => {
-  const caseID = req.params.case_id;
-  const { case_detail, case_img } = req.body;
+  const ticketID = req.params.ticket_id;
   db.query(
-    "UPDATE Cases SET case_detail = ?, case_img = ? WHERE case_id = ?",
-    [case_detail, case_img, caseID],
+    "DELETE FROM tickets WHERE ticket_id = ?",
+    [ticketID],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -257,12 +264,29 @@ exports.update = async (req, res) => {
   );
 };
 
-exports.casestatusupdate = async (req, res) => {
+// exports.update = async (req, res) => {
+//   const ticketID = req.params.ticket_id;
+//   const { description, ticket_img } = req.body;
+//   db.query(
+//     "UPDATE tickets SET description = ?, ticket_img = ? WHERE ticket_id = ?",
+//     [description, ticket_img, ticketID],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(500).send("server error");
+//       } else {
+//         res.send(result);
+//       }
+//     },
+//   );
+// };
+
+exports.ticketstatusupdate = async (req, res) => {
   const status_id = req.body.status_id;
   const user_id = req.params.user_id;
-  const case_id = req.params.case_id;
-  const case_resolution = req.body.case_resolution;
-  const case_device_id = req.body.case_device_id;
+  const ticket_id = req.params.ticket_id;
+  const ticket_resolution = req.body.ticket_resolution;
+  const ticket_device_id = req.body.ticket_device_id;
   const event_type = {
     1: "created",
     2: "assigned",
@@ -274,8 +298,8 @@ exports.casestatusupdate = async (req, res) => {
 
   const selectOldStatusSql = () => {
     db.query(
-      "select status_id as old_status_id from Cases where case_id = ? ",
-      [case_id],
+      "select status_id as old_status_id from tickets where ticket_id = ? ",
+      [ticket_id],
       (err, result) => {
         if (err) {
           return res.status(500).send(err);
@@ -283,10 +307,11 @@ exports.casestatusupdate = async (req, res) => {
           const old_status_id = result[0].old_status_id;
           console.log(old_status_id);
           switch (status_id) {
+            //Open
             case 1:
               db.query(
-                "UPDATE Cases SET status_id = ?, created_date = NOW() WHERE case_id = ? ",
-                [status_id, case_id],
+                "UPDATE tickets SET status_id = ?, created_at = NOW() WHERE ticket_id = ? ",
+                [status_id, ticket_id],
                 (err, result) => {
                   if (err) {
                     console.log(err);
@@ -297,21 +322,37 @@ exports.casestatusupdate = async (req, res) => {
                 },
               );
               break;
+            //Assigned
             case 2:
               db.query(
-                "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-                [status_id, case_id],
+                "UPDATE tickets SET status_id = ?, assigned_at = NOW() WHERE ticket_id = ? ",
+                [status_id, ticket_id],
                 (err, result) => {
                   if (err) {
                     console.log(err);
                     res.status(500).send("error update status");
                   } else {
+                    res.status(200).send(result);
                   }
                 },
               );
               break;
+            //Technician Completed
             case 3:
-              // TODO: เปลี่ยน completed_date เป็น work_completed_date เปลี่ยนใน Database ด้วย
+              db.query(
+                "UPDATE tickets SET status_id = ? , started_at = NOW() WHERE ticket_id =? ",
+                [status_id, ticket_id],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                    res.status(500).send("error update status");
+                  } else {
+                    res.status(200).send(result);
+                  }
+                },
+              );
+              break;
+            case 4:
               const { serial_number } = req.body;
               console.log(status_id);
               db.query(
@@ -327,8 +368,8 @@ exports.casestatusupdate = async (req, res) => {
 
                   const instance_id = result[0].instance_id;
                   db.query(
-                    "update Cases set  status_id = ? , instance_id = ?, case_resolution = ?,  work_completed_date = NOW()  where case_id = ? ",
-                    [status_id, instance_id, case_resolution, case_id],
+                    "update tickets set  status_id = ? , instance_id = ?, ticket_resolution = ?,  work_completed_at = NOW()  where ticket_id = ? ",
+                    [status_id, instance_id, ticket_resolution, ticket_id],
                     (error, result) => {
                       if (error) {
                         console.log(error);
@@ -341,31 +382,16 @@ exports.casestatusupdate = async (req, res) => {
                 },
               );
               break;
-            case 4:
-              db.query(
-                "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
-                [status_id, case_id],
-                (err, result) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).send("server error no status 3");
-                  } else {
-                    res.send(result);
-                  }
-                },
-              );
-
-              break;
             case 5:
               db.query(
-                "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-                [status_id, case_id],
+                "update tickets set status_id = ?, closed_at = now() where ticket_id = ? ",
+                [status_id, ticket_id],
                 (err, result) => {
                   if (err) {
                     console.log(err);
-                    res.status(500).send("server error ");
+                    return res.status(500).send(err);
                   } else {
-                    res.send(result);
+                    return res.status(200).send(result);
                   }
                 },
               );
@@ -373,31 +399,14 @@ exports.casestatusupdate = async (req, res) => {
               break;
             case 6:
               db.query(
-                "update Cases set status_id = ?, closed_date = now() where case_id = ? ",
-                [status_id, case_id],
+                "update tickets set status_id = ? where ticket_id = ? ",
+                [status_id, ticket_id],
                 (err, result) => {
                   if (err) {
                     console.log(err);
                     return res.status(500).send(err);
                   } else {
-                    db.query(
-                      "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
-                      [
-                        case_id,
-                        case_device_id,
-                        user_id,
-                        old_status_id,
-                        status_id,
-                        event_type[6],
-                      ],
-                      (err2, result2) => {
-                        if (err2) {
-                          console.log(err2);
-                        } else {
-                          res.send(result2);
-                        }
-                      },
-                    );
+                    return res.status(200).send(result);
                   }
                 },
               );
@@ -405,9 +414,9 @@ exports.casestatusupdate = async (req, res) => {
               break;
           }
           // const insertHistorySql =
-          //   "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
+          //   "insert into historyrepair (ticket_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
           // const insertParams = [
-          //   case_id,
+          //   ticket_id,
           //   null,
           //   user_id,
           //   null,
@@ -425,10 +434,10 @@ exports.casestatusupdate = async (req, res) => {
   };
   selectOldStatusSql();
   // switch (status_id) {
-  //   case 1:
+  //   ticket 1:
   //     db.query(
-  //       "UPDATE Cases SET status_id = ?, created_date = NOW() WHERE case_id = ? ",
-  //       [status_id, case_id],
+  //       "UPDATE tickets SET status_id = ?, created_at = NOW() WHERE ticket_id = ? ",
+  //       [status_id, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -439,10 +448,10 @@ exports.casestatusupdate = async (req, res) => {
   //       },
   //     );
   //     break;
-  //   case 2:
+  //   ticket 2:
   //     db.query(
-  //       "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-  //       [status_id, case_id],
+  //       "UPDATE tickets SET status_id = ?, assigned_at = NOW() WHERE ticket_id = ? ",
+  //       [status_id, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -453,11 +462,10 @@ exports.casestatusupdate = async (req, res) => {
   //       },
   //     );
   //     break;
-  //   case 3:
-  //     // TODO: เปลี่ยน completed_date เป็น work_completed_date เปลี่ยนใน Database ด้วย
+  //   ticket 3:
   //     db.query(
-  //       "UPDATE Cases SET status_id = ?,case_device_id = ?, work_completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-  //       [status_id, case_device_id, case_resolution, case_id],
+  //       "UPDATE tickets SET status_id = ?,ticket_device_id = ?, work_completed_at = NOW(), ticket_resolution= ? WHERE ticket_id = ? ",
+  //       [status_id, ticket_device_id, ticket_resolution, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -468,10 +476,10 @@ exports.casestatusupdate = async (req, res) => {
   //       },
   //     );
   //     db.query(
-  //       "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
+  //       "insert into historyrepair (ticket_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
   //       [
-  //         case_id,
-  //         case_device_id,
+  //         ticket_id,
+  //         ticket_device_id,
   //         user_id,
   //         old_status_id,
   //         status_id,
@@ -480,10 +488,10 @@ exports.casestatusupdate = async (req, res) => {
   //     );
   //
   //     break;
-  //   case 4:
+  //   ticket 4:
   //     db.query(
-  //       "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
-  //       [status_id, case_id],
+  //       "UPDATE tickets SET status_id = ?, closed_at = NOW() WHERE ticket_id = ?",
+  //       [status_id, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -495,10 +503,10 @@ exports.casestatusupdate = async (req, res) => {
   //     );
   //
   //     break;
-  //   case 5:
+  //   ticket 5:
   //     db.query(
-  //       "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //       [status_id, case_id],
+  //       "UPDATE tickets SET status_id = ? WHERE ticket_id = ? ",
+  //       [status_id, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -510,10 +518,10 @@ exports.casestatusupdate = async (req, res) => {
   //     );
   //
   //     break;
-  //   case 6:
+  //   ticket 6:
   //     db.query(
-  //       "update Cases set status_id = ?, closed_date = now() where case_id = ? ",
-  //       [status_id, case_id],
+  //       "update tickets set status_id = ?, closed_at = now() where ticket_id = ? ",
+  //       [status_id, ticket_id],
   //       (err, result) => {
   //         if (err) {
   //           console.log(err);
@@ -527,8 +535,8 @@ exports.casestatusupdate = async (req, res) => {
   //     break;
   // }
   // const insertHistorySql =
-  //   "insert into historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
-  // const insertParams = [case_id, null, user_id, null, status_id, event_type[1]];
+  //   "insert into historyrepair (ticket_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)";
+  // const insertParams = [ticket_id, null, user_id, null, status_id, event_type[1]];
   // db.query(insertHistorySql, insertParams, (err) => {
   //   if (err) {
   //     console.log("insert error");
@@ -536,8 +544,8 @@ exports.casestatusupdate = async (req, res) => {
   // });
   // if (status_id === 6) {
   //   db.query(
-  //     "update Cases set status_id = ?, closed_date = now() where case_id = ? ",
-  //     [status_id, case_id],
+  //     "update tickets set status_id = ?, closed_at = now() where ticket_id = ? ",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -550,8 +558,8 @@ exports.casestatusupdate = async (req, res) => {
   // }
   // if (status_id === 5) {
   //   db.query(
-  //     "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //     [status_id, case_id],
+  //     "UPDATE tickets SET status_id = ? WHERE ticket_id = ? ",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -565,8 +573,8 @@ exports.casestatusupdate = async (req, res) => {
   //
   // if (status_id === 4) {
   //   db.query(
-  //     "UPDATE Cases SET status_id = ?, closed_date = NOW() WHERE case_id = ?",
-  //     [status_id, case_id],
+  //     "UPDATE tickets SET status_id = ?, closed_at = NOW() WHERE ticket_id = ?",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -579,8 +587,8 @@ exports.casestatusupdate = async (req, res) => {
   // } else if (status_id === 2) {
   //   console.log("status", status_id);
   //   db.query(
-  //     "UPDATE Cases SET status_id = ?, assigned_date = NOW() WHERE case_id = ? ",
-  //     [status_id, case_id],
+  //     "UPDATE tickets SET status_id = ?, assigned_at = NOW() WHERE ticket_id = ? ",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -592,8 +600,8 @@ exports.casestatusupdate = async (req, res) => {
   //   );
   // } else if (status_id === 1) {
   //   db.query(
-  //     "UPDATE Cases SET status_id = ?, created_date = NOW() WHERE case_id = ? ",
-  //     [status_id, case_id],
+  //     "UPDATE tickets SET status_id = ?, created_at = NOW() WHERE ticket_id = ? ",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -605,8 +613,8 @@ exports.casestatusupdate = async (req, res) => {
   //   );
   // } else if (status_id === 3) {
   //   db.query(
-  //     "UPDATE Cases SET status_id = ?,case_device_id = ?, completed_date = NOW(), case_resolution= ? WHERE case_id = ? ",
-  //     [status_id, case_device_id, case_resolution, case_id],
+  //     "UPDATE tickets SET status_id = ?,ticket_device_id = ?, completed_date = NOW(), ticket_resolution= ? WHERE ticket_id = ? ",
+  //     [status_id, ticket_device_id, ticket_resolution, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -618,8 +626,8 @@ exports.casestatusupdate = async (req, res) => {
   //   );
   // } else {
   //   db.query(
-  //     "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-  //     [status_id, case_id],
+  //     "UPDATE tickets SET status_id = ? WHERE ticket_id = ? ",
+  //     [status_id, ticket_id],
   //     (err, result) => {
   //       if (err) {
   //         console.log(err);
@@ -632,8 +640,8 @@ exports.casestatusupdate = async (req, res) => {
   // }
 };
 
-exports.checktimecase = async () => {
-  db.query("SELECT * FROM Cases ", (err, result) => {
+exports.checktimeticket = async () => {
+  db.query("SELECT * FROM tickets ", (err, result) => {
     if (err) {
       console.log(err);
       return;
@@ -641,44 +649,44 @@ exports.checktimecase = async () => {
 
     result.map((item) => {
       const currenttime = moment();
-      const assigndate = moment(item.assigned_date);
-      const diffInDays = currenttime.diff(assigndate, "days");
-      if (diffInDays >= 3 && item.status_id !== 4) {
+      const started_at = moment(item.started_at);
+      const diffInDays = currenttime.diff(started_at, "days");
+      if (diffInDays >= 3 && item.status_id === 3) {
         db.query(
-          "UPDATE Cases SET status_id = 5 WHERE case_id = ? ",
-          [item.case_id],
+          "UPDATE tickets SET status_id = 5 WHERE ticket_id = ? ",
+          [item.ticket_id],
           (err, result) => {
-            console.log(`เลยแล้ว ${item.case_id}`);
+            console.log(`เลยแล้ว ${item.ticket_id}`);
           },
         );
       } else {
-        console.log(`ยังไม่เลย${item.case_id}`);
+        console.log(`ยังไม่เลย${item.ticket_id}`);
       }
     });
   });
 };
-exports.listcasebyuserid = async (req, res) => {
+exports.listticketbyuserid = async (req, res) => {
   const technician_id = req.params.technician_id;
   console.log("user_id", technician_id);
   db.query(
-    "SELECT * FROM Cases WHERE technician_id = ?",
+    "SELECT t.*, CASE WHEN t.work_completed_at IS NULL AND t.assigned_at IS NOT NULL AND NOW() > DATE_ADD(t.assigned_at, INTERVAL 3 DAY) THEN 1 ELSE 0 END AS is_overdue FROM tickets  t WHERE t.technician_id = ? ;",
     [technician_id],
     (err, result) => {
       if (err) {
         console.log(err);
-        res.status(500).send("error query casebyid");
+        res.status(500).send("error query ticketbyid");
       } else {
         res.send(result);
       }
     },
   );
 };
-exports.getLastedCase = async (req, res) => {
+exports.getLastedticket = async (req, res) => {
   const limit = req.body.limit || 2;
   const user_id = req.params.user_id;
 
   db.query(
-    `select * from Cases c  where c.user_id = ? ORDER BY c.case_id desc limit ?`,
+    `select * from tickets c  where c.user_id = ? ORDER BY c.ticket_id desc limit ?`,
     [user_id, limit],
     (error, result) => {
       if (error) {
@@ -690,10 +698,10 @@ exports.getLastedCase = async (req, res) => {
     },
   );
 };
-exports.getCasesByInstanceID = async (req, res) => {
+exports.getticketsByInstanceID = async (req, res) => {
   const instance_id = req.params.instance_id;
   db.query(
-    "select * from Cases where instance_id = ? ",
+    "select * from tickets where instance_id = ? ",
     [instance_id],
     (error, result) => {
       if (error) {
@@ -706,10 +714,10 @@ exports.getCasesByInstanceID = async (req, res) => {
   );
 };
 
-exports.listHistoryCaseByTechnicianID = async (req, res) => {
+exports.listHistoryticketByTechnicianID = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "select case_id, user_id, technician_id, manager_id, status_id, categories_id, instance_id, case_title, case_detail, case_resolution, created_date, assigned_date, work_completed_date, closed_date from Cases c join Users u on c.technician_id = u.users_id where c.technician_id = ?",
+    "select ticket_id, user_id, technician_id, manager_id, status_id, issues_categories_id, instance_id, title, description, ticket_resolution, created_at, assigned_at, work_completed_at, closed_at from tickets c join Users u on c.technician_id = u.users_id where c.technician_id = ?",
     [technician_id],
     (error, result) => {
       if (error) {

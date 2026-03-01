@@ -81,7 +81,9 @@ const Sidebarmanager = () => {
                     alignItems="center"
                     ml="15px"
                   >
-                    <Typography sx={{ color: "white" }}>REPAIR APP</Typography>
+                    <Typography sx={{ color: "white" }}>
+                      HELPDESK APP
+                    </Typography>
                     <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon sx={{ color: "white" }} />
                     </IconButton>
@@ -118,7 +120,7 @@ const Sidebarmanager = () => {
                   หน้าหลัก
                 </MenuItem>
               </Link>
-              <Link to="/manager/reportcase" className="menu-bars">
+              <Link to="/manager/reportticket" className="menu-bars">
                 <MenuItem
                   icon={<ConstructionOutlinedIcon />}
                   style={{ color: "white" }}
@@ -126,7 +128,7 @@ const Sidebarmanager = () => {
                   รายการแจ้งซ่อม
                 </MenuItem>
               </Link>
-              <Link to="/manager/statuscase" className="menu-bars">
+              <Link to="/manager/statusticket" className="menu-bars">
                 <MenuItem
                   icon={<HistoryToggleOffIcon />}
                   style={{ color: "white" }}

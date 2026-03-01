@@ -112,9 +112,9 @@ exports.getHistoryRepairInstanceDeviceById = async (req, res) => {
   const { instance_id } = req.params;
   try {
     db.query(
-      // "select * from DeviceInstances di join Cases c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id where di.instance_id = ?",
-      // "select * from DeviceInstances di join Cases c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id join Devicetype dv on dv.devicetype_id = d.dev_type  where di.instance_id = ?",
-      "select * from DeviceInstances di join Cases c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id join Devicetype dv on dv.devicetype_id = d.dev_type join Users u on u.users_id = c.technician_id join Status s on s.status_id = c.status_id where di.instance_id = ?",
+      // "select * from DeviceInstances di join tickets c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id where di.instance_id = ?",
+      // "select * from DeviceInstances di join tickets c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id join Devicetype dv on dv.devicetype_id = d.dev_type  where di.instance_id = ?",
+      "select * from DeviceInstances di join tickets c on c.instance_id = di.instance_id join Devices d on d.dev_id = di.device_id join Devicetype dv on dv.devicetype_id = d.dev_type join Users u on u.users_id = c.technician_id join status s on s.status_id = c.status_id where di.instance_id = ?",
 
       [instance_id],
       (error, result) => {

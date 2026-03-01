@@ -12,33 +12,33 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-function Detailcase() {
+export const Detailcase = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { case_id } = useParams();
-  const [casedatabyID, setcasedatabyID] = useState([]);
+  const { ticket_id } = useParams();
+  const [ticketdatabyID, setticketdatabyID] = useState([]);
   const [imgurl, setImgUrls] = useState([]);
   const status_id = 2;
   const [technician, settechnician] = useState([]);
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
-  const { caseData } = location.state || {};
+  const { ticketData } = location.state || {};
   const [refresh, setRefresh] = useState(false);
   const manager_id = useSelector((state) => state.user.users_id);
-  const [caseById, setCaseById] = useState();
-  console.log("case_id", case_id);
-  const sendtech = async (case_id, techid) => {
+  const [ticketById, setticketById] = useState();
+  console.log("ticket_id", ticket_id);
+  const sendtech = async (ticket_id, techid) => {
     await axios
-      .patch(`http://localhost:5011/addtechcase/${case_id}`, {
+      .patch(`http://localhost:5011/addtechticket/${ticket_id}`, {
         technician_id: techid,
         manager_id,
         status_id,
 
-        // case_device_id: caseData[0].case_device_id,
+        // ticket_device_id: ticketData[0].ticket_device_id,
       })
       .then(() => {
         setSelectedTechnicians({});
         setRefresh(true); // ตั้งค่า refresh ให้เป็น true หลังจากการส่งข้อมูลสำเร็จ
-        navigate("/manager/reportcase");
+        navigate("/manager/reportticket");
       })
       .catch((error) => {
         console.log(error);
@@ -76,18 +76,20 @@ function Detailcase() {
         console.log(error);
       }
     };
-    const fetchCaseById = async () => {
-      // const { case_id } = useParams();
+    const fetchticketById = async () => {
+      // const { ticket_id } = useParams();
       try {
-        const res = await axios.get(`http://localhost:5011/caseid/${case_id}`);
+        const res = await axios.get(
+          `http://localhost:5011/ticketid/${ticket_id}`,
+        );
         console.log(res.data[0]);
       } catch (error) {
         console.log(error);
       }
     };
     fetchdata();
-    fetchCaseById();
-  }, [case_id]);
+    fetchticketById();
+  }, [ticket_id]);
   useEffect(() => {
     if (refresh) {
       setRefresh(false); // รีเซ็ต refresh หลังจากการดึงข้อมูลใหม่เสร็จสมบูรณ์
@@ -133,7 +135,7 @@ function Detailcase() {
                   color="success"
                   sx={{ mb: 3, mr: 3 }}
                   onClick={() => {
-                    sendtech(case_id, tech.id);
+                    sendtech(ticket_id, tech.id);
                   }}
                 >
                   {" "}
@@ -146,6 +148,4 @@ function Detailcase() {
       </Grid>
     </Box>
   );
-}
-
-export default Detailcase;
+};

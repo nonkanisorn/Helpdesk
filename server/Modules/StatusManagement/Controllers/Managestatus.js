@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 });
 
 exports.list = async (req, res) => {
-  db.query("SELECT * FROM Status ", (err, results) => {
+  db.query("SELECT * FROM status ", (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("server error");
@@ -21,7 +21,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   const status_name = req.body.status_name;
   db.query(
-    "INSERT INTO Status(status_name) VALUES(?)",
+    "INSERT INTO status(status_name) VALUES(?)",
     [status_name],
     (err, result) => {
       if (err) {
@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
 exports.remove = async (req, res) => {
   const status_id = req.params.status_id;
   db.query(
-    "DELETE FROM Status WHERE status_id = ? ",
+    "DELETE FROM status WHERE status_id = ? ",
     [status_id],
     (err, result) => {
       if (err) {
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
   const status_id = req.params.status_id;
   const status_name = req.params.status_name;
   db.query(
-    "UPDATE Status SET status_name = ? WHERE status_id =? ",
+    "UPDATE status SET status_name = ? WHERE status_id =? ",
     [status_name, status_id],
     (err, result) => {
       if (err) {
@@ -68,10 +68,10 @@ exports.update = async (req, res) => {
 };
 exports.statusupdate = async (req, res) => {
   const status_id = req.body.status_id;
-  const case_id = req.params.case_id;
+  const ticket_id = req.params.ticket_id;
   db.query(
-    "UPDATE Cases SET status_id = ? WHERE case_id = ? ",
-    [status_id, case_id],
+    "UPDATE tickets SET status_id = ? WHERE ticket_id = ? ",
+    [status_id, ticket_id],
     (err, result) => {
       if (err) {
         console.log(err);

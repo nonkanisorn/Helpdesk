@@ -13,24 +13,27 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 function Historycase() {
-  const statusMap = {
-    3: "รอยืนยันการซ่อม",
-    4: "รออะไหล่",
-    5: "เลยกำาหนดการซ่อม",
-    6: "เสร็จสิ้น",
+  const technicianStatusMap = {
+    1: "งานใหม่",
+    2: "ได้รับมอบหมาย",
+    3: "กำลังดำเนินการ",
+    4: "บันทึกผลแล้ว",
+    5: "รอผู้ใช้ยืนยัน",
+    6: "ปิดงานแล้ว",
+    7: "รออะไหล่",
   };
   const navigate = useNavigate();
   const technician_id = useSelector((state) => state.user.users_id);
-  const [caseData, setcaseData] = useState([]);
+  const [ticketData, setticketData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
-  const topagedetail = (case_id) => {
-    navigate(`/technician/repairs/${case_id}`);
+  const topagedetail = (ticket_id) => {
+    navigate(`/technician/repairs/${ticket_id}`);
   };
   useEffect(() => {
     axios
-      .get(`${apiUrl}/cases/history-technician/${technician_id}`)
+      .get(`${apiUrl}/tickets/history-technician/${technician_id}`)
       .then(function (response) {
-        setcaseData(response.data);
+        setticketData(response.data);
         console.log(response);
       })
       .catch(function (error) {
@@ -54,7 +57,7 @@ function Historycase() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {caseData.map((item, index) => (
+            {ticketData.map((item, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -62,15 +65,15 @@ function Historycase() {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell>{item.case_title}</TableCell>
-                <TableCell>{item.case_detail}</TableCell>
-                <TableCell>{statusMap[item.status_id]}</TableCell>
+                <TableCell>{item.title}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell>{technicianStatusMap[item.status_id]}</TableCell>
                 <TableCell>
                   <Button
                     size="small"
                     sx={{ padding: 0.5 }}
                     variant="contained"
-                    onClick={() => topagedetail(item.case_id)}
+                    onClick={() => topagedetail(item.ticket_id)}
                   >
                     ประวัติ
                   </Button>

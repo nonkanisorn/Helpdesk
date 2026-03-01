@@ -294,7 +294,7 @@ const ManageDevice = () => {
                         color="success"
                         sx={{ ml: 2 }}
                       >
-                        ดูอุปกรณ์แต่ละตัว
+                        รายการอุปกรณ์
                       </Button>
                     </Link>
                   </TableCell>

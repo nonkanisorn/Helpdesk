@@ -25,10 +25,11 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   const dev_name = req.body.dev_name;
   const dev_type = req.body.dev_type;
+  const dev_detail = req.body.dev_detail;
   //   console.log(dev_name);
   db.query(
-    "INSERT INTO Devices(dev_name,dev_type) VALUES(?,?)",
-    [dev_name, dev_type],
+    "INSERT INTO Devices(dev_name,dev_type,dev_detail) VALUES(?,?,?)",
+    [dev_name, dev_type, dev_detail],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -74,12 +75,12 @@ exports.update = async (req, res) => {
 exports.listhistorydevice = async (req, res) => {
   const dev_id = req.params.dev_id;
   db.query(
-    "SELECT * FROM Cases WHERE case_device_id = ? ",
+    "SELECT * FROM tickets WHERE ticket_device_id = ? ",
     [dev_id],
     (err, result) => {
       if (err) {
         console.log(err);
-        res.status(500).send("no case_device_id");
+        res.status(500).send("no ticket_device_id");
       } else {
         res.send(result);
       }
@@ -87,7 +88,7 @@ exports.listhistorydevice = async (req, res) => {
   );
 };
 exports.listcategoriesdevice = async (_, res) => {
-  db.query("SELECT * FROM Categoriesdevice", (err, result) => {
+  db.query("SELECT * FROM issues_categories", (err, result) => {
     if (err) {
       res.status(500).send("error query categoriesdevice");
     } else {
@@ -98,7 +99,7 @@ exports.listcategoriesdevice = async (_, res) => {
 // exports.listdevicehistory = async (req, res) => {
 //   const device_id = req.params.device_id;
 //   db.query(
-//     "SELECT c.case_id ,c.case_device_id,h.event_type ,c.case_resolution, h.occurred_at ,h.status_from ,h.status_to,h.actor_id,u.name   from Historyrepair h JOIN Cases c ON h.case_id  = c.case_id JOIN Users u ON h.actor_id = u.users_id  where c.case_device_id = ? ",
+//     "SELECT c.ticket_id ,c.ticket_device_id,h.event_type ,c.ticket_resolution, h.occurred_at ,h.status_from ,h.status_to,h.actor_id,u.name   from Historyrepair h JOIN tickets c ON h.ticket_id  = c.ticket_id JOIN Users u ON h.actor_id = u.users_id  where c.ticket_device_id = ? ",
 //     [device_id],
 //     (err, result) => {
 //       if (err) {
@@ -112,7 +113,7 @@ exports.listcategoriesdevice = async (_, res) => {
 exports.listdevicehistory = async (req, res) => {
   const device_id = req.params.device_id;
   db.query(
-    "SELECT created_date , assigned_date , work_completed_date , closed_date  from Cases where case_device_id = ?",
+    "SELECT created_at , assigned_at , work_completed_at , closed_at  from tickets where ticket_device_id = ?",
     [device_id],
     (err, result) => {
       if (err) {

@@ -6,16 +6,33 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-
-exports.patch = async (req, res) => {
-  const case_id = req.params.case_id;
+exports.addTechToTicket = async (req, res) => {
+  const ticket_id = req.params.ticket_id;
   const technician_id = req.body.technician_id;
   const manager_id = req.body.manager_id;
   const status_id = req.body.status_id;
-  const case_device_id = req.body.case_device_id;
   db.query(
-    "select status_id as old_status_id from Cases where case_id = ? ",
-    [case_id],
+    "UPDATE tickets SET technician_id = ?, manager_id=?,status_id =?,assigned_at = NOW()  WHERE ticket_id = ?",
+    [technician_id, manager_id, status_id, ticket_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      } else {
+        res.status(200).send(result);
+      }
+    },
+  );
+};
+exports.patch = async (req, res) => {
+  const ticket_id = req.params.ticket_id;
+  const technician_id = req.body.technician_id;
+  const manager_id = req.body.manager_id;
+  const status_id = req.body.status_id;
+  const ticket_device_id = req.body.ticket_device_id;
+  db.query(
+    "select status_id as old_status_id from tickets where ticket_id = ? ",
+    [ticket_id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -24,18 +41,18 @@ exports.patch = async (req, res) => {
         const old_status_id = result[0].old_status_id;
         console.log("oldsts", old_status_id);
         db.query(
-          "UPDATE Cases SET technician_id = ?, manager_id=?,status_id =?,assigned_date = NOW()  WHERE case_id = ?",
-          [technician_id, manager_id, status_id, case_id],
+          "UPDATE tickets SET technician_id = ?, manager_id=?,status_id =?,assigned_date = NOW()  WHERE ticket_id = ?",
+          [technician_id, manager_id, status_id, ticket_id],
           (err1, result1) => {
             if (err1) {
               console.log(err);
               res.status(500).send("server error");
             } else {
               db.query(
-                "insert into Historyrepair (case_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
+                "insert into Historyrepair (ticket_id,device_id,actor_id,status_from,status_to,event_type) values (?,?,?,?,?,?)",
                 [
-                  case_id,
-                  case_device_id,
+                  ticket_id,
+                  ticket_device_id,
                   manager_id,
                   old_status_id,
                   status_id,

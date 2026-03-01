@@ -48,7 +48,7 @@ function App() {
   const checktimerepair = async () => {
     try {
       const res = await axios
-        .get(`${process.env.REACT_APP_API_URL}/checktimecase`)
+        .get(`${process.env.REACT_APP_API_URL}/checktimeticket`)
         .then((res) => {});
     } catch (error) {}
   };

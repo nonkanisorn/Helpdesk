@@ -49,11 +49,11 @@ const AddStatusDialog = ({ open, onClose, onSuccess }) => {
         <DialogTitle>เพิ่มสถานะ</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ pt: 1.5, mb: 2 }}>
-            ใช้สำหรับกำหนดสิทธิ์และหน้าที่ของผู้ใช้งานในระบบ
+            ใช้สำหรับกำหนดสถานะของรายการแจ้งซ่อมในแต่ละขั้นตอน
           </DialogContentText>
-          <form onSubmit={createrole} id="create-roles-form">
+          <form onSubmit={createrole} id="create-status-form">
             <TextField
-              label="บทบาท"
+              label="สถานะ"
               fullWidth
               onChange={(e) => setStatusname(e.target.value)}
             ></TextField>
@@ -61,7 +61,7 @@ const AddStatusDialog = ({ open, onClose, onSuccess }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>ยกเลิก</Button>
-          <Button form="create-roles-form" type="submit" onClick={onClose}>
+          <Button form="create-status-form" type="submit" onClick={onClose}>
             บันทึก
           </Button>
         </DialogActions>

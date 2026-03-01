@@ -114,7 +114,7 @@ const Sidebaruser = () => {
                   หน้าหลัก
                 </MenuItem>
               </Link>
-              <Link to="/user/Addcase" className="menu-bars">
+              <Link to="/user/Addticket" className="menu-bars">
                 <MenuItem
                   style={{ color: "#fff" }}
                   icon={<ConstructionOutlinedIcon />}
@@ -122,7 +122,7 @@ const Sidebaruser = () => {
                   แจ้งซ่อม
                 </MenuItem>
               </Link>
-              <Link to="/user/statuscase" className="menu-bars">
+              <Link to="/user/statusticket" className="menu-bars">
                 <MenuItem
                   style={{ color: "#fff" }}
                   icon={<ConstructionOutlinedIcon />}

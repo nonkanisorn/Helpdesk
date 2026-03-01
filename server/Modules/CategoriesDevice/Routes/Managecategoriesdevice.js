@@ -4,5 +4,5 @@ const router = express.Router();
 const {
   getCategoriesDevice,
 } = require("../Controllers/Managecategoriesdevice.js");
-router.get("/categoriesdevice", getCategoriesDevice);
+router.get("/issues-categories-device", getCategoriesDevice);
 module.exports = router;

@@ -13,36 +13,40 @@ import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { Link } from "react-router-dom";
 function Managerpages() {
-  const [casedata, setcasedata] = useState([]);
+  const [ticketdata, setticketdata] = useState([]);
   const [technicianData, setTechnicianData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
-  console.log(casedata);
-  const casedatalenght = () => {
-    return casedata.length;
+  console.log(ticketdata);
+  const ticketdatalenght = () => {
+    return ticketdata.length;
   };
-  const datafilterstatuscase5 = () => {
-    return casedata.filter((data) => data.status_id === 5).length;
+  const datafilterstatusticket5 = () => {
+    return ticketdata.filter((data) => data.status_id === 5).length;
   };
-  const datafilterstatuscase4 = () => {
-    return casedata.filter((data) => data.status_id === 4).length;
-  };
-
-  const datafilterstatuscase6 = () => {
-    return casedata.filter((data) => data.status_id === 6).length;
-  };
-  const datafilterstatuscase3 = () => {
-    return casedata.filter((data) => data.status_id === 3).length;
-  };
-  const datafilterstatuscase2 = () => {
-    return casedata.filter((data) => data.status_id === 2).length;
-  };
-  const datafilterstatuscase1 = () => {
-    return casedata.filter((data) => data.status_id === 1).length;
+  const datafilterstatusticket4 = () => {
+    return ticketdata.filter((data) => data.status_id === 4).length;
   };
 
+  const datafilterstatusticket6 = () => {
+    return ticketdata.filter((data) => data.status_id === 6).length;
+  };
+  const datafilterstatusticket3 = () => {
+    return ticketdata.filter((data) => data.status_id === 3).length;
+  };
+  const datafilterstatusticket2 = () => {
+    return ticketdata.filter((data) => data.status_id === 2).length;
+  };
+  const datafilterstatusticket1 = () => {
+    return ticketdata.filter((data) => data.status_id === 1).length;
+  };
+  const countIsOverDue = () => {
+    return ticketdata.filter((data) => data.is_overdue === 1).length;
+  };
+
+  console.log("countntaj", countIsOverDue());
   useEffect(() => {
-    axios.get(`${apiUrl}/caseall`).then((response) => {
-      setcasedata(response.data);
+    axios.get(`${apiUrl}/ticketall`).then((response) => {
+      setticketdata(response.data);
     });
   }, []);
   useEffect(() => {
@@ -57,7 +61,7 @@ function Managerpages() {
         <Typography variant="h4" fontWeight="fontWeightBold">
           Dashbaord ผู้จัดการ
         </Typography>
-        <Link to={{ pathname: "/manager/reportcase" }}>
+        <Link to={{ pathname: "/manager/reportticket" }}>
           <Button variant="contained" sx={{ borderRadius: 3 }}>
             <SignalCellularAltRoundedIcon sx={{ mr: 1, fontSize: 20 }} />{" "}
             ดูรายงานเต็ม
@@ -76,7 +80,7 @@ function Managerpages() {
                 sx={{ fontSize: 50, color: "#2463EB" }}
               />
             }
-            number={casedatalenght()}
+            number={ticketdatalenght()}
           />
         </Grid>
         <Grid item md={3}>
@@ -87,7 +91,7 @@ function Managerpages() {
                 sx={{ fontSize: 50, color: green[500] }}
               />
             }
-            number={datafilterstatuscase6()}
+            number={datafilterstatusticket6()}
           />
         </Grid>
         <Grid item md={3}>
@@ -96,7 +100,7 @@ function Managerpages() {
             icon={
               <AccessTimeRoundedIcon sx={{ fontSize: 50, color: amber[400] }} />
             }
-            number={datafilterstatuscase2()}
+            number={datafilterstatusticket2()}
           />
         </Grid>
         <Grid item md={3}>
@@ -105,7 +109,7 @@ function Managerpages() {
             icon={
               <ErrorOutlineRoundedIcon sx={{ fontSize: 50, color: red[400] }} />
             }
-            number={datafilterstatuscase5()}
+            number={countIsOverDue()}
           />
         </Grid>
       </Grid>

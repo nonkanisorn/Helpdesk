@@ -16,8 +16,8 @@ import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 
 function Addcase() {
-  const [caseDetail, setCaseDetail] = useState("");
-  const [case_title, setcase_title] = useState("");
+  const [ticketDetail, setticketDetail] = useState("");
+  const [title, setTitle] = useState("");
   const [categories, setCategories] = useState([]);
   const [fetchtrigger, setFetchtrigger] = useState(false);
   const [dataDev, setDataDev] = useState([]);
@@ -26,18 +26,18 @@ function Addcase() {
   const apiUrl = process.env.REACT_APP_API_URL;
   const userId = useSelector((state) => state.user.users_id);
   const userName = useSelector((state) => state.user.name);
-  const createcase = async (e) => {
+  const createticket = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:5011/Case",
+        "http://localhost:5011/ticket",
         {
           // dep_name: selectedDepartment,
-          case_title,
-          case_detail: caseDetail,
-          case_device_id: null,
+          title,
+          description: ticketDetail,
+          // ticket_device_id: null,
           user_id: userId,
           status_id,
-          categories_id: selectcategory,
+          issues_categories_id: selectcategory,
         },
         {
           headers: {
@@ -45,8 +45,8 @@ function Addcase() {
           },
         },
       );
-      setCaseDetail("");
-      setcase_title("");
+      setticketDetail("");
+      setTitle("");
       setSelectcategory("");
       //ใช้ NOT ! เพื่อsetFetchtrigger ให้เปลี่ยนค่า จากเดิมที่กดหนดเป็นfalse ให้เป็นtrue
       setFetchtrigger(!fetchtrigger);
@@ -69,7 +69,7 @@ function Addcase() {
   useEffect(() => {
     try {
       const fetchdata = async () => {
-        const response = await axios.get(apiUrl + "/categoriesdevice");
+        const response = await axios.get(apiUrl + "/issues-categories-device");
         setCategories(response.data);
       };
       fetchdata();
@@ -112,9 +112,9 @@ function Addcase() {
               <Typography>ชื่องาน *</Typography>
               <TextField
                 label="หัวข้อ"
-                id="case_title"
-                value={case_title}
-                onChange={(e) => setcase_title(e.target.value)}
+                id="ticket_title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 placeholder="กรอกหัวข้อการแจ้งซ่อม"
                 fullWidth
               />
@@ -123,9 +123,9 @@ function Addcase() {
               <Typography>รายละเอียดปัญหา *</Typography>
               <TextField
                 label="รายละเอียด"
-                id="case_detail"
-                value={caseDetail}
-                onChange={(e) => setCaseDetail(e.target.value)}
+                id="ticket_detail"
+                value={ticketDetail}
+                onChange={(e) => setticketDetail(e.target.value)}
                 placeholder="กรอกรายละเอียดปัญหา"
                 multiline
                 rows={4}
@@ -144,10 +144,10 @@ function Addcase() {
                 >
                   {categories.map((item) => (
                     <MenuItem
-                      key={item.categories_id}
-                      value={item.categories_id}
+                      key={item.issues_categories_id}
+                      value={item.issues_categories_id}
                     >
-                      {item.categories_name}
+                      {item.issues_categories_name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -156,7 +156,7 @@ function Addcase() {
               {/* ปุ่ม */}
               <Button
                 variant="contained"
-                onClick={createcase}
+                onClick={createticket}
                 sx={{ mt: 2, py: 1.5, bgcolor: "#2764E7" }}
               >
                 เพิ่มการแจ้งซ่อม

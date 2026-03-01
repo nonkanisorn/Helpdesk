@@ -1,6 +1,6 @@
 // const {
-//   checktimecase,
-// } = require("./Modules/CaseManagement/Controllers/ManageCase");
+//   checktimeticket,
+// } = require("./Modules/ticketManagement/Controllers/Manageticket");
 var mysql = require("mysql");
 const express = require("express");
 const { readdirSync } = require("fs");
@@ -12,7 +12,7 @@ const Cookies = require("universal-cookie");
 const morgan = require("morgan");
 const { existsSync } = require("fs");
 const {
-  checktimecase,
+  checktimeticket,
 } = require("./Modules/CaseManagement/Controllers/ManageCase");
 const cookies = new Cookies();
 app.use(morgan("dev"));
@@ -47,7 +47,7 @@ var db = mysql.createConnection({
   database: "RepairSystemDB",
 });
 setInterval(() => {
-  checktimecase();
+  checktimeticket();
 }, 86400000);
 db.connect(function (err) {
   if (err) {

@@ -20,11 +20,16 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddDeviceTypeDialog from "../dialog/AddDialog/AddDeviceTypeDialog";
+import EditDeviceTypeDialog from "../dialog/EditDialog/EditDeviceTypeDialog";
 const Addtypedevice = () => {
   const [typeDevice, setTypeDevice] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const [openAddDeviceType, setOpenAddDeviceType] = useState(false);
+  const [openEditDeviceTypeDialog, setOpenEditDeviceTypeDialog] =
+    useState(false);
+
+  const [selectedDeviceTypeID, setSelectedDeviceTypeID] = useState(null);
   const [inputNewType, setInputNewType] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
   const deleteTypeDevice = (devicetype_id) => {
@@ -48,6 +53,14 @@ const Addtypedevice = () => {
   const handleCloseAddDeviceType = () => {
     setOpenAddDeviceType(false);
   };
+  const handleOpenEditDeviceTypeDialog = (id) => {
+    setSelectedDeviceTypeID(id);
+    setOpenEditDeviceTypeDialog(true);
+  };
+  const handleCloseEditDeviceTypeDialog = () => {
+    setOpenEditDeviceTypeDialog(false);
+  };
+
   const handleSubmit = (devicetype_id) => {
     axios
       .patch(`${apiUrl}/device/type/${devicetype_id}`, {
@@ -75,9 +88,18 @@ const Addtypedevice = () => {
   useEffect(() => {
     fetchtypedevice();
   }, []);
-  console.log(typeDevice);
+  console.log("okgkk");
   return (
+    // TODO: แก้ไขประเภทอุปกรณ์ pass
+    //  TODO: สร้างหน้า ประเภทปัญหา  pass
+    //  TODO: update ui profile pass
     <>
+      <EditDeviceTypeDialog
+        open={openEditDeviceTypeDialog}
+        onClose={handleCloseEditDeviceTypeDialog}
+        onSuccess={fetchtypedevice}
+        id={selectedDeviceTypeID}
+      />
       <Box>
         <Box sx={{ display: "flex" }}>
           <Typography variant="h3">จัดการประเภทอุปกรณ์</Typography>
@@ -114,7 +136,9 @@ const Addtypedevice = () => {
                       <Button
                         variant="contained"
                         sx={{ fontSize: "12px", backgroundColor: "#FF9933" }}
-                        onClick={() => handleOpenDialog(items.devicetype_name)}
+                        onClick={() =>
+                          handleOpenEditDeviceTypeDialog(items.devicetype_id)
+                        }
                       >
                         แก้ไข
                       </Button>

@@ -47,7 +47,6 @@ exports.removetypedevice = async (req, res) => {
     },
   );
 };
-// TODO: เพ่ม feature update typedevice
 exports.updatetypedevice = async (req, res) => {
   const devicetype_id = req.params.devicetype_id;
   const devicetype_name = req.body.devicetype_name;

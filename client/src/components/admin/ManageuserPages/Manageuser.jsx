@@ -23,6 +23,7 @@ import {
 
 import { Link } from "react-router-dom";
 import { Stack } from "@mui/system";
+import EditUserDialog from "../dialog/EditDialog/EditUserDialog";
 
 function Manageuser() {
   const defaultValues = {
@@ -51,8 +52,12 @@ function Manageuser() {
   const [refresh, setrefresh] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
   const [openAddUserDialog, setOpenAddUserDialog] = useState(false);
+  const [openEditUserDialog, setOpenEditUserDialog] = useState(false);
+  const [selectedUserID, setSelectedUserID] = useState(null);
   const handleOpenAddUserDialog = () => setOpenAddUserDialog(true);
   const handleCloseAddUserDialog = () => setOpenAddUserDialog(false);
+  const handleCloseEditUserDialog = () => setOpenEditUserDialog(false);
+
   console.log(watch("is_active"));
   const handleStatusActiveUsers = async (users_id, checked) => {
     const newStatus = checked ? 1 : 0; // ✅ boolean -> 0/1
@@ -88,15 +93,15 @@ function Manageuser() {
       setrefresh((prev) => !prev);
     });
   };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/users`);
+      setUserData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/users`);
-        setUserData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchData();
   }, [refresh]);
   useEffect(() => {
@@ -147,7 +152,16 @@ function Manageuser() {
 
   console.log("rdata", roleData);
   return (
+    // TODO: แก้ไขข้อมูลผู้ใช้ pass
     <>
+      <EditUserDialog
+        open={openEditUserDialog}
+        onClose={handleCloseEditUserDialog}
+        onSuccess={fetchData}
+        id={selectedUserID}
+        roleData={roleData}
+        depData={depData}
+      />
       <Dialog
         open={openAddUserDialog}
         onClose={handleCloseAddUserDialog}
@@ -271,14 +285,16 @@ function Manageuser() {
                     />
                   </TableCell>
                   <TableCell>
-                    <Link to={`/admin/edituser/${item.users_id}`}>
-                      <Button
-                        variant="contained"
-                        sx={{ fontSize: "12px", backgroundColor: "#FF9933" }}
-                      >
-                        แก้ไข
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="contained"
+                      sx={{ fontSize: "12px", backgroundColor: "#FF9933" }}
+                      onClick={() => {
+                        setSelectedUserID(item.users_id);
+                        setOpenEditUserDialog(true);
+                      }}
+                    >
+                      แก้ไข
+                    </Button>
 
                     <Button
                       onClick={() => {

@@ -27,6 +27,7 @@ import Editstatus from "../components/admin/ManagestatusPages/Editstatus";
 import Adduser from "../components/admin/ManageuserPages/Adduser";
 import Edituser from "../components/admin/ManageuserPages/Edituser";
 import Addtypedevice from "../components/admin/ManagedevicePages/Addtypedevice";
+import ManageissuesPages from "../components/admin/Manageissues/ManageissuesPages";
 const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [ok, setOk] = useState(false);
@@ -99,6 +100,7 @@ const AdminRoute = ({ children }) => {
               <Route path="index" element={<Adminpages />} />
               <Route path="managestatus" element={<Managestatus />} />
               <Route path="managedepartment" element={<Managedepartment />} />
+              {/* <Route path="" element={<Managedepartment />} /> */}
               <Route path="adddevice" element={<Adddevice />} />
               <Route path="edituser/:users_id" element={<Edituser />} />
               <Route
@@ -121,6 +123,10 @@ const AdminRoute = ({ children }) => {
                 element={<Editdepartment />}
               />
               <Route path="managetypedevice" element={<Addtypedevice />} />
+              <Route
+                path="manage/issues-categories"
+                element={<ManageissuesPages />}
+              />
               <Route path="adduser" element={<Adduser />} />
               <Route path="*" element={<Notfound404 text="ไม่มีpathนี้" />} />
             </Routes>

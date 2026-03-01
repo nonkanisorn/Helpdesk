@@ -149,7 +149,7 @@ const Sidebaradmin = () => {
                   จัดการประเภทอุปกรณ์
                 </MenuItem>
               </Link>
-              <Link to="/admin/Managedepartment" className="menu-bars">
+              <Link to="/admin/manage/issues-categories" className="menu-bars">
                 <MenuItem style={{ color: "#fff" }} icon={<EditOutlinedIcon />}>
                   จัดการประเภทปัญหา
                 </MenuItem>
