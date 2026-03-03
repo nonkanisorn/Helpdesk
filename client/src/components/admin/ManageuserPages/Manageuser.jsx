@@ -30,12 +30,12 @@ function Manageuser() {
     // ช่องข้อความ
     username: "",
     userpassword: "",
-    name: "",
-    user_email: "",
-    user_phone: "",
+    full_name: "",
+    email: "",
+    phone: "",
     // ช่อง select (number)
     role_id: null, // 👈 number | null
-    dep_id: null, // 👈 number | null
+    department_id: null, // 👈 number | null
     is_active: 1,
   };
   const {
@@ -138,10 +138,10 @@ function Manageuser() {
         username: data.username,
         userpassword: data.userpassword,
         role_id: data.role_id,
-        name: data.name,
-        dep_id: data.dep_id,
-        user_email: data.user_email,
-        user_phone: data.user_phone,
+        full_name: data.full_name,
+        department_id: data.department_id,
+        email: data.email,
+        phone: data.phone,
         is_active: data.is_active,
       })
       .then((res) => {
@@ -184,11 +184,11 @@ function Manageuser() {
               <Typography>รหัสผ่าน</Typography>
               <TextField {...register("userpassword")}></TextField>
               <Typography>ชื่อ-นามสกุล</Typography>
-              <TextField {...register("name")}></TextField>
+              <TextField {...register("full_name")}></TextField>
               <Typography>อีเมล์</Typography>
-              <TextField {...register("user_email")}></TextField>
+              <TextField {...register("email")}></TextField>
               <Typography>เบอร์โทรศัพท์</Typography>
-              <TextField {...register("user_phone")}></TextField>
+              <TextField {...register("phone")}></TextField>
               <Typography>บทบาท</Typography>
               <Controller
                 control={control}
@@ -206,7 +206,7 @@ function Manageuser() {
               <Typography>แผนก</Typography>
               <Controller
                 control={control}
-                name="dep_id"
+                name="department_id"
                 render={({ field }) => (
                   <Select defaultValue={" "} {...field}>
                     {depData.map((items, index) => (
@@ -272,15 +272,15 @@ function Manageuser() {
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell>{item.users_id} </TableCell>
+                  <TableCell>{item.user_id} </TableCell>
 
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.full_name}</TableCell>
                   <TableCell>{item.role_name}</TableCell>
                   <TableCell>
                     <Switch
                       checked={item.is_active === 1}
                       onChange={(e) =>
-                        handleStatusActiveUsers(item.users_id, e.target.checked)
+                        handleStatusActiveUsers(item.user_id, e.target.checked)
                       }
                     />
                   </TableCell>
@@ -289,7 +289,7 @@ function Manageuser() {
                       variant="contained"
                       sx={{ fontSize: "12px", backgroundColor: "#FF9933" }}
                       onClick={() => {
-                        setSelectedUserID(item.users_id);
+                        setSelectedUserID(item.user_id);
                         setOpenEditUserDialog(true);
                       }}
                     >
@@ -298,7 +298,7 @@ function Manageuser() {
 
                     <Button
                       onClick={() => {
-                        handleDelete(item.users_id);
+                        handleDelete(item.user_id);
                       }}
                       variant="contained"
                       sx={{

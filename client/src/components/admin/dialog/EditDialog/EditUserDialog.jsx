@@ -36,11 +36,11 @@ const EditUserDialog = ({
     defaultValues: {
       username: "",
       userpassword: "", // ถ้าไม่อยากให้แก้รหัสผ่าน ให้เอาออกได้
-      name: "",
-      user_email: "",
-      user_phone: "",
+      full_name: "",
+      email: "",
+      phone: "",
       role_id: "",
-      dep_id: "",
+      department_id: "",
       is_active: 1,
     },
   });
@@ -62,12 +62,12 @@ const EditUserDialog = ({
 
         reset({
           username: u.username ?? "",
-          userpassword: "", // ไม่เติม password เดิม (ปกติ backend ก็ไม่ส่งมาอยู่แล้ว)
-          name: u.name ?? "",
-          user_email: u.user_email ?? "",
-          user_phone: u.user_phone ?? "",
+          userpassword: u.userpassword ?? "", // ไม่เติม password เดิม (ปกติ backend ก็ไม่ส่งมาอยู่แล้ว)
+          full_name: u.full_name ?? "",
+          email: u.email ?? "",
+          phone: u.phone ?? "",
           role_id: u.role_id ?? null,
-          dep_id: u.dep_id ?? null,
+          department_id: u.dep_id ?? null,
           is_active: typeof u.is_active === "number" ? u.is_active : 1,
         });
       } catch (err) {
@@ -86,11 +86,11 @@ const EditUserDialog = ({
       // ถ้าไม่ต้องการแก้รหัสผ่าน: ไม่ต้องส่ง userpassword ถ้าเป็น ""
       const payload = {
         username: data.username,
-        name: data.name,
-        user_email: data.user_email,
-        user_phone: data.user_phone,
+        full_name: data.full_name,
+        email: data.email,
+        phone: data.phone,
         role_id: Number(data.role_id),
-        dep_id: Number(data.dep_id),
+        department_id: Number(data.department_id),
         is_active: Number(data.is_active),
       };
 
@@ -142,13 +142,13 @@ const EditUserDialog = ({
               <TextField type="password" {...register("userpassword")} />
 
               <Typography>ชื่อ-นามสกุล</Typography>
-              <TextField {...register("name")} />
+              <TextField {...register("full_name")} />
 
               <Typography>อีเมล์</Typography>
-              <TextField {...register("user_email")} />
+              <TextField {...register("email")} />
 
               <Typography>เบอร์โทรศัพท์</Typography>
-              <TextField {...register("user_phone")} />
+              <TextField {...register("phone")} />
 
               <Typography>บทบาท</Typography>
               <Controller
@@ -172,7 +172,7 @@ const EditUserDialog = ({
               <Typography>แผนก</Typography>
               <Controller
                 control={control}
-                name="dep_id"
+                name="department_id"
                 render={({ field }) => (
                   <Select
                     {...field}

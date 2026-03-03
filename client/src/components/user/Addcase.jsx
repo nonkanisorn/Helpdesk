@@ -24,7 +24,7 @@ function Addcase() {
   const [selectcategory, setSelectcategory] = useState("");
   const status_id = 1;
   const apiUrl = process.env.REACT_APP_API_URL;
-  const userId = useSelector((state) => state.user.users_id);
+  const userId = useSelector((state) => state.user.user_id);
   const userName = useSelector((state) => state.user.name);
   const createticket = async (e) => {
     try {

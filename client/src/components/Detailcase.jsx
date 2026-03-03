@@ -28,7 +28,7 @@ function Detailcase() {
   const navigate = useNavigate();
   const [ticketData, setTicketData] = useState([]);
   const role_id = useSelector((state) => state.user.role);
-  const user_id = useSelector((state) => state.user.users_id);
+  const user_id = useSelector((state) => state.user.user_id);
   const apiUrl = process.env.REACT_APP_API_URL;
   console.log("role", role_id);
   const waitingForPartButton = async (ticket_id) => {
@@ -354,16 +354,15 @@ function Detailcase() {
                   )}
                   {/* User confirm */}
 
-                  {role_id === 4 &&
-                    (items.status_id === 5 || items.status_id === 4) && (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => handleUpdateStatusTicketByUser(5)}
-                      >
-                        ยืนยันการซ่อม
-                      </Button>
-                    )}
+                  {role_id === 4 && items.status_id === 4 && (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleUpdateStatusTicketByUser(5)}
+                    >
+                      ยืนยันการซ่อม
+                    </Button>
+                  )}
                   {/* Manager */}
                   {role_id === 2 && (
                     <Button

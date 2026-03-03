@@ -26,7 +26,7 @@ import { Link } from "react-router-dom";
 function Technicianpage() {
   const [ticketdata, setticketdata] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
-  const technician_id = useSelector((state) => state.user.users_id);
+  const technician_id = useSelector((state) => state.user.user_id);
   const ticketdatalenght = () => {
     return ticketdata.length;
   };

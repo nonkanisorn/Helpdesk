@@ -68,8 +68,8 @@ function App() {
           username: res.data[0].username,
           role: res.data[0].role_id,
           token: idToken,
-          name: res.data[0].name,
-          users_id: res.data[0].users_id,
+          full_name: res.data[0].full_name,
+          user_id: res.data[0].user_id,
         }),
       );
       setLoading(false);

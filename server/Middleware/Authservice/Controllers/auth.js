@@ -33,16 +33,16 @@ exports.register = async (req, res) => {
       username,
       userpassword,
       role_id,
-      name,
-      dep_id,
-      user_email,
-      user_phone,
+      full_name,
+      department_id,
+      email,
+      phone,
       is_active,
     } = req.body;
     const user_img = req.file ? req.file.buffer : null;
     const passwordHash = await bcrypt.hash(userpassword, 10); //Encrypt
     db.query(
-      "SELECT * FROM Users WHERE username = ? ",
+      "SELECT * FROM users WHERE username = ? ",
       [username],
       (error, results) => {
         if (error) {
@@ -52,16 +52,16 @@ exports.register = async (req, res) => {
           res.send("มีคนใช้แล้ว").status(400);
         }
         (db.query(
-          "INSERT INTO Users (username,userpassword,role_id,name,user_email,user_phone,user_img,dep_id,is_active)values(?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO users (username,password_hash,role_id,full_name,email,phone,user_img,department_id,is_active)values(?,?,?,?,?,?,?,?,?)",
           [
             username,
             passwordHash,
             role_id,
-            name,
-            user_email,
-            user_phone,
+            full_name,
+            email,
+            phone,
             user_img,
-            dep_id,
+            department_id,
             is_active,
           ],
         ),
@@ -88,7 +88,7 @@ exports.testimg = async (req, res) => {
     const users_id = req.params.users_id;
     console.log(user_img);
     db.query(
-      "UPDATE Users SET user_img = ? WHERE users_id = ? ",
+      "UPDATE users SET user_img = ? WHERE user_id = ? ",
       [user_img, users_id],
       (error, results) => {
         if (error) {
@@ -109,7 +109,7 @@ exports.login = async (req, res) => {
     //check user 1.เช็คusername ว่าในdatabaseไหม ท่าไม่มี 401 2 ท่ามีไปเช็ตpassword ต่อ 3 จากนั้น สร้างpayload ที่จะส่งไปหน้าบ้าน 4.สร้างtoken
     const { username, userpassword } = req.body;
     db.query(
-      "SELECT * FROM Users WHERE username = ? ",
+      "SELECT * FROM users WHERE username = ? ",
       [username],
       async (error, results) => {
         if (error) {
@@ -119,7 +119,7 @@ exports.login = async (req, res) => {
         if (results.length > 0) {
           const isMatch = await bcrypt.compare(
             userpassword,
-            results[0].userpassword,
+            results[0].password_hash,
           );
           if (!isMatch) {
             return res.status(400).send("passผิด");
@@ -129,9 +129,9 @@ exports.login = async (req, res) => {
             user: {
               username: results[0].username,
               role: results[0].role_id,
-              name: results[0].name,
-              users_id: results[0].users_id,
-              dep_id: results[0].dep_id,
+              full_name: results[0].full_name,
+              user_id: results[0].user_id,
+              department_id: results[0].department_id,
               is_active: results[0].is_active,
             },
           };
@@ -154,7 +154,7 @@ exports.currentUser = async (req, res) => {
   try {
     console.log("currentUser", req.user);
     db.query(
-      "SELECT users_id,username,role_id,name,is_active FROM Users WHERE username = ? ",
+      "SELECT user_id,username,role_id,full_name,is_active FROM users WHERE username = ? ",
       [req.user.username],
       async (error, result) => {
         if (error) {
@@ -178,7 +178,7 @@ exports.adminCheck = async (req, res, next) => {
   try {
     // console.log('admincheck', req.user)
     db.query(
-      "SELECT username,role_id FROM Users WHERE username = ? ",
+      "SELECT username,role_id FROM users WHERE username = ? ",
       [req.user.username],
       (error, result) => {
         if (error) {

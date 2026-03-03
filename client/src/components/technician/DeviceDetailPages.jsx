@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import SearchIcon from "@mui/icons-material/Search";
+import { Link } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -372,6 +374,14 @@ const DeviceDetailPages = () => {
                 <TableCell>{row.serial_number}</TableCell>
                 <TableCell>{row.dep_name ?? "-"}</TableCell>
                 <TableCell>
+                  <Link
+                    to={{
+                      pathname: `/technician/instance/${row.instance_id}/history`,
+                    }}
+                  >
+                    <Button>ประวัติการซ่อม</Button>
+                  </Link>
+
                   <Button onClick={() => openEdit(row)}>แก้ไข</Button>
                   {/* ปุ่มลบทำเพิ่มทีหลังได้ */}
                   <Button

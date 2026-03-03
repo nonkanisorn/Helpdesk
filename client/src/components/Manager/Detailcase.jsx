@@ -23,7 +23,7 @@ export const Detailcase = () => {
   const [selectedTechnicians, setSelectedTechnicians] = useState({});
   const { ticketData } = location.state || {};
   const [refresh, setRefresh] = useState(false);
-  const manager_id = useSelector((state) => state.user.users_id);
+  const manager_id = useSelector((state) => state.user.user_id);
   const [ticketById, setticketById] = useState();
   console.log("ticket_id", ticket_id);
   const sendtech = async (ticket_id, techid) => {
@@ -52,11 +52,11 @@ export const Detailcase = () => {
         );
         const technicianData = await technicianResponse.data.map(
           (technician) => ({
-            id: technician.users_id,
-            name: technician.name,
+            id: technician.user_id,
+            full_name: technician.full_name,
             user_img: technician.user_img,
-            user_email: technician.user_email,
-            user_phone: technician.user_phone,
+            email: technician.email,
+            phone: technician.phone,
           }),
         );
         settechnician(technicianData);
@@ -107,13 +107,13 @@ export const Detailcase = () => {
                     ข้อมูลรายละเอียดช่าง
                   </Typography>
                   <br />
-                  <Typography variant="h5">{tech.name}</Typography>
+                  <Typography variant="h5">{tech.full_name}</Typography>
                   <br />
                   <Typography color="text.secondary">
-                    Email: {tech.user_email}
+                    Email: {tech.email}
                   </Typography>
                   <Typography color="text.secondary">
-                    Phone: {tech.user_phone}
+                    Phone: {tech.phone}
                   </Typography>
                 </CardContent>
                 <CardMedia

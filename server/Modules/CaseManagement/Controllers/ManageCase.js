@@ -10,7 +10,7 @@ const db = mysql.createConnection({
 
 exports.list = async (req, res) => {
   db.query(
-    "SELECT * FROM tickets c INNER JOIN Users u on c.user_id = u.users_id WHERE status_id = 1",
+    "SELECT * FROM tickets c INNER JOIN users u on c.user_id = u.user_id WHERE status_id = 1",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -63,7 +63,7 @@ exports.listall = async (req, res) => {
 
 exports.listticket = async (req, res) => {
   db.query(
-    "SELECT * FROM tickets c INNER JOIN status s on c.status_id = s.status_id  INNER JOIN Users u ON c.user_id = u.users_id WHERE c.status_id IN (2,3,4,5,6,7)",
+    "SELECT * FROM tickets c INNER JOIN status s on c.status_id = s.status_id  INNER JOIN users u ON c.user_id = u.user_id WHERE c.status_id IN (2,3,4,5,6,7)",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -79,7 +79,7 @@ exports.listticket = async (req, res) => {
 exports.listbyticketid = async (req, res) => {
   const ticket_id = req.params.ticket_id;
   db.query(
-    "SELECT * FROM tickets c LEFT JOIN Users u on c.technician_id = u.users_id WHERE ticket_id = ? ",
+    "SELECT * FROM tickets c LEFT JOIN users u on c.technician_id = u.user_id WHERE ticket_id = ? ",
     [ticket_id],
     (err, result) => {
       if (err) {
@@ -110,7 +110,7 @@ exports.listbyticket = async (req, res) => {
 exports.getticketbyticketid = async (req, res) => {
   const ticket_id = req.params.ticket_id;
   db.query(
-    "select u.name ,u.user_phone,c.started_at, c.description,c.title ,c.created_at,c.assigned_at,c.work_completed_at,closed_at ,d.dep_name, c2.issues_categories_name,c.status_id   from tickets c join Users u on c.user_id = u.users_id join Department d on u.dep_id = d.dep_id join issues_categories c2  on c.issues_categories_id = c2.issues_categories_id   where c.ticket_id = ?",
+    "select u.full_name ,u.phone,c.started_at, c.description,c.title ,c.created_at,c.assigned_at,c.work_completed_at,closed_at ,d.dep_name, c2.issues_categories_name,c.status_id   from tickets c join users u on c.user_id = u.user_id join Department d on u.department_id = d.dep_id join issues_categories c2  on c.issues_categories_id = c2.issues_categories_id   where c.ticket_id = ?",
 
     [ticket_id],
     (error, result) => {
@@ -126,7 +126,7 @@ exports.getticketbyticketid = async (req, res) => {
 exports.listbyID = async (req, res) => {
   const ticket_id = req.params.ticket_id;
   db.query(
-    "SELECT u1.name AS user_name,c.title, c.ticket_id,c.user_id,c.description,c.technician_id,u.name FROM tickets c inner join Users u on manager_id = users_id INNER JOIN Users u1 ON c.user_id = u1.users_id WHERE ticket_id = ?  ",
+    "SELECT u1.full_name AS user_name,c.title, c.ticket_id,c.user_id,c.description,c.technician_id,u.full_name FROM tickets c inner join users u on manager_id = u.user_id INNER JOIN users u1 ON c.user_id = u1.user_id WHERE ticket_id = ?  ",
     [ticket_id],
     (err, result) => {
       if (err) {
@@ -142,7 +142,7 @@ exports.listbyID = async (req, res) => {
 exports.listbyidtech = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.name AS usersname,s.status_id,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
+    "SELECT u1.full_name AS usersname,s.status_id,u.full_name ,c.title,c.ticket_id,c.description,c.manager_id as username  FROM tickets c  inner join users  u on c.technician_id = u.user_id  inner join status s on c.status_id = s.status_id INNER JOIN users u1 on c.user_id = u1.user_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -159,7 +159,7 @@ exports.listbyidtechstatus2 = async (req, res) => {
   db.query(
     // "SELECT u1.name AS usersname,s.status_name,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username,c.created_at  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join Status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
 
-    "SELECT u1.name AS usersname,s.status_name,s.status_id,u.name ,c.title,c.ticket_id,c.description,c.manager_id as username,c.created_at  FROM tickets c  inner join Users  u on c.technician_id = u.users_id  inner join status s on c.status_id = s.status_id INNER JOIN Users u1 on c.user_id = u1.users_id  WHERE technician_id = ? AND c.status_id IN (2) ",
+    "SELECT u1.full_name AS usersname,s.status_name,s.status_id,u.full_name ,c.title,c.ticket_id,c.description,c.manager_id as username,c.created_at  FROM tickets c  inner join users  u on c.technician_id = u.user_id  inner join status s on c.status_id = s.status_id INNER JOIN users u1 on c.user_id = u1.user_id  WHERE technician_id = ? AND c.status_id IN (2) ",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -175,7 +175,7 @@ exports.listbyidtechstatus2 = async (req, res) => {
 exports.listbyidtechstatus3 = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT c.title,u2.name,s.status_name,c.created_at,c.ticket_id,c.description,c.manager_id FROM tickets c  INNER JOIN Users u1 ON c.technician_id = u1.users_id INNER JOIN status s ON c.status_id = s.status_id INNER JOIN Users u2 on c.manager_id = u2.users_id  WHERE c.technician_id = ? AND c.status_id IN (3,4);",
+    "SELECT c.title,u2.name,s.status_name,c.created_at,c.ticket_id,c.description,c.manager_id FROM tickets c  INNER JOIN users u1 ON c.technician_id = u1.user_id INNER JOIN status s ON c.status_id = s.status_id INNER JOIN users u2 on c.manager_id = u2.user_id  WHERE c.technician_id = ? AND c.status_id IN (3,4);",
     [technician_id],
     (err, result) => {
       if (err) {
@@ -353,34 +353,79 @@ exports.ticketstatusupdate = async (req, res) => {
               );
               break;
             case 4:
-              const { serial_number } = req.body;
-              console.log(status_id);
+              const { serial_number, ticket_resolution } = req.body || {};
+
+              const trimmedSerial =
+                typeof serial_number === "string" ? serial_number.trim() : null;
+
+              // ✅ ถ้าติ๊ก "ไม่ระบุรหัสอุปกรณ์" -> serial_number จะเป็น null (หรือส่งว่างมา)
+              // ให้ update ได้เลย โดย instance_id = NULL
+              if (!trimmedSerial) {
+                db.query(
+                  `update tickets
+       set status_id = ?, instance_id = NULL, ticket_resolution = ?, work_completed_at = NOW()
+       where ticket_id = ?`,
+                  [status_id, ticket_resolution, ticket_id],
+                  (error, result) => {
+                    if (error) return res.status(500).send(error);
+                    return res.status(200).send(result);
+                  },
+                );
+                break;
+              }
+
+              // ✅ ถ้ามี serial_number จริง -> ค่อยไปหา instance_id
               db.query(
-                "select * from DeviceInstances where serial_number = ? ",
-                [serial_number],
+                "select instance_id from DeviceInstances where serial_number = ?",
+                [trimmedSerial],
                 (error, result) => {
-                  if (error) {
-                    return res.status(500).send(error);
-                  }
+                  if (error) return res.status(500).send(error);
                   if (result.length === 0) {
-                    return res.status(500).send("not found serial_number");
+                    return res.status(404).send("not found serial_number");
                   }
 
                   const instance_id = result[0].instance_id;
+
                   db.query(
-                    "update tickets set  status_id = ? , instance_id = ?, ticket_resolution = ?,  work_completed_at = NOW()  where ticket_id = ? ",
+                    `update tickets
+         set status_id = ?, instance_id = ?, ticket_resolution = ?, work_completed_at = NOW()
+         where ticket_id = ?`,
                     [status_id, instance_id, ticket_resolution, ticket_id],
                     (error, result) => {
-                      if (error) {
-                        console.log(error);
-                        res.status(500).send(error);
-                      } else {
-                        res.status(200).send(result);
-                      }
+                      if (error) return res.status(500).send(error);
+                      return res.status(200).send(result);
                     },
                   );
                 },
               );
+              // const { serial_number } = req.body || "";
+              // console.log(status_id);
+              // db.query(
+              //   "select * from DeviceInstances where serial_number = ? ",
+              //   [serial_number],
+              //   (error, result) => {
+              //     if (error) {
+              //       return res.status(500).send(error);
+              //     }
+              //     if (result.length === 0) {
+              //       return res.status(500).send("not found serial_number");
+              //     }
+              //
+              //     const instance_id = result[0].instance_id;
+              //     db.query(
+              //       "update tickets set  status_id = ? , instance_id = ?, ticket_resolution = ?,  work_completed_at = NOW()  where ticket_id = ? ",
+              //       [status_id, instance_id, ticket_resolution, ticket_id],
+              //       (error, result) => {
+              //         if (error) {
+              //           console.log(error);
+              //           res.status(500).send(error);
+              //         } else {
+              //           res.status(200).send(result);
+              //         }
+              //       },
+              //     );
+              //   },
+              // );
               break;
             case 5:
               db.query(
@@ -717,7 +762,7 @@ exports.getticketsByInstanceID = async (req, res) => {
 exports.listHistoryticketByTechnicianID = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "select ticket_id, user_id, technician_id, manager_id, status_id, issues_categories_id, instance_id, title, description, ticket_resolution, created_at, assigned_at, work_completed_at, closed_at from tickets c join Users u on c.technician_id = u.users_id where c.technician_id = ?",
+    "select ticket_id, u.user_id, technician_id, manager_id, status_id, issues_categories_id, instance_id, title, description, ticket_resolution, created_at, assigned_at, work_completed_at, closed_at from tickets c join users u on c.technician_id = u.user_id where c.technician_id = ?",
     [technician_id],
     (error, result) => {
       if (error) {
@@ -728,4 +773,28 @@ exports.listHistoryticketByTechnicianID = async (req, res) => {
       }
     },
   );
+};
+exports.autoUpdateStatus = async (req, res) => {
+  db.query("select * from tickets ", (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    results.map((item) => {
+      const currenttime = moment();
+      const work_completed_at = moment(item.work_completed_at);
+      const diffInDays = currenttime.diff(work_completed_at, "days");
+      if (diffInDays >= 3 && item.status_id === 4) {
+        db.query(
+          "UPDATE tickets SET status_id = 5 WHERE ticket_id = ? ",
+          [item.ticket_id],
+          (err, result) => {
+            console.log(`เลยแล้ว ${item.ticket_id}`);
+          },
+        );
+      } else {
+        console.log(`ยังไม่เลย${item.ticket_id}`);
+      }
+    });
+  });
 };

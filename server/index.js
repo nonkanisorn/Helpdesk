@@ -13,6 +13,7 @@ const morgan = require("morgan");
 const { existsSync } = require("fs");
 const {
   checktimeticket,
+  autoUpdateStatus,
 } = require("./Modules/CaseManagement/Controllers/ManageCase");
 const cookies = new Cookies();
 app.use(morgan("dev"));
@@ -41,13 +42,14 @@ app.use(cors());
 app.use(cookieParser());
 
 var db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "",
-  database: "RepairSystemDB",
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 setInterval(() => {
-  checktimeticket();
+  // checktimeticket();
+  autoUpdateStatus();
 }, 86400000);
 db.connect(function (err) {
   if (err) {

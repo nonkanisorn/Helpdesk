@@ -27,7 +27,7 @@ import { AssignmentInd, PrecisionManufacturing } from "@mui/icons-material";
 function User() {
   const [ticketdata, setTicketdata] = useState([]);
   console.log(ticketdata);
-  const user_id = useSelector((state) => state.user.users_id);
+  const user_id = useSelector((state) => state.user.user_id);
   console.log(ticketdata);
   const userStatusMap = {
     1: "เปิดงาน",
@@ -89,27 +89,6 @@ function User() {
               </Link>
             </Paper>
           </Grid>
-          {/* <Grid item md={4}> */}
-          {/*   <Paper square sx={{ height: 250, p: 2, borderRadius: 3 }}> */}
-          {/*     <SearchRoundedIcon sx={{ color: "orange", fontSize: "4vw" }} /> */}
-          {/*     <Typography variant="h6" fontWeight="fontWeightBold" mt={2}> */}
-          {/*       ติดตามสถานะ */}
-          {/*     </Typography> */}
-          {/*     <Typography color="grey">แจ้งปัญหาและขอรับบริการซ่อม</Typography> */}
-          {/*     <Button */}
-          {/*       variant="contained" */}
-          {/*       sx={{ */}
-          {/*         mt: 3, */}
-          {/*         width: "100%", */}
-          {/*         borderRadius: 3, */}
-          {/*         color: "black", */}
-          {/*         bgcolor: "#F8F8F7", */}
-          {/*       }} */}
-          {/*     > */}
-          {/*       เลือก */}
-          {/*     </Button> */}
-          {/*   </Paper> */}
-          {/* </Grid> */}
           <Grid item md={6}>
             <Paper square sx={{ height: 250, p: 2, borderRadius: 3 }}>
               <HistoryRoundedIcon sx={{ color: "green", fontSize: "4vw" }} />

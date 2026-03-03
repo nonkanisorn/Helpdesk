@@ -23,7 +23,7 @@ function Historycase() {
     7: "รออะไหล่",
   };
   const navigate = useNavigate();
-  const technician_id = useSelector((state) => state.user.users_id);
+  const technician_id = useSelector((state) => state.user.user_id);
   const [ticketData, setticketData] = useState([]);
   const apiUrl = process.env.REACT_APP_API_URL;
   const topagedetail = (ticket_id) => {

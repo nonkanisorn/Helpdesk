@@ -14,7 +14,7 @@ import { Box } from "@mui/material";
 function Statuscase() {
   const [ticketId, setticketId] = useState();
   const [ticketDeviceId, setticketDeviceId] = useState();
-  const user_id = useSelector((state) => state.user.users_id);
+  const user_id = useSelector((state) => state.user.user_id);
   const status_id = 6;
   const [ticketData, setticketData] = useState([]);
   const [reFresh, setRefresh] = useState(true);

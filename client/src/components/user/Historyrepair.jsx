@@ -28,7 +28,7 @@ function Historyrepair() {
     });
   };
   const [ticketData, setticketData] = useState([]);
-  const user_id = useSelector((state) => state.user.users_id);
+  const user_id = useSelector((state) => state.user.user_id);
 
   // ✅ เปลี่ยนเป็น key ของกลุ่มสถานะ (อ่านง่าย + filter ถูก)
   const [groupKey, setGroupKey] = useState("all");
@@ -42,13 +42,13 @@ function Historyrepair() {
     pending: { label: "รอดำเนินการ", ids: [1, 2] },
 
     // In Progress + Waiting for Parts
-    progress: { label: "อยู่ระหว่างซ่อม", ids: [3, 7] },
+    progress: { label: "อยู่ระหว่างซ่อม", ids: [3, 6] },
 
     // Waiting for User Confirmation
-    confirm: { label: "รอการยืนยันจากคุณ", ids: [4, 5] },
+    confirm: { label: "รอการยืนยันจากคุณ", ids: [4] },
 
     // Closed
-    done: { label: "เสร็จสิ้นแล้ว", ids: [6] },
+    done: { label: "เสร็จสิ้นแล้ว", ids: [5] },
   };
 
   // ✅ label สำหรับ chip (รองรับครบทุกสถานะที่ user เห็น)
@@ -57,9 +57,8 @@ function Historyrepair() {
     2: "รอดำเนินการ",
     3: "อยู่ระหว่างซ่อม",
     4: "รอการยืนยันจากคุณ",
-    7: "อยู่ระหว่างซ่อม",
-    5: "รอการยืนยันจากคุณ",
-    6: "เสร็จสิ้น",
+    5: "เสร็จสิ้น",
+    6: "อยู่ระหว่างซ่อม",
   };
 
   // ✅ helper นับ + กรอง

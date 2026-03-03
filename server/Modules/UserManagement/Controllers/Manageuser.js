@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 exports.listPerformanceTechnician = async (req, res) => {
   db.query(
-    "SELECT u.users_id AS technician_id, u.name AS technician_name,   COUNT(c.ticket_id) AS assigned_count, SUM(CASE WHEN c.status_id = 6 THEN 1 ELSE 0 END) AS completed_count FROM Users u LEFT JOIN tickets c  ON c.technician_id = u.users_id WHERE u.role_id = 3 GROUP BY u.users_id, u.name ORDER BY u.name;",
+    "SELECT u.user_id AS technician_id, u.full_name AS technician_name,   COUNT(c.ticket_id) AS assigned_count, SUM(CASE WHEN c.status_id = 6 THEN 1 ELSE 0 END) AS completed_count FROM users u LEFT JOIN tickets c  ON c.technician_id = u.user_id WHERE u.role_id = 3 GROUP BY u.user_id, u.full_name ORDER BY u.full_name;",
 
     (err, results) => {
       if (err) {
@@ -28,7 +28,7 @@ exports.isActiveUsers = async (req, res) => {
   const { users_id } = req.params;
   const { is_active } = req.body;
   db.query(
-    "Update Users SET is_active = ? WHERE users_id = ? ",
+    "Update users SET is_active = ? WHERE user_id = ? ",
     [is_active, users_id],
     (err, results) => {
       if (err) {
@@ -42,7 +42,7 @@ exports.isActiveUsers = async (req, res) => {
 };
 exports.getAllUsers = async (req, res) => {
   db.query(
-    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id",
+    "SELECT * FROM users u INNER JOIN Role r ON u.role_id = r.role_id",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -56,7 +56,7 @@ exports.getAllUsers = async (req, res) => {
 exports.listbyid = async (req, res) => {
   const user_id = req.params.users_id;
   db.query(
-    "SELECT * FROM Users u INNER JOIN Role r ON u.role_id = r.role_id LEFT JOIN Department d on u.dep_id =  d.dep_id WHERE users_id = ? ",
+    "SELECT * FROM users u INNER JOIN Role r ON u.role_id = r.role_id LEFT JOIN Department d on u.department_id =  d.dep_id WHERE user_id = ? ",
     [user_id],
     (err, results) => {
       if (err) {
@@ -73,38 +73,34 @@ exports.remove = async (req, res) => {
   const user_id = req.params.user_id;
   //
   // console.log(users_id);
-  db.query(
-    "DELETE FROM Users WHERE users_id = ? ",
-    [user_id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("cannot delete");
-      } else {
-        res.send(result);
-      }
-    },
-  );
+  db.query("DELETE FROM users WHERE user_id = ? ", [user_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("cannot delete");
+    } else {
+      res.send(result);
+    }
+  });
 };
 
 exports.update = async (req, res) => {
-  const users_id = req.params.user_id;
+  const user_id = req.params.user_id;
   const user_img = req.file ? req.file.buffer : null;
   const {
-    name,
+    full_name,
     role_id,
     username,
     userpassword,
-    dep_id,
-    user_email,
-    user_phone,
+    department_id,
+    email,
+    phone,
     is_active,
   } = req.body;
-  let query = "UPDATE Users SET ";
+  let query = "UPDATE users SET ";
   const params = [];
-  if (name) {
-    query += "name = ? ,";
-    params.push(name);
+  if (full_name) {
+    query += "full_name = ? ,";
+    params.push(full_name);
   }
   if (role_id) {
     query += "role_id = ? ,";
@@ -115,7 +111,7 @@ exports.update = async (req, res) => {
     params.push(username);
   }
   if (userpassword) {
-    query += "userpassword = ? ,";
+    query += "password_hash = ? ,";
     const userPasswordHash = await bcrypt.hash(userpassword, 10);
     params.push(userPasswordHash);
   }
@@ -123,17 +119,17 @@ exports.update = async (req, res) => {
     query += "user_img = ? ,";
     params.push(user_img);
   }
-  if (dep_id) {
-    query += "dep_id = ? ,";
-    params.push(dep_id);
+  if (department_id) {
+    query += "department_id = ? ,";
+    params.push(department_id);
   }
-  if (user_email) {
-    query += "user_email = ? ,";
-    params.push(user_email);
+  if (email) {
+    query += "email = ? ,";
+    params.push(email);
   }
-  if (user_phone) {
-    query += "user_phone = ? ,";
-    params.push(user_phone);
+  if (phone) {
+    query += "phone = ? ,";
+    params.push(phone);
   }
   if (is_active) {
     query += "is_active = ? ,";
@@ -142,8 +138,8 @@ exports.update = async (req, res) => {
 
   query = query.slice(0, -1);
 
-  query += "WHERE users_id = ? ";
-  params.push(users_id);
+  query += "WHERE user_id = ? ";
+  params.push(user_id);
   console.log("params", params);
 
   console.log(query);

@@ -15,15 +15,15 @@ const Sidebarmanager = () => {
   const [isCollapsed, setisCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
-  const name = useSelector((state) => state.user.name);
-  const users_id = useSelector((state) => state.user.users_id);
+  const full_name = useSelector((state) => state.user.full_name);
+  const user_id = useSelector((state) => state.user.user_id);
   const [url, setUrl] = useState("");
 
   useEffect(() => {
-    if (users_id) {
+    if (user_id) {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:5011/users/${users_id}`,
+          `http://localhost:5011/users/${user_id}`,
         );
         if (
           !response.data[0].user_img ||
@@ -42,7 +42,7 @@ const Sidebarmanager = () => {
 
       fetchdata();
     }
-  }, [users_id]);
+  }, [user_id]);
 
   return (
     <div
@@ -107,7 +107,7 @@ const Sidebarmanager = () => {
                   </Box>
                   <Box textAlign="center">
                     <Typography sx={{ m: "10px 0 0 0", color: "white" }}>
-                      {name}
+                      {full_name}
                     </Typography>
                   </Box>
                 </Box>

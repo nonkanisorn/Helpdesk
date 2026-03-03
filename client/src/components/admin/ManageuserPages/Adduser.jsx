@@ -32,11 +32,11 @@ function Adduser() {
     formData.append("username", username);
     formData.append("userpassword", userpassword);
     formData.append("role_id", selectRole);
-    formData.append("name", name);
-    formData.append("user_email", useremail);
-    formData.append("user_phone", userphone);
+    formData.append("full_name", name);
+    formData.append("email", useremail);
+    formData.append("phone", userphone);
     formData.append("user_img", fileimg);
-    formData.append("dep_id", selectDepName);
+    formData.append("department_id", selectDepName);
     axios
       .post(`${apiUrl}/register`, formData, {
         headers: {

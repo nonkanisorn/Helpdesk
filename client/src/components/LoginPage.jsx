@@ -40,20 +40,20 @@ function LoginPage() {
           // username: response.data.payload.user,
           role: response.data.payload.user.role,
           token: response.data.token,
-          name: response.data.payload.user.name,
-          users_id: response.data.payload.user.users_id,
-          dep_id: response.data.payload.user.dep_id,
+          full_name: response.data.payload.user.full_name,
+          user_id: response.data.payload.user.user_id,
+          department_id: response.data.payload.user.department_id,
         }),
       );
       localStorage.setItem(
         "user",
         JSON.stringify({
           // username: response.data.payload.user,
-          name: response.data.payload.user.name,
+          full_name: response.data.payload.user.full_name,
           role: response.data.payload.user.role,
           token: response.data.token,
-          users_id: response.data.payload.user.users_id,
-          dep_id: response.data.payload.user.dep_id,
+          user_id: response.data.payload.user.user_id,
+          department_id: response.data.payload.user.department_id,
         }),
       );
       // localStorage.setItem("token", response.data.token)

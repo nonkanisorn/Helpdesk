@@ -67,11 +67,11 @@ function Adminpages() {
     username: "",
     userpassword: "",
     name: "",
-    user_email: "",
-    user_phone: "",
+    email: "",
+    phone: "",
     // ช่อง select (number)
     role_id: null, // 👈 number | null
-    dep_id: null, // 👈 number | null
+    department_id: null, // 👈 number | null
     is_active: 1,
   };
   const {
@@ -89,10 +89,10 @@ function Adminpages() {
         username: data.username,
         userpassword: data.userpassword,
         role_id: data.role_id,
-        name: data.name,
+        full_name: data.name,
         dep_id: data.dep_id,
-        user_email: data.user_email,
-        user_phone: data.user_phone,
+        email: data.email,
+        phone: data.phone,
         is_active: data.is_active,
       })
       .then((res) => {
@@ -152,9 +152,9 @@ function Adminpages() {
               <Typography>ชื่อ-นามสกุล</Typography>
               <TextField {...register("name")}></TextField>
               <Typography>อีเมล์</Typography>
-              <TextField {...register("user_email")}></TextField>
+              <TextField {...register("email")}></TextField>
               <Typography>เบอร์โทรศัพท์</Typography>
-              <TextField {...register("user_phone")}></TextField>
+              <TextField {...register("phone")}></TextField>
               <Typography>บทบาท</Typography>
               <Controller
                 control={control}

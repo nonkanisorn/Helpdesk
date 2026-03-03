@@ -15,8 +15,8 @@ import {
 
 function Profile() {
   const role_id = useSelector((state) => state.user.role);
-  const name = useSelector((state) => state.user.name);
-  const users_id = useSelector((state) => state.user.users_id);
+  const full_name = useSelector((state) => state.user.full_name);
+  const user_id = useSelector((state) => state.user.user_id);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [url, setUrl] = useState("/assets/user.png");
@@ -35,7 +35,7 @@ function Profile() {
   }, [role_id]);
 
   useEffect(() => {
-    if (!users_id) return;
+    if (!user_id) return;
 
     let alive = true;
     setLoading(true);
@@ -43,15 +43,15 @@ function Profile() {
 
     const fetchdata = async () => {
       try {
-        const res = await axios.get(`http://localhost:5011/users/${users_id}`);
+        const res = await axios.get(`http://localhost:5011/users/${user_id}`);
         const u = res.data?.[0];
         if (!u) throw new Error("ไม่พบข้อมูลผู้ใช้");
 
         if (!alive) return;
 
         setDep(u.dep_name ?? "");
-        setEmail(u.user_email ?? "");
-        setPhone(u.user_phone ?? "");
+        setEmail(u.email ?? "");
+        setPhone(u.phone ?? "");
         const img = u.user_img;
         if (!img || !img.data || img.data.length === 0) {
           setUrl("/assets/user.png");
@@ -79,7 +79,7 @@ function Profile() {
       if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [users_id]);
+  }, [user_id]);
 
   return (
     <Box sx={{ px: { xs: 2, md: 5 }, py: 4 }}>
@@ -170,10 +170,10 @@ function Profile() {
                 ) : (
                   <>
                     <Typography variant="h6" fontWeight={900}>
-                      {name || "-"}
+                      {full_name || "-"}
                     </Typography>
                     <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                      User ID: {users_id}
+                      User ID: {user_id}
                     </Typography>
                   </>
                 )}
@@ -191,7 +191,7 @@ function Profile() {
               <InfoRow
                 label="ชื่อผู้ใช้"
                 loading={loading}
-                value={name || "-"}
+                value={full_name || "-"}
               />
               <InfoRow
                 label="แผนก"

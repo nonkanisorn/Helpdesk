@@ -30,14 +30,14 @@ function Edituser() {
   const [user_phone, setUserPhone] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
   const formData = new FormData();
-  formData.append("name", newName);
+  formData.append("full_name", newName);
   formData.append("username", newUsername);
   formData.append("userpassword", newUserpassword);
   formData.append("role_id", newRolename);
-  formData.append("dep_id", newDepname);
+  formData.append("department_id", newDepname);
   formData.append("user_img", newProfile);
-  formData.append("user_email", user_email);
-  formData.append("user_phone", user_phone);
+  formData.append("email", user_email);
+  formData.append("phone", user_phone);
   const handleSubmit = () => {
     axios
       .patch(`${apiUrl}/userupdate/${users_id}`, formData, {
@@ -142,7 +142,9 @@ function Edituser() {
           </Box>
           <br />
           <Box>
-            <Typography>ชื่อนามสกุลผู้ใช้เดิม : {userData[0].name}</Typography>
+            <Typography>
+              ชื่อนามสกุลผู้ใช้เดิม : {userData[0].full_name}
+            </Typography>
             <Typography component="span">ชื่อนามสกุลผู้ใช้ใหม่ : </Typography>
             <TextField
               value={newName}
@@ -150,18 +152,14 @@ function Edituser() {
             ></TextField>
           </Box>
           <Box>
-            <Typography component="span">
-              Email: {userData[0].user_email}
-            </Typography>
+            <Typography component="span">Email: {userData[0].email}</Typography>
             <TextField
               onChange={(e) => setUserEmail(e.target.value)}
             ></TextField>
           </Box>
 
           <Box>
-            <Typography component="span">
-              Phone: {userData[0].user_phone}
-            </Typography>
+            <Typography component="span">Phone: {userData[0].phone}</Typography>
             <TextField
               onChange={(e) => setUserPhone(e.target.value)}
             ></TextField>

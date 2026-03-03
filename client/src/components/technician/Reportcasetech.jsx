@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 function Reportcasetech() {
   const navigate = useNavigate();
-  const technician_id = useSelector((state) => state.user.users_id);
+  const technician_id = useSelector((state) => state.user.user_id);
   const [ticketData, setticketData] = useState([]);
   const status_id = 4;
   const [refresh, setRefresh] = useState(false);
