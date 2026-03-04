@@ -23,14 +23,17 @@ exports.list = async (req, res) => {
 };
 
 exports.listTicketStatusOpen = async (req, res) => {
-  db.query("select * from tickets where status_id = 1 ", (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("server error");
-    } else {
-      res.send(result);
-    }
-  });
+  db.query(
+    "select * from tickets  t where status_id = 1 order   by t.ticket_id  desc",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      } else {
+        res.send(result);
+      }
+    },
+  );
 };
 exports.listForManager = async (req, res) => {
   db.query(
@@ -142,7 +145,7 @@ exports.listbyID = async (req, res) => {
 exports.listbyidtech = async (req, res) => {
   const technician_id = req.params.technician_id;
   db.query(
-    "SELECT u1.full_name AS usersname,s.status_id,u.full_name ,c.title,c.ticket_id,c.description,c.manager_id as username  FROM tickets c  inner join users  u on c.technician_id = u.user_id  inner join status s on c.status_id = s.status_id INNER JOIN users u1 on c.user_id = u1.user_id  WHERE technician_id = ? AND c.status_id IN (2,4,5) ",
+    "SELECT u1.full_name AS usersname,s.status_id,u.full_name ,c.title,c.ticket_id,c.description,c.manager_id as username  FROM tickets c  inner join users  u on c.technician_id = u.user_id  inner join status s on c.status_id = s.status_id INNER JOIN users u1 on c.user_id = u1.user_id  WHERE technician_id = 8 AND c.status_id IN (2,4,5) order by c.ticket_id desc ",
     [technician_id],
     (err, result) => {
       if (err) {
