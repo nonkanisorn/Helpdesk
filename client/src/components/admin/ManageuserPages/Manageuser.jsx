@@ -30,6 +30,7 @@ function Manageuser() {
     // ช่องข้อความ
     username: "",
     userpassword: "",
+    confirmPassword: "",
     full_name: "",
     email: "",
     phone: "",
@@ -45,7 +46,9 @@ function Manageuser() {
     formState: { errors },
     reset,
     control,
-  } = useForm({ defaultValues });
+  } = useForm({ defaultValues, mode: "onChange" });
+  const password = watch("userpassword");
+  console.log("passsss", password);
   const [userData, setUserData] = useState([]);
   const [roleData, setRoleData] = useState([]);
   const [depData, setDepData] = useState([]);
@@ -182,7 +185,21 @@ function Manageuser() {
               <Typography>ชื่อผู้ใช้</Typography>
               <TextField {...register("username")}></TextField>
               <Typography>รหัสผ่าน</Typography>
-              <TextField {...register("userpassword")}></TextField>
+              <TextField
+                type="password"
+                {...register("userpassword")}
+              ></TextField>
+              <Typography>ยืนยันรหัสผ่าน</Typography>
+              <TextField
+                type="password"
+                {...register("confirmPassword", {
+                  validate: (value) =>
+                    value === password || "รหัสผ่านไม่ตรงกัน",
+                })}
+              ></TextField>
+              {errors.confirmPassword && (
+                <Typography>{errors.confirmPassword.message}</Typography>
+              )}
               <Typography>ชื่อ-นามสกุล</Typography>
               <TextField {...register("full_name")}></TextField>
               <Typography>อีเมล์</Typography>
