@@ -26,6 +26,7 @@ import { AssignmentInd, PrecisionManufacturing } from "@mui/icons-material";
 
 function User() {
   const [ticketdata, setTicketdata] = useState([]);
+  console.log(process.env.REACT_APP_API_URL);
   console.log(ticketdata);
   const user_id = useSelector((state) => state.user.user_id);
   console.log(ticketdata);

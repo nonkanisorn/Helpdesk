@@ -37,6 +37,7 @@ const AdminRoute = ({ children }) => {
   const currentAdmin = async (idToken) => {
     try {
       const res = await axios.post(
+        // `${process.env.REACT_APP_API_URL}/current-admin`,
         `${process.env.REACT_APP_API_URL}/current-admin`,
         {},
         {
